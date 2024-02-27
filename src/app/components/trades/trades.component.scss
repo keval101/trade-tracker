@@ -1,0 +1,13 @@
+.profit {
+    @apply text-green-600 font-semibold;
+}
+
+.lose {
+    @apply text-red-600 font-semibold;
+}
+
+.trades {
+    table {
+        font-size: 16px;
+    }
+}

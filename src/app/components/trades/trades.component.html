@@ -1,0 +1,86 @@
+<div class="trades">
+    <h1 class="text-4xl font-semibold mb-10">Trades</h1>
+
+    <app-add-trade (emitFormData)="tradeData($event)"></app-add-trade>
+
+    <div class="relative mt-4 overflow-x-auto shadow-sm">
+        <table
+            class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+            <thead
+                class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                <tr>
+                    <th scope="col" class="px-6 py-3">
+                        Date
+                    </th>
+                    <th scope="col" class="px-6 py-3">
+                        Total Trades
+                    </th>
+                    <th scope="col" class="px-6 py-3">
+                        Market
+                    </th>
+                    <th scope="col" class="px-6 py-3">
+                        Investment
+                    </th>
+                    <th scope="col" class="px-6 py-3">
+                        Profit/Lose
+                    </th>
+                    <th scope="col" class="px-6 py-3">
+                        Brokerage
+                    </th>
+                    <th scope="col" class="px-6 py-3">
+                        Net
+                    </th>
+                    <th scope="col" class="px-6 py-3">
+                        <span class="sr-only">Edit</span>
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <ng-container *ngFor="let trade of trades">
+                    <tr
+                        class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                        <th scope="row"
+                            class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                            <!-- {{ newDate | date: 'dd-MM-yyyy'}} -->
+                            {{trade.date}}
+                        </th>
+                        <td class="px-6 py-4">
+                            {{trade.totalTrades}}
+                        </td>
+                        <td class="px-6 py-4">
+                            {{trade.market}}
+                        </td>
+                        <td class="px-6 py-4">
+                            {{trade.investment}}
+                        </td>
+                        <td class="px-6 py-4">
+                            <span class="profit" *ngIf="trade.isProfitable">+{{trade.profit}}</span>
+                            <span class="lose" *ngIf="!trade.isProfitable">-{{trade.lose}}</span>
+                        </td>
+                        <td class="px-6 py-4">
+                            {{trade.brokerage}}
+                        </td>
+                        <td class="px-6 py-4">
+                            <span class="profit" *ngIf="trade.isProfitable">{{+trade.investment + +trade.profit - +trade.brokerage}}</span>
+
+                            <span class="lose" *ngIf="!trade.isProfitable">{{+trade.investment - +trade.lose - +trade.brokerage}}</span>
+                        </td>
+                        <td class="px-6 py-4 text-right">
+                            <button data-modal-target="trade-modal"
+                            data-modal-toggle="trade-modal"
+                                class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit</button>
+                        </td>
+                    </tr>
+                </ng-container>
+
+                <ng-container *ngIf="!trades.length">
+                    <tr>
+                        <td colspan="8" scope="col" class="px-6 py-8">
+                            <p class="text-center">No Data Found</p>
+                        </td>
+                    </tr>
+                </ng-container>
+            </tbody>
+        </table>
+    </div>
+</div>
