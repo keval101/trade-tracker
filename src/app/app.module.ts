@@ -9,6 +9,12 @@ import { TradesComponent } from './components/trades/trades.component';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { AddTradeComponent } from './components/trades/add-trade/add-trade.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+
+import { DialogModule } from 'primeng/dialog';
+import { DialogService, DynamicDialogModule } from 'primeng/dynamicdialog';
+import { CalendarModule } from 'primeng/calendar';
+import { FundDialogComponent } from './components/account/fund-dialog/fund-dialog.component';
 
 @NgModule({
   declarations: [
@@ -17,15 +23,20 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     AccountComponent,
     TradesComponent,
     DashboardComponent,
-    AddTradeComponent
+    AddTradeComponent,
+    FundDialogComponent
   ],
   imports: [
     BrowserModule,
+    BrowserAnimationsModule,
     AppRoutingModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    DialogModule,
+    DynamicDialogModule,
+    CalendarModule
   ],
-  providers: [],
+  providers: [DialogService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

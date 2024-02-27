@@ -15,7 +15,7 @@
     <div class="fund mt-12">
         <div class="flex justify-between items-center">
             <h1 class="mb-8 text-2xl">Added Fund Records</h1>
-            <button type="button" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">Add Fund</button>
+            <button type="button" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800" (click)="openAddFundDialog()">Add Fund</button>
         </div>
         
         <div class="relative overflow-x-auto sm:rounded-lg">
@@ -84,3 +84,10 @@
 
     </div>
 </div>
+
+<p-dialog header="Header" [(visible)]="visible" [style]="{width: '50vw'}" [modal]="true">
+    <p>
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+        consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+    </p>
+</p-dialog>
