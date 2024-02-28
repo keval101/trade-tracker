@@ -1,7 +1,12 @@
 <div class="trades">
     <h1 class="text-4xl font-semibold mb-10">Trades</h1>
 
-    <app-add-trade (emitFormData)="tradeData($event)"></app-add-trade>
+    <!-- <app-add-trade (emitFormData)="tradeData($event)"></app-add-trade> -->
+    <button (click)="openTradeForm()"
+        class="block text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 ml-auto py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+        type="button">
+        Add Trade
+    </button>
 
     <div class="relative mt-4 overflow-x-auto shadow-sm">
         <table
@@ -26,6 +31,9 @@
                     </th>
                     <th scope="col" class="px-6 py-3">
                         Brokerage
+                    </th>
+                    <th scope="col" class="px-6 py-3">
+                        ROI
                     </th>
                     <th scope="col" class="px-6 py-3">
                         Net
@@ -61,13 +69,16 @@
                             {{trade.brokerage}}
                         </td>
                         <td class="px-6 py-4">
+                            <span class="profit" *ngIf="trade.isProfitable">+{{((trade.profit / trade.investment) * 100).toFixed(2)}}%</span>
+                            <span class="lose" *ngIf="!trade.isProfitable">-{{((trade.lose / trade.investment) * 100).toFixed(2)}}%</span>
+                        </td>
+                        <td class="px-6 py-4">
                             <span class="profit" *ngIf="trade.isProfitable">{{+trade.investment + +trade.profit - +trade.brokerage}}</span>
 
                             <span class="lose" *ngIf="!trade.isProfitable">{{+trade.investment - +trade.lose - +trade.brokerage}}</span>
                         </td>
                         <td class="px-6 py-4 text-right">
-                            <button data-modal-target="trade-modal"
-                            data-modal-toggle="trade-modal"
+                            <button  (click)="openTradeForm(trade)"
                                 class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit</button>
                         </td>
                     </tr>

@@ -1,6 +1,7 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { Validators } from '@angular/forms';
 import { FormBuilder, FormGroup } from '@angular/forms';
+import { DynamicDialogConfig } from 'primeng/dynamicdialog';
 @Component({
   selector: 'app-add-trade',
   templateUrl: './add-trade.component.html',
@@ -10,11 +11,12 @@ export class AddTradeComponent implements OnInit{
 
   tradeForm: FormGroup;
   isEdit = false;
-  data: any;
 
   @Output() emitFormData = new EventEmitter()
 
-  constructor(private fb: FormBuilder) {}
+  constructor(
+    private fb: FormBuilder,
+    public config: DynamicDialogConfig) {}
 
   ngOnInit(): void {
     this.tradeForm = this.fb.group({
@@ -28,8 +30,8 @@ export class AddTradeComponent implements OnInit{
       brokerage: [null, Validators.required]
     })
 
-    if(this.data) {
-      this.tradeForm.patchValue(this.data);
+    if(this.config.data) {
+      this.tradeForm.patchValue(this.config.data)
     }
   }
 

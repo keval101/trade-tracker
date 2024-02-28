@@ -28,6 +28,9 @@
                         <th scope="col" class="px-6 py-3">
                             Funds
                         </th>
+                        <th scope="col" class="px-6 py-3">
+                            <span class="sr-only">Edit</span>
+                        </th>
                     </tr>
                 </thead>
                 <tbody>
@@ -39,6 +42,10 @@
                             </th>
                             <td class="px-6 py-4 text-red-600 font-semibold">
                                 {{ item.fund }}
+                            </td>
+                            <td class="px-6 py-4 text-right">
+                                <button  (click)="openAddFundDialog(item)"
+                                    class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit</button>
                             </td>
                         </tr>
                     </ng-container>
@@ -64,6 +71,9 @@
                         <th scope="col" class="px-6 py-3">
                             Funds
                         </th>
+                        <th scope="col" class="px-6 py-3">
+                            <span class="sr-only">Edit</span>
+                        </th>
                     </tr>
                 </thead>
                 <tbody>
@@ -76,6 +86,10 @@
                             <td class="px-6 py-4 text-green-600 font-semibold">
                                 {{ item.fund }}
                             </td>
+                            <td class="px-6 py-4 text-right">
+                                <button  (click)="openAddFundDialog(item)"
+                                    class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit</button>
+                            </td>
                         </tr>
                     </ng-container>
                 </tbody>
@@ -84,10 +98,3 @@
 
     </div>
 </div>
-
-<p-dialog header="Header" [(visible)]="visible" [style]="{width: '50vw'}" [modal]="true">
-    <p>
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-        consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-    </p>
-</p-dialog>

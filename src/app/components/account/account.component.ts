@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { DialogService } from 'primeng/dynamicdialog';
 import { FundDialogComponent } from './fund-dialog/fund-dialog.component';
+import { DataService } from 'src/app/service/data.service';
 
 @Component({
   selector: 'app-account',
@@ -11,44 +12,20 @@ export class AccountComponent {
   newDate = new Date();
   visible = false;
 
-  addFunds = [
-    {
-      date: '12/02/2024',
-      fund: 1500
-    },
-    {
-      date: '22/02/2024',
-      fund: 2000
-    }
-  ]
+  addFunds = this.dataService.addFunds
+  withdrawlFunds = this.dataService.withdrawlFunds
 
-  withdrawlFunds = [
-    {
-      date: '13/02/2024',
-      fund: 1500
-    },
-    {
-      date: '23/02/2024',
-      fund: 1500
-    },
-    {
-      date: '26/02/2024',
-      fund: 500
-    },
-    {
-      date: '27/02/2024',
-      fund: 500
-    }
-  ]
+  constructor(
+    private dialogService: DialogService,
+    private dataService: DataService
+    ) {}
 
-
-  constructor(private dialogService: DialogService) {}
-
-  openAddFundDialog() {
+  openAddFundDialog(fundData?: any) {
+    const fund = fundData ? fundData : '';
     const dialogRef = this.dialogService.open(FundDialogComponent, {
-      data: {
-        type: 'Add Fund'
-      }
+      width: '30vw',
+      header: 'Add Fund',
+      data: fund
     })
 
     dialogRef.onClose.subscribe(() => console.log('Dialog Closed'))

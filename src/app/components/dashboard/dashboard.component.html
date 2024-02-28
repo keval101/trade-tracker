@@ -6,24 +6,36 @@
             <div class="overview__card">
                 <p class="text-sm text-gray-400 mb-2">Current Week Investment</p>
                 <div class="flex items-center justify-between">
-                    <p class="text-3xl">₹1250</p>
+                    <p class="text-3xl">₹{{expectedROI.currentWeekInvestment}}</p>
                 </div>
             </div>
 
             <div class="overview__card mt-4 pt-4 border-t border-gray-100">
-                <p class="text-sm text-gray-400 mb-2">Goal Of Current Week</p>
+                <p class="text-sm text-gray-400 mb-2">Goal Of Current Week Capital</p>
                 <div class="flex items-center justify-between">
-                    <p class="text-3xl">₹1250</p>
+                    <p class="text-3xl">₹{{expectedROI.currentWeekExpectedResult}}</p>
+                </div>
+            </div>
+
+            <div class="overview__card mt-4 pt-4 border-t border-gray-100">
+                <p class="text-sm text-gray-400 mb-2">Expected Daily ROI</p>
+                <div class="flex items-center justify-between">
+                    <p class="text-3xl">{{expectedROI.currentWeekExpectedROI}}%</p>
                 </div>
             </div>
 
             <div class="overview__card mt-4 pt-4 border-t border-gray-100">
                 <p class="text-sm text-gray-400 mb-2">Current Week Result</p>
                 <div class="flex items-center justify-between">
-                    <p class="text-3xl">₹1250</p>
-                    <div class="overview__card-growth flex gap-1 justify-between items-center profit">
-                        <img src="./assets/icons/down-arrow.png" alt="Up Arrow" width="20" height="20">
-                        20%
+                    <p class="text-3xl">₹{{expectedROI.currentWeekCapital}}</p>
+                    <div class="overview__card-growth flex gap-1 justify-between items-center"
+                    [class.profit]="calculatePercentage(expectedROI) > 0" 
+                    [class.lose]="calculatePercentage(expectedROI) < 0">
+                        <img src="./assets/icons/up-arrow.png" alt="Up Arrow" width="20" height="20" 
+                        *ngIf="calculatePercentage(expectedROI) > 0">
+                        <img src="./assets/icons/down-arrow.png" alt="Up Arrow" width="20" height="20" 
+                        *ngIf="calculatePercentage(expectedROI) < 0">
+                        {{calculatePercentage(expectedROI).toFixed(2)}}%
                     </div>
                 </div>
             </div>
