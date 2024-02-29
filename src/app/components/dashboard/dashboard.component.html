@@ -3,39 +3,44 @@
         <h1 class="text-4xl font-semibold mb-10">Overview</h1>
 
         <div class="overview">
+            <div class="overview__week flex gap-4 py-5 justify-end">
+                <button (click)="prevWeek()"><img width="12" height="12" src="./../../../assets/icons/left-arrow.svg" alt=""></button>
+                <span>Week {{selectedWeek}}</span>
+                <button (click)="nextWeek()"><img width="12" height="12" src="./../../../assets/icons/right-arrow.svg" alt=""></button>
+            </div>
             <div class="overview__card">
                 <p class="text-sm text-gray-400 mb-2">Current Week Investment</p>
                 <div class="flex items-center justify-between">
-                    <p class="text-3xl">₹{{expectedROI.currentWeekInvestment}}</p>
+                    <p class="text-3xl">₹{{selectedWeekData?.currentWeekInvestment}}</p>
                 </div>
             </div>
 
             <div class="overview__card mt-4 pt-4 border-t border-gray-100">
                 <p class="text-sm text-gray-400 mb-2">Goal Of Current Week Capital</p>
                 <div class="flex items-center justify-between">
-                    <p class="text-3xl">₹{{expectedROI.currentWeekExpectedResult}}</p>
+                    <p class="text-3xl">₹{{selectedWeekData?.currentWeekExpectedResult}}</p>
                 </div>
             </div>
 
             <div class="overview__card mt-4 pt-4 border-t border-gray-100">
                 <p class="text-sm text-gray-400 mb-2">Expected Daily ROI</p>
                 <div class="flex items-center justify-between">
-                    <p class="text-3xl">{{expectedROI.currentWeekExpectedROI}}%</p>
+                    <p class="text-3xl">{{selectedWeekData?.currentWeekExpectedROI}}%</p>
                 </div>
             </div>
 
             <div class="overview__card mt-4 pt-4 border-t border-gray-100">
                 <p class="text-sm text-gray-400 mb-2">Current Week Result</p>
                 <div class="flex items-center justify-between">
-                    <p class="text-3xl">₹{{expectedROI.currentWeekCapital}}</p>
+                    <p class="text-3xl">₹{{selectedWeekData?.currentWeekCapital}}</p>
                     <div class="overview__card-growth flex gap-1 justify-between items-center"
-                    [class.profit]="calculatePercentage(expectedROI) > 0" 
-                    [class.lose]="calculatePercentage(expectedROI) < 0">
+                    [class.profit]="calculatePercentage(selectedWeekData) > 0" 
+                    [class.lose]="calculatePercentage(selectedWeekData) < 0">
                         <img src="./assets/icons/up-arrow.png" alt="Up Arrow" width="20" height="20" 
-                        *ngIf="calculatePercentage(expectedROI) > 0">
+                        *ngIf="calculatePercentage(selectedWeekData) > 0">
                         <img src="./assets/icons/down-arrow.png" alt="Up Arrow" width="20" height="20" 
-                        *ngIf="calculatePercentage(expectedROI) < 0">
-                        {{calculatePercentage(expectedROI).toFixed(2)}}%
+                        *ngIf="calculatePercentage(selectedWeekData) < 0">
+                        {{calculatePercentage(selectedWeekData).toFixed(2)}}%
                     </div>
                 </div>
             </div>

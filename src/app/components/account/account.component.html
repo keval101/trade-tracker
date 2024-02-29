@@ -9,6 +9,10 @@
                 <p class="text-gray-400">Admin</p>
                 <p class="text-gray-300">Junagadh, Gujarat</p>
             </div>
+            <p *ngIf="totalWithdrawalFunds > totalAddedFunds" class="bg-green-500 text-white px-4 py-2 ml-auto rounded-lg">
+                Overall Profitable With ₹{{totalWithdrawalFunds - totalAddedFunds | number}}</p>
+            <p *ngIf="totalWithdrawalFunds < totalAddedFunds" class="bg-red-500 text-white px-4 py-2 ml-auto rounded-lg">
+                Overall In Lose Of ₹{{totalAddedFunds - totalWithdrawalFunds | number}}</p>
         </div>
     </div>
 

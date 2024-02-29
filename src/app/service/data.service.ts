@@ -244,11 +244,11 @@ export class DataService {
       );
   }
 
-  addWithdrawalFunds(payload: any) {
+  addWithdrawalFund(payload: any) {
     return this.firestore.collection('withdrawal-funds').add(payload);
   }
 
-  updateWithdrawalFunds(fundId: any, payload: any) {
+  updateWithdrawalFund(fundId: any, payload: any) {
     return this.firestore
       .collection('withdrawal-funds')
       .doc(fundId)

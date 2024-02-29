@@ -1,4 +1,10 @@
 .overview {
+    &__week {
+        button {
+            @apply bg-gray-100 px-3 py-1 rounded-sm;
+        }
+    }
+    
     &__card {
         &-growth {
 

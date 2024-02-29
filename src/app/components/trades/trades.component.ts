@@ -30,6 +30,7 @@ export class TradesComponent implements OnInit {
 
     dialogRef.onClose.subscribe(() => {
       this.getTrades();
+      dialogRef.destroy();
     });
   }
 

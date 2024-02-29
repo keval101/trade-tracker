@@ -13,7 +13,10 @@ export class AccountComponent implements OnInit{
   visible = false;
 
   addFunds: any[] = []
-  withdrawalFunds: any[] = []
+  withdrawalFunds: any[] = [];
+
+  totalAddedFunds = 0;
+  totalWithdrawalFunds = 0;
 
   constructor(
     private dialogService: DialogService,
@@ -36,10 +39,12 @@ export class AccountComponent implements OnInit{
     dialogRef.onClose.subscribe(() => {
       this.getAddFunds();
       this.getWithdrawalFunds();
+      dialogRef.destroy();
     })
   }
 
   getAddFunds() {
+    this.addFunds = [];
     this.dataService.getAddFunds().subscribe(funds => {
       funds.sort((a, b) => {
         const dateA: any = new Date(a.date.split('/').reverse().join('/'));
@@ -47,10 +52,12 @@ export class AccountComponent implements OnInit{
         return dateA - dateB;
       });
       this.addFunds = funds;
+      this.totalAddedFunds = this.addFunds.reduce((total, current) => total + current.fund, 0);
     })
   }
 
   getWithdrawalFunds() {
+    this.withdrawalFunds = [];
     this.dataService.getWithdrawalFunds().subscribe(funds => {
       funds.sort((a, b) => {
         const dateA: any = new Date(a.date.split('/').reverse().join('/'));
@@ -58,6 +65,8 @@ export class AccountComponent implements OnInit{
         return dateA - dateB;
       });
       this.withdrawalFunds = funds;
+      this.totalWithdrawalFunds = this.withdrawalFunds.reduce((total, current) => total + current.fund, 0);
+
     })
   }
 }
