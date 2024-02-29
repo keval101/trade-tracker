@@ -10,11 +10,31 @@ import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { AddTradeComponent } from './components/trades/add-trade/add-trade.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { FundDialogComponent } from './components/account/fund-dialog/fund-dialog.component';
 
+//primeng
+import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { DialogModule } from 'primeng/dialog';
 import { DialogService, DynamicDialogModule } from 'primeng/dynamicdialog';
 import { CalendarModule } from 'primeng/calendar';
-import { FundDialogComponent } from './components/account/fund-dialog/fund-dialog.component';
+
+// Firebase Modules
+import { AngularFireModule } from '@angular/fire/compat';
+import { AngularFireDatabaseModule } from '@angular/fire/compat/database';
+import { AngularFirestoreModule } from '@angular/fire/compat/firestore';
+import { AngularFireStorageModule } from '@angular/fire/compat/storage';
+import { DatePipe } from '@angular/common';
+
+const firebaseConfig = {
+  apiKey: "AIzaSyA7OCANxXbgxUiQ_0zB_co_22z3jgxJiFY",
+  authDomain: "paper-trade-5c9d7.firebaseapp.com",
+  databaseURL: "https://paper-trade-5c9d7-default-rtdb.firebaseio.com",
+  projectId: "paper-trade-5c9d7",
+  storageBucket: "paper-trade-5c9d7.appspot.com",
+  messagingSenderId: "1020706193249",
+  appId: "1:1020706193249:web:0a4452766cf34844810f20",
+  measurementId: "G-FZXX60P22Q"
+};
 
 @NgModule({
   declarations: [
@@ -34,9 +54,14 @@ import { FundDialogComponent } from './components/account/fund-dialog/fund-dialo
     ReactiveFormsModule,
     DialogModule,
     DynamicDialogModule,
-    CalendarModule
+    CalendarModule,
+    AngularFireModule.initializeApp(firebaseConfig),
+    AngularFireDatabaseModule,
+    AngularFirestoreModule,
+    AngularFireStorageModule,
+    ProgressSpinnerModule
   ],
-  providers: [DialogService],
+  providers: [DialogService, DatePipe],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

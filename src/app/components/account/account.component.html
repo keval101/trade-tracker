@@ -15,7 +15,7 @@
     <div class="fund mt-12">
         <div class="flex justify-between items-center">
             <h1 class="mb-8 text-2xl">Added Fund Records</h1>
-            <button type="button" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800" (click)="openAddFundDialog()">Add Fund</button>
+            <button type="button" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800" (click)="openAddFundDialog('add')">Add Fund</button>
         </div>
         
         <div class="relative overflow-x-auto sm:rounded-lg">
@@ -44,7 +44,7 @@
                                 {{ item.fund }}
                             </td>
                             <td class="px-6 py-4 text-right">
-                                <button  (click)="openAddFundDialog(item)"
+                                <button  (click)="openAddFundDialog('add', item)"
                                     class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit</button>
                             </td>
                         </tr>
@@ -57,8 +57,9 @@
 
     <div class="fund mt-12">
         <div class="flex justify-between items-center">
-            <h1 class="mb-8 text-2xl">Withdrawl Records</h1>
-            <button type="button" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">Withdraw Fund</button>
+            <h1 class="mb-8 text-2xl">Withdrawal Records</h1>
+            <button type="button" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
+            (click)="openAddFundDialog('withdrawal')">Withdrawal Fund</button>
         </div>
         
         <div class="relative overflow-x-auto sm:rounded-lg">
@@ -77,7 +78,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <ng-container *ngFor="let item of withdrawlFunds">
+                    <ng-container *ngFor="let item of withdrawalFunds">
                         <tr class="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700">
                             <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                                 <!-- {{ newDate | date: 'dd-MM-yyyy'}} -->
@@ -87,7 +88,7 @@
                                 {{ item.fund }}
                             </td>
                             <td class="px-6 py-4 text-right">
-                                <button  (click)="openAddFundDialog(item)"
+                                <button  (click)="openAddFundDialog('withdrawal' , item)"
                                     class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit</button>
                             </td>
                         </tr>

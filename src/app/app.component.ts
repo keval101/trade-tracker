@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { initFlowbite } from 'flowbite';
+import { DataService } from './service/data.service';
 
 @Component({
   selector: 'app-root',
@@ -9,7 +10,10 @@ import { initFlowbite } from 'flowbite';
 export class AppComponent {
   title = 'paper-trading';
 
+
+  constructor(private data: DataService) {}
+
   ngOnInit() {
-    initFlowbite()
+    initFlowbite();
   }
 }

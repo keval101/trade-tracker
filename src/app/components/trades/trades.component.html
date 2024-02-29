@@ -1,7 +1,6 @@
 <div class="trades">
     <h1 class="text-4xl font-semibold mb-10">Trades</h1>
 
-    <!-- <app-add-trade (emitFormData)="tradeData($event)"></app-add-trade> -->
     <button (click)="openTradeForm()"
         class="block text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 ml-auto py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
         type="button">
@@ -44,50 +43,59 @@
                 </tr>
             </thead>
             <tbody>
-                <ng-container *ngFor="let trade of trades">
-                    <tr
-                        class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-                        <th scope="row"
-                            class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                            <!-- {{ newDate | date: 'dd-MM-yyyy'}} -->
-                            {{trade.date}}
-                        </th>
-                        <td class="px-6 py-4">
-                            {{trade.totalTrades}}
-                        </td>
-                        <td class="px-6 py-4">
-                            {{trade.market}}
-                        </td>
-                        <td class="px-6 py-4">
-                            {{trade.investment}}
-                        </td>
-                        <td class="px-6 py-4">
-                            <span class="profit" *ngIf="trade.isProfitable">+{{trade.profit}}</span>
-                            <span class="lose" *ngIf="!trade.isProfitable">-{{trade.lose}}</span>
-                        </td>
-                        <td class="px-6 py-4">
-                            {{trade.brokerage}}
-                        </td>
-                        <td class="px-6 py-4">
-                            <span class="profit" *ngIf="trade.isProfitable">+{{((trade.profit / trade.investment) * 100).toFixed(2)}}%</span>
-                            <span class="lose" *ngIf="!trade.isProfitable">-{{((trade.lose / trade.investment) * 100).toFixed(2)}}%</span>
-                        </td>
-                        <td class="px-6 py-4">
-                            <span class="profit" *ngIf="trade.isProfitable">{{+trade.investment + +trade.profit - +trade.brokerage}}</span>
-
-                            <span class="lose" *ngIf="!trade.isProfitable">{{+trade.investment - +trade.lose - +trade.brokerage}}</span>
-                        </td>
-                        <td class="px-6 py-4 text-right">
-                            <button  (click)="openTradeForm(trade)"
-                                class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit</button>
-                        </td>
-                    </tr>
-                </ng-container>
-
-                <ng-container *ngIf="!trades.length">
+                <ng-container *ngIf="!isLoading">
+                    <ng-container *ngFor="let trade of trades">
+                        <tr
+                            class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                            <th scope="row"
+                                class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                                <!-- {{ newDate | date: 'dd-MM-yyyy'}} -->
+                                {{trade.date}}
+                            </th>
+                            <td class="px-6 py-4">
+                                {{trade.totalTrades}}
+                            </td>
+                            <td class="px-6 py-4">
+                                {{trade.market}}
+                            </td>
+                            <td class="px-6 py-4">
+                                {{trade.investment}}
+                            </td>
+                            <td class="px-6 py-4">
+                                <span class="profit" *ngIf="trade.isProfitable">+{{trade.profit}}</span>
+                                <span class="lose" *ngIf="!trade.isProfitable">-{{trade.lose}}</span>
+                            </td>
+                            <td class="px-6 py-4">
+                                {{trade.brokerage}}
+                            </td>
+                            <td class="px-6 py-4">
+                                <span class="profit" *ngIf="trade.isProfitable">+{{((trade.profit / trade.investment) * 100).toFixed(2)}}%</span>
+                                <span class="lose" *ngIf="!trade.isProfitable">-{{((trade.lose / trade.investment) * 100).toFixed(2)}}%</span>
+                            </td>
+                            <td class="px-6 py-4">
+                                <span class="profit" *ngIf="trade.isProfitable">{{+trade.investment + +trade.profit - +trade.brokerage}}</span>
+    
+                                <span class="lose" *ngIf="!trade.isProfitable">{{+trade.investment - +trade.lose - +trade.brokerage}}</span>
+                            </td>
+                            <td class="px-6 py-4 text-right">
+                                <button  (click)="openTradeForm(trade)"
+                                    class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit</button>
+                            </td>
+                        </tr>
+                    </ng-container>
+    
+                    <ng-container *ngIf="!trades.length">
+                        <tr>
+                            <td colspan="8" scope="col" class="px-6 py-8">
+                                <p class="text-center">No Data Found</p>
+                            </td>
+                        </tr>
+                    </ng-container>
+                </ng-container>                
+                <ng-container *ngIf="isLoading">
                     <tr>
-                        <td colspan="8" scope="col" class="px-6 py-8">
-                            <p class="text-center">No Data Found</p>
+                        <td colspan="8" scope="col" class="px-6 text-center py-8">
+                            <p-progressSpinner styleClass="w-1rem h-1rem" strokeWidth="8" fill="var(--surface-ground)" animationDuration=".5s"></p-progressSpinner>
                         </td>
                     </tr>
                 </ng-container>

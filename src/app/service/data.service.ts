@@ -1,43 +1,43 @@
 import { Injectable } from '@angular/core';
-
+import { AngularFirestore } from '@angular/fire/compat/firestore';
+import { Observable, map } from 'rxjs';
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class DataService {
-
   addFunds = [
     {
       date: '12/02/2024',
-      fund: 1500
+      fund: 1500,
     },
     {
       date: '22/02/2024',
-      fund: 2000
-    }
-  ]
+      fund: 2000,
+    },
+  ];
 
-  withdrawlFunds = [
+  withdrawalFunds = [
     {
       date: '13/02/2024',
-      fund: 1500
+      fund: 1500,
     },
     {
       date: '23/02/2024',
-      fund: 1500
+      fund: 1500,
     },
     {
       date: '26/02/2024',
-      fund: 500
+      fund: 500,
     },
     {
       date: '27/02/2024',
-      fund: 500
+      fund: 500,
     },
     {
       date: '28/02/2024',
-      fund: 200
-    }
-  ]
+      fund: 200,
+    },
+  ];
 
   trades: any[] = [
     {
@@ -172,5 +172,86 @@ export class DataService {
     },
   ];
 
-  constructor() { }
+  constructor(private firestore: AngularFirestore) {}
+
+  // Trade API
+  getTrades(): Observable<any> {
+    return this.firestore
+      .collection('trades')
+      .snapshotChanges()
+      .pipe(
+        map((actions) => {
+          return actions.map((a) => {
+            const data: any = a.payload.doc.data();
+            const id = a.payload.doc.id;
+            return { ...data, id };
+          });
+        })
+      );
+  }
+
+  addTrade(payload: any) {
+    return this.firestore.collection('trades').add(payload);
+  }
+
+  udpateData(tradeId: any, payload: any) {
+    return this.firestore
+      .collection('trades')
+      .doc(tradeId)
+      .set(payload, { merge: true });
+  }
+
+  // Add Fund API
+  getAddFunds(): Observable<any> {
+    return this.firestore
+      .collection('add-funds')
+      .snapshotChanges()
+      .pipe(
+        map((actions) => {
+          return actions.map((a) => {
+            const data: any = a.payload.doc.data();
+            const id = a.payload.doc.id;
+            return { ...data, id };
+          });
+        })
+      );
+  }
+
+  addFund(payload: any) {
+    return this.firestore.collection('addFunds').add(payload);
+  }
+
+  updateFund(fundId: any, payload: any) {
+    return this.firestore
+      .collection('add-funds')
+      .doc(fundId)
+      .set(payload, { merge: true });
+  }
+
+  // Add Withdrawal Fund API
+  getWithdrawalFunds(): Observable<any> {
+    return this.firestore
+      .collection('withdrawal-funds')
+      .snapshotChanges()
+      .pipe(
+        map((actions) => {
+          return actions.map((a) => {
+            const data: any = a.payload.doc.data();
+            const id = a.payload.doc.id;
+            return { ...data, id };
+          });
+        })
+      );
+  }
+
+  addWithdrawalFunds(payload: any) {
+    return this.firestore.collection('withdrawal-funds').add(payload);
+  }
+
+  updateWithdrawalFunds(fundId: any, payload: any) {
+    return this.firestore
+      .collection('withdrawal-funds')
+      .doc(fundId)
+      .set(payload, { merge: true });
+  }
 }
