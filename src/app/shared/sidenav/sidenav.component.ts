@@ -19,6 +19,10 @@ export class SidenavComponent {
     {
       name: 'Trades',
       route: 'trades'
+    },
+    {
+      name: 'Sheet',
+      route: 'sheet'
     }
   ]
 }

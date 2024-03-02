@@ -1,0 +1,105 @@
+<div class="sheet">
+    <h1 class="text-4xl font-semibold mb-10">Trade Sheet</h1>
+
+    <button (click)="addSheet()"
+    class="block text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 ml-auto py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+    type="button">
+        Generate Sheet
+    </button>
+
+    <ng-container *ngFor="let sheet of sheets; let i = index">
+        <div class="sheet__card my-12">
+            <div class="flex gap-2 items-center">
+                <h1 class="text-2xl font-semibold">Sheet {{i + 1}}</h1>
+                <p *ngIf="sheet.targetAchieved" class="px-4 py-1 text-sm bg-green-500 border-green-900 rounded-lg text-white">Target Achieved</p>
+
+            </div>
+
+            <div class="sheet__card-overview flex justify-between flex-wrap gap-2 mt-4 p-4 bg-yellow-50 border border-yellow-100 rounded-lg">
+                <p><strong>Date: </strong>{{sheet.date}}</p>
+                <p><strong>Starting Capital: </strong>{{sheet.capital}}</p>
+                <p><strong>Expected ROI: </strong>{{sheet.roi}}</p>
+                <p><strong>Number Of Days: </strong>{{sheet.days}}</p>
+                <p><strong>Expected Final Capital: </strong>{{calculateCapital(sheet.capital, sheet.roi, sheet.days)}}</p>
+            </div>
+
+            <div class="relative mt-4 overflow-x-auto shadow-sm">
+                <button (click)="addSheetEntry(sheet)"
+                class="block text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 ml-auto py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                type="button">
+                    Add Entry
+                </button>
+
+                <table
+                    class="w-full mt-4 text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+                    <thead
+                        class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                        <tr>
+                            <th scope="col" class="px-6 py-3">
+                                Date
+                            </th>
+                            <th scope="col" class="px-6 py-3">
+                                Starting Capital
+                            </th>
+                            <th scope="col" class="px-6 py-3">
+                                Current Capital
+                            </th>
+                            <th scope="col" class="px-6 py-3">
+                                Expected Profit
+                            </th>
+                            <th scope="col" class="px-6 py-3">
+                                Current Profit
+                            </th>
+                            <th scope="col" class="px-6 py-3">
+                                ROI
+                            </th>
+                            <th scope="col" class="px-6 py-3">
+                                Net
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <ng-container *ngFor="let item of sheet.expectedSheet; let i = index">
+                            <tr *ngIf="!item.isAddFund"
+                                [class.bg-green-50]="item.profit > 0"
+                                [class.bg-red-50]="item.profit < 0"
+                                class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600"
+                                (click)="updateSheetEntry(sheet, item)">
+                                <th scope="row"
+                                    class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                                    {{item.date}}
+                                </th>
+                                <td class="px-6 py-4">
+                                    {{item.capital}}
+                                </td>
+                                <td class="px-6 py-4">
+                                    {{ item.startingCapital }}
+                                </td>
+                                <td class="px-6 py-4">
+                                    {{item.expectedProfit.toFixed(2)}}
+                                </td>
+                                <td class="px-6 py-4">
+                                    <span class="profit" *ngIf="item.profit > 0">+{{item.profit}}</span>
+                                    <span class="lose" *ngIf="item.profit < 0">{{item.profit}}</span>
+                                </td>
+                                <td class="px-6 py-4">
+                                    <span class="profit" *ngIf="item.profit > 0">+{{((item.profit / item.startingCapital) * 100).toFixed(2)}}%</span>
+                                    <span class="lose" *ngIf="item.profit < 0">{{((item.profit / item.startingCapital) * 100).toFixed(2)}}%</span>
+                                </td>
+                                <td class="px-6 py-4">
+                                    <span [class.profit]="item.profit > 0" [class.lose]="item.profit < 0">{{item.startingCapital + +item.profit}}</span>
+                                </td>
+                            </tr>
+                            <!-- <tr *ngIf="item.isAddFund">
+                                <td class="px-6 py-4 bg-red-400 text-center text-white" colspan="7">Added 2000</td>
+                            </tr>
+                            <tr *ngIf="item.isWithdrawalFund">
+                                <td class="px-6 py-4 bg-green-400 text-center text-white" colspan="7">WithdrawalFund 2000</td>
+                            </tr> -->
+                        </ng-container>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </ng-container>
+</div>

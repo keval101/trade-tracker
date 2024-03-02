@@ -8,3 +8,11 @@
     width: 40px;
     height: 40px;
 }
+
+.profit {
+    @apply text-green-600 font-semibold;
+}
+
+.lose {
+    @apply text-red-600 font-semibold;
+}

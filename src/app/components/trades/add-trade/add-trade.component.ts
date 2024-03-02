@@ -1,12 +1,14 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output, ViewEncapsulation } from '@angular/core';
 import { Validators } from '@angular/forms';
 import { FormBuilder, FormGroup } from '@angular/forms';
+import { MessageService } from 'primeng/api';
 import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { DataService } from 'src/app/service/data.service';
 @Component({
   selector: 'app-add-trade',
   templateUrl: './add-trade.component.html',
-  styleUrls: ['./add-trade.component.scss']
+  styleUrls: ['./add-trade.component.scss'],
+  encapsulation: ViewEncapsulation.None
 })
 export class AddTradeComponent implements OnInit{
 
@@ -19,7 +21,8 @@ export class AddTradeComponent implements OnInit{
     private fb: FormBuilder,
     public config: DynamicDialogConfig,
     public dataService: DataService,
-    public ref: DynamicDialogRef) {}
+    public ref: DynamicDialogRef,
+    private messageService: MessageService) {}
 
   ngOnInit(): void {
     this.tradeForm = this.fb.group({
@@ -40,12 +43,16 @@ export class AddTradeComponent implements OnInit{
 
   addTrade() {
     if(!this.config.data) {
-      this.dataService.addTrade(this.tradeForm.value).then()
+      this.dataService.addTrade(this.tradeForm.value).then(() => {
+        this.messageService.add({ severity: 'success', summary: 'Trade', detail: 'Trade Added Successfully!' });
+      })
       .catch((error) => {
         console.error('Error adding document: ', error);
       });
     } else {
-      this.dataService.udpateData(this.config.data.id, this.tradeForm.value).then()
+      this.dataService.updateTrade(this.config.data.id, this.tradeForm.value).then(() => {
+        this.messageService.add({ severity: 'success', summary: 'Trade', detail: 'Trade Updated Successfully!' });
+      })
       .catch((error) => {
         console.error('Error adding document: ', error);
       });

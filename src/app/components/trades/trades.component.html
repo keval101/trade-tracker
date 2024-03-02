@@ -38,7 +38,7 @@
                         Net
                     </th>
                     <th scope="col" class="px-6 py-3">
-                        <span class="sr-only">Edit</span>
+                        <span class="sr-only">Actions</span>
                     </th>
                 </tr>
             </thead>
@@ -79,8 +79,26 @@
                             </td>
                             <td class="px-6 py-4 text-right">
                                 <button  (click)="openTradeForm(trade)"
-                                    class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit</button>
+                                    class="font-medium mx-2 text-blue-600 dark:text-blue-500 hover:underline">Edit</button>
+                                <button  (click)="deleteTrade(trade)"
+                                    class="font-medium mx-2 text-blue-600 dark:text-blue-500 hover:underline">Delete</button>
                             </td>
+                        </tr>
+                    </ng-container>
+
+                    <ng-container *ngIf="tradeOverview && trades.length">
+                        <tr>
+                            <td class="px-6 py-4"></td>
+                            <td class="px-6 py-4">
+                                {{tradeOverview.totalTrades}}
+                            </td>
+                            <td class="px-6 py-4"></td>
+                            <td class="px-6 py-4"></td>
+                            <td class="px-6 py-4">
+                                <span class="profit" *ngIf="tradeOverview.profitLose > 0">+{{tradeOverview.profitLose}}</span>
+                                <span class="lose" *ngIf="tradeOverview.profitLose < 0">-{{tradeOverview.profitLose}}</span>
+                            </td>
+                            <td class="px-6 py-4">{{tradeOverview.brokerage}}</td>
                         </tr>
                     </ng-container>
     

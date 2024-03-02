@@ -1,6 +1,7 @@
 import { DatePipe } from '@angular/common';
 import { Component, ViewEncapsulation } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { MessageService } from 'primeng/api';
 import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { DataService } from 'src/app/service/data.service';
 
@@ -19,7 +20,8 @@ export class FundDialogComponent {
     public config: DynamicDialogConfig,
     private dataService: DataService,
     private ref: DynamicDialogRef,
-    private datePipe: DatePipe) {}
+    private datePipe: DatePipe,
+    private messageService: MessageService) {}
 
   ngOnInit() {
     this.fundForm = this.fb.group({
@@ -49,12 +51,16 @@ export class FundDialogComponent {
 
   submitFund(payload, ) {
     if(!this.config.data) {
-      this.dataService.addFund(payload).then()
+      this.dataService.addFund(payload).then(() => {
+        this.messageService.add({ severity: 'success', summary: 'Add Funds', detail: 'Funds Added Successfully!' });
+      })
       .catch((error) => {
         console.error('Error adding document: ', error);
       });
     } else {
-      this.dataService.updateFund(this.config.data.fund.id, payload).then()
+      this.dataService.updateFund(this.config.data.fund.id, payload).then(() => {
+        this.messageService.add({ severity: 'success', summary: 'Add Funds', detail: 'Funds Updated Successfully!' });
+      })
       .catch((error) => {
         console.error('Error adding document: ', error);
       });
@@ -63,12 +69,16 @@ export class FundDialogComponent {
 
   submitWithdrawalFund(payload, ) {
     if(!this.config.data) {
-      this.dataService.addWithdrawalFund(payload).then()
+      this.dataService.addWithdrawalFund(payload).then(() => {
+        this.messageService.add({ severity: 'success', summary: 'Withdrawal Funds', detail: 'Funds Withdrawal Added Successfully!' });
+      })
       .catch((error) => {
         console.error('Error adding document: ', error);
       });
     } else {
-      this.dataService.updateWithdrawalFund(this.config.data.fund.id, payload).then()
+      this.dataService.updateWithdrawalFund(this.config.data.fund.id, payload).then(() => {
+        this.messageService.add({ severity: 'success', summary: 'Withdrawal Funds', detail: 'Funds Withdrawal Updated Successfully!' });
+      })
       .catch((error) => {
         console.error('Error adding document: ', error);
       });
