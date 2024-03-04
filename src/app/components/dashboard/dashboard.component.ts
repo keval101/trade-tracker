@@ -36,8 +36,12 @@ export class DashboardComponent implements OnInit{
   }
 
   calculatePercentage(data)  {
-    const percentage = (data.currentWeekCapital * 100) / data.currentWeekExpectedResult
-    return percentage > 0 ? (((data.currentWeekCapital * 100) / data.currentWeekExpectedResult) - 100) : (100 - ((data.currentWeekCapital * 100) / data.currentWeekExpectedResult));
+    if(data) {
+      const percentage = (data.currentWeekCapital * 100) / data.currentWeekExpectedResult
+      return percentage > 0 ? (((data.currentWeekCapital * 100) / data.currentWeekExpectedResult) - 100) : (100 - ((data.currentWeekCapital * 100) / data.currentWeekExpectedResult));
+    } else {
+      return 0;
+    }
   }
 
   getTrades() {

@@ -16,3 +16,24 @@
 .lose {
     @apply text-red-600 font-semibold;
 }
+
+/* width */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+    @apply rounded-xl; 
+}
+ 
+/* Handle */
+::-webkit-scrollbar-thumb {
+  @apply bg-gray-300 rounded-xl; 
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+    @apply bg-gray-400;
+}

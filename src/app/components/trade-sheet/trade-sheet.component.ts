@@ -23,13 +23,18 @@ export class TradeSheetComponent implements OnInit{
 
   getSheets() {
     this.dataService.getSheet().subscribe(sheets => {
-      this.sheets = sheets;
-      this.sheets.map(sheet => {
+      sheets.map(sheet => {
         sheet['expectedSheet'] = this.generateSheet(sheet)
         if(sheet) {
           sheet['targetAchieved'] = sheet.data.length == sheet.days ? sheet.expectedSheet[sheet.days - 1].finalCapital >= +this.calculateCapital(sheet.capital, sheet.roi, sheet.days) ? true : false : null;
         }
       })
+      sheets.sort((a, b) => {
+        const dateA: any = new Date(a.date.split('/').reverse().join('/'));
+        const dateB: any = new Date(b.date.split('/').reverse().join('/'));
+        return dateA - dateB;
+      });
+      this.sheets = sheets;
     })
   }
 

@@ -10,19 +10,23 @@ export class SidenavComponent {
   navigations = [
     {
       name: 'Dashboard',
-      route: 'dashboard'
+      route: 'dashboard',
+      icon: '/assets/icons/dashboard.svg'
     },
     {
       name: 'Account',
-      route: 'account'
+      route: 'account',
+      icon: '/assets/icons/account.svg'
     },
     {
       name: 'Trades',
-      route: 'trades'
+      route: 'trades',
+      icon: '/assets/icons/swap.svg'
     },
     {
       name: 'Sheet',
-      route: 'sheet'
+      route: 'sheet',
+      icon: '/assets/icons/sheet.svg'
     }
   ]
 }
