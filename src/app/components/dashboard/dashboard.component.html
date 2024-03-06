@@ -1,5 +1,5 @@
-<div class="flex gap-20">
-    <div class="w-1/3"> 
+<div class="gap-20 block sm:flex">
+    <div class="w-full sm:w-1/3"> 
         <h1 class="text-4xl font-semibold mb-10">Overview</h1>
 
         <div class="overview">
@@ -54,24 +54,56 @@
     <div class="flex-grow">
         <h1 class="text-4xl font-semibold mb-10">Recent Trades</h1>
 
-        <div class="recent">
-            <div class="recent__grid header">
-                <p class="uppercase">Date</p>
-                <p class="uppercase">Capital</p>
-                <p class="uppercase">Profit/lose</p>
-                <p class="uppercase">Brokerage</p>
-                <p class="uppercase">Net</p>
-            </div>
-            <ng-container *ngFor="let trade of this.groupedData[selectedWeek - 1]">
-                <div class="recent__grid body">
-                    <p class="uppercase">{{trade.date}}</p>
-                    <p class="uppercase">{{trade.investment}}</p>
-                    <p class="uppercase" [class.profit]="trade.isProfitable" 
-                    [class.lose]="!trade.isProfitable">{{trade.isProfitable ? '+' + trade.profit : '-' + trade.lose}}</p>
-                    <p class="uppercase">{{trade.brokerage}}</p>
-                    <p class="uppercase">{{trade.isProfitable ? +trade.investment + +trade.profit - +trade.brokerage : trade.investment - +trade.lose - +trade.brokerage}}</p>
-                </div>
-            </ng-container>
+        <div class="relative mt-4 overflow-x-auto shadow-sm">
+            <table
+                class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+                <thead
+                    class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                    <tr>
+                        <th scope="col" class="px-6 py-3">
+                            Date
+                        </th>
+                        <th scope="col" class="px-6 py-3">
+                            Capital
+                        </th>
+                        <th scope="col" class="px-6 py-3">
+                            Profit/Lose
+                        </th>
+                        <th scope="col" class="px-6 py-3">
+                            Brokerage
+                        </th>
+                        <th scope="col" class="px-6 py-3">
+                            Net
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <ng-container *ngFor="let trade of this.groupedData[selectedWeek - 1]">
+                        <tr
+                            class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                            <th scope="row"
+                                class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                                {{trade.date}}
+                            </th>
+                            <td class="px-6 py-4">
+                                {{trade.investment}}
+                            </td>
+                            <td class="px-6 py-4">
+                                <span class="profit" *ngIf="trade.isProfitable">+{{trade.profit}}</span>
+                                <span class="lose" *ngIf="!trade.isProfitable">-{{trade.lose}}</span>
+                            </td>
+                            <td class="px-6 py-4">
+                                {{trade.brokerage}}
+                            </td>
+                            <td class="px-6 py-4">
+                                <span class="profit" *ngIf="trade.isProfitable">{{+trade.investment + +trade.profit - +trade.brokerage}}</span>
+    
+                                <span class="lose" *ngIf="!trade.isProfitable">{{+trade.investment - +trade.lose - +trade.brokerage}}</span>
+                            </td>
+                        </tr>
+                    </ng-container>
+                </tbody>
+            </table>
         </div>
     </div>
 </div>
