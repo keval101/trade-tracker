@@ -27,7 +27,7 @@ export class TradesComponent implements OnInit {
 
   openTradeForm(trade?: any) {
     const dialogRef = this.dialogService.open(AddTradeComponent, {
-      width: '30vw',
+      width: window.screen.availWidth < 992 ? '80vw' : '30vw',
       header: 'Add Trade',
       data: trade
     });
@@ -65,7 +65,7 @@ export class TradesComponent implements OnInit {
 
   deleteTrade(trade: any) {
     const dialogRef = this.dialogService.open(DeleteTradeComponent, {
-      width: '30vw',
+      width: window.screen.availWidth < 992 ? '80vw' : '30vw',
       header: 'Delete Trade',
       data: trade
     })

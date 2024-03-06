@@ -62,7 +62,7 @@ export class TradeSheetComponent implements OnInit{
 
   addSheet() {
     const dialogRef = this.dialogService.open(SheetFormComponent, {
-      width: '30vw',
+      width: window.screen.availWidth < 992 ? '80vw' : '30vw',
       header: "Generate Sheet"
     })
 
@@ -83,7 +83,7 @@ export class TradeSheetComponent implements OnInit{
 
   addSheetEntry(sheet: any) {
     this.dialogService.open(SheetEntryDialogComponent, {
-      width: '30vw',
+      width: window.screen.availWidth < 992 ? '80vw' : '30vw',
       data: sheet,
       header: 'Sheet Entry'
     })
@@ -91,7 +91,7 @@ export class TradeSheetComponent implements OnInit{
 
   updateSheetEntry(sheet: any, selectedRow: any) {
     this.dialogService.open(SheetEntryDialogComponent, {
-      width: '30vw',
+      width: window.screen.availWidth < 992 ? '80vw' : '30vw',
       data: {sheet, selectedRow, isEdit: true},
       header: 'Sheet Entry',
     })
