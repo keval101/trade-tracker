@@ -22,3 +22,22 @@
         }
     }
 }
+
+::ng-deep .chart canvas {
+    height: 400px !important;
+}
+
+.recent {
+    &__grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+
+        &.header {
+            @apply bg-gray-100 rounded-lg px-4 py-2;
+        }
+
+        &.body {
+            @apply rounded-lg px-4 py-4 border-b border-b-gray-100;
+        }
+    }
+}

@@ -19,11 +19,52 @@ export class DashboardComponent implements OnInit{
   weeklyROIData: any[] = [];
   selectedWeek: number;
   selectedWeekData: any;
+  chartData: any;
+  options: any;
+  data: any;
+  trades: any[] = []
+
 
   constructor(private dataService: DataService) {}
 
   ngOnInit(): void {
     this.getTrades();
+  }
+
+  setChart() {
+    const documentStyle = getComputedStyle(document.documentElement);
+    const textColor = documentStyle.getPropertyValue('--text-color');
+
+    this.data = {
+        labels: ['Bank Nifty', 'Nifty', 'Fin Nifty', 'MidCap Nifty'],
+        datasets: [
+            {
+                data: [this.chartData.bank_nifty, this.chartData.nifty, this.chartData.fin_nifty, this.chartData.midcap_nifty] ,
+                backgroundColor: [
+                  this.setColor(this.chartData.bank_nifty, documentStyle),
+                  this.setColor(this.chartData.nifty, documentStyle),
+                  this.setColor(this.chartData.fin_nifty, documentStyle),
+                  this.setColor(this.chartData.midcap_nifty, documentStyle)],
+                hoverBackgroundColor: [
+                  this.setColor(this.chartData.bank_nifty, documentStyle),
+                  this.setColor(this.chartData.nifty, documentStyle),
+                  this.setColor(this.chartData.fin_nifty, documentStyle),
+                  this.setColor(this.chartData.midcap_nifty, documentStyle)
+                ]
+            }
+        ]
+    };
+
+    this.options = {
+            plugins: {
+                legend: {
+                    labels: {
+                        usePointStyle: true,
+                        color: textColor
+                    }
+                }
+            }
+        };
   }
 
   calculateCapital(initialCapital, roi, days) {
@@ -52,6 +93,8 @@ export class DashboardComponent implements OnInit{
         return dateA - dateB;
       });
       const tradesData = trades;
+      this.chartData = this.calculateMarketProfits(trades)
+      this.setChart();
 
       // Group the data by week
       this.groupedData = tradesData.reduce((acc, obj) => {
@@ -96,5 +139,43 @@ export class DashboardComponent implements OnInit{
   nextWeek() {
     this.selectedWeek = this.selectedWeek != this.weeklyROIData.length ? this.selectedWeek + 1 : this.weeklyROIData.length;
     this.selectedWeekData = this.selectedWeek != this.weeklyROIData.length ? this.weeklyROIData[this.selectedWeek - 1] : this.weeklyROIData[this.weeklyROIData.length - 1];
+  }
+
+  calculateMarketProfits(trades) {
+    let marketProfits = {};
+
+    trades.forEach(trade => {
+        const { profit, lose, market, isProfitable } = trade;
+        let profitValue = parseFloat(profit);
+        let loseValue = parseFloat(lose);
+
+        if (isNaN(profitValue)) profitValue = 0;
+        if (isNaN(loseValue)) loseValue = 0;
+
+        const formattedMarket = market.toLowerCase().replace(/\s+/g, '_');
+        const tradeProfitLoss = isProfitable ? profitValue : -loseValue;
+
+        if (!marketProfits[formattedMarket]) {
+            marketProfits[formattedMarket] = tradeProfitLoss;
+        } else {
+            marketProfits[formattedMarket] += tradeProfitLoss;
+        }
+    });
+
+    return marketProfits;
+  }
+
+  setColor(marketValue: any,documentStyle:any) {
+    if(marketValue < 0 && marketValue < -500) {
+      return documentStyle.getPropertyValue('--red-500');
+    } else if (marketValue < 0 && marketValue < -1000) {
+      return documentStyle.getPropertyValue('--red-300');
+    } else if(marketValue > 0 && marketValue > 3000) {
+      return documentStyle.getPropertyValue('--green-600');
+    } else if(marketValue > 0 && marketValue > 2000) {
+      return documentStyle.getPropertyValue('--green-500');
+    } else if(marketValue > 0 && marketValue > 1000) {
+      return documentStyle.getPropertyValue('--green-300');
+    }
   }
 }

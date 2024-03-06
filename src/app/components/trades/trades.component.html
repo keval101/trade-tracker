@@ -7,6 +7,37 @@
         Add Trade
     </button>
 
+    
+    <div class="sheet__card-overview flex justify-between flex-wrap gap-2 mt-4 p-4 bg-yellow-50 border border-yellow-100 rounded-lg">
+        <p><strong>Total Days: </strong>{{tradingAccuracy?.totalDays}}</p>
+        <p><strong>Total Profitable Days: </strong>{{tradingAccuracy?.totalProfitableDays}}</p>
+        <p><strong>Success Ratio: </strong>{{((tradingAccuracy?.totalProfitableDays / tradingAccuracy?.totalDays) * 100).toFixed(2)}}%</p>
+    </div>
+
+    <!-- <div class="flex gap-2 mt-8 flex-wrap">
+        <ng-container *ngFor="let trade of trades">
+            <div class="w-16 h-8 rounded-lg"
+            [class.bg-green-200]="trade.isProfitable && trade.profit < 500"
+            [class.bg-green-300]="trade.isProfitable && trade.profit > 500"
+            [class.bg-green-500]="trade.isProfitable && trade.profit > 1000"
+            [class.bg-green-700]="trade.isProfitable && trade.profit > 2000"
+            
+            [class.bg-red-200]="!trade.isProfitable && trade.lose < 500"
+            [class.bg-red-300]="!trade.isProfitable && trade.lose > 500"
+            [class.bg-red-500]="!trade.isProfitable && trade.lose > 1000"
+            [class.bg-red-700]="!trade.isProfitable && trade.lose > 2000"
+            [pTooltip]="tooltipContent" tooltipStyleClass="custom-tooltip"></div>
+
+            <ng-template #tooltipContent>
+                <div class="flex align-items-center">
+                    <span>
+                        <b [class.profit]="trade.profit > 0" [class.lose]="trade.lose">{{trade.date}}:  {{trade.isProfitable ? '+' + trade.profit : '-' + trade.lose}}</b>
+                    </span>
+                </div>
+            </ng-template>
+        </ng-container>
+    </div> -->
+
     <div class="relative mt-4 overflow-x-auto shadow-sm">
         <table
             class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
@@ -121,3 +152,4 @@
         </table>
     </div>
 </div>
+

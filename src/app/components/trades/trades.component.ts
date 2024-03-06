@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { DialogService } from 'primeng/dynamicdialog';
 import { AddTradeComponent } from './add-trade/add-trade.component';
 import { DataService } from 'src/app/service/data.service';
@@ -8,12 +8,14 @@ import { DeleteTradeComponent } from './delete-trade/delete-trade.component';
   selector: 'app-trades',
   templateUrl: './trades.component.html',
   styleUrls: ['./trades.component.scss'],
+  encapsulation: ViewEncapsulation.None
 })
 export class TradesComponent implements OnInit {
   newDate = new Date();
   trades: any[] = [];
   isLoading = true;
   tradeOverview: any;
+  tradingAccuracy: any;
 
   constructor(
     private dialogService: DialogService,
@@ -43,9 +45,10 @@ export class TradesComponent implements OnInit {
       trades.sort((a, b) => {
         const dateA: any = new Date(a.date.split('/').reverse().join('/'));
         const dateB: any = new Date(b.date.split('/').reverse().join('/'));
-        return dateA - dateB;
+        return dateB - dateA;
       });
       this.trades = trades;
+      this.tradingAccuracy = this.calculateTotalDaysAndProfitableDays(this.trades)
       this.isLoading = false;
 
       const totalProfit = this.trades.reduce((total, current) => total + +current.profit, 0)
@@ -72,4 +75,49 @@ export class TradesComponent implements OnInit {
       dialogRef.destroy();
     })
   }
+
+  calculateMarketProfits(trades) {
+    let marketProfits = {};
+
+    trades.forEach(trade => {
+        const { profit, lose, market, isProfitable } = trade;
+        let profitValue = parseFloat(profit);
+        let loseValue = parseFloat(lose);
+
+        if (isNaN(profitValue)) profitValue = 0;
+        if (isNaN(loseValue)) loseValue = 0;
+
+        const formattedMarket = market.toLowerCase().replace(/\s+/g, '_');
+        const tradeProfitLoss = isProfitable ? profitValue : -loseValue;
+
+        if (!marketProfits[formattedMarket]) {
+            marketProfits[formattedMarket] = tradeProfitLoss;
+        } else {
+            marketProfits[formattedMarket] += tradeProfitLoss;
+        }
+    });
+
+    return marketProfits;
+  }
+  calculateTotalDaysAndProfitableDays(trades) {
+    let totalDays = 0;
+    let totalProfitableDays = 0;
+
+    trades.forEach(trade => {
+        const { isProfitable } = trade;
+
+        // Increment total days count for each trade
+        totalDays++;
+
+        // Increment profitable days count if the trade is profitable
+        if (isProfitable) {
+            totalProfitableDays++;
+        }
+    });
+
+    return {
+        totalDays,
+        totalProfitableDays
+    };
+}
 }

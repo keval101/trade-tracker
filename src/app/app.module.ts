@@ -18,6 +18,8 @@ import { DialogModule } from 'primeng/dialog';
 import { DialogService, DynamicDialogModule } from 'primeng/dynamicdialog';
 import { CalendarModule } from 'primeng/calendar';
 import { ToastModule } from 'primeng/toast';
+import { ChartModule } from 'primeng/chart';
+import { TooltipModule } from 'primeng/tooltip';
 
 // Firebase Modules
 import { AngularFireModule } from '@angular/fire/compat';
@@ -30,6 +32,7 @@ import { DeleteTradeComponent } from './components/trades/delete-trade/delete-tr
 import { TradeSheetComponent } from './components/trade-sheet/trade-sheet.component';
 import { SheetFormComponent } from './components/trade-sheet/sheet-form/sheet-form.component';
 import { SheetEntryDialogComponent } from './components/trade-sheet/sheet-entry-dialog/sheet-entry-dialog.component';
+import { LogoComponent } from './shared/logo/logo.component';
 
 const firebaseConfig = {
   apiKey: "AIzaSyA7OCANxXbgxUiQ_0zB_co_22z3jgxJiFY",
@@ -54,7 +57,8 @@ const firebaseConfig = {
     DeleteTradeComponent,
     TradeSheetComponent,
     SheetFormComponent,
-    SheetEntryDialogComponent
+    SheetEntryDialogComponent,
+    LogoComponent
   ],
   imports: [
     BrowserModule,
@@ -70,7 +74,9 @@ const firebaseConfig = {
     AngularFirestoreModule,
     AngularFireStorageModule,
     ProgressSpinnerModule,
-    ToastModule
+    ToastModule,
+    ChartModule,
+    TooltipModule
   ],
   providers: [DialogService, DatePipe, MessageService],
   bootstrap: [AppComponent]
