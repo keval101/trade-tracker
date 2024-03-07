@@ -4,6 +4,7 @@ import { AccountComponent } from './components/account/account.component';
 import { TradesComponent } from './components/trades/trades.component';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { TradeSheetComponent } from './components/trade-sheet/trade-sheet.component';
+import { LoginComponent } from './components/login/login.component';
 
 const routes: Routes = [
   {
@@ -26,6 +27,10 @@ const routes: Routes = [
   {
     path: 'dashboard',
     component: DashboardComponent
+  },
+  {
+    path: 'login',
+    component: LoginComponent
   }
 ];
 

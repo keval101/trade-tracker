@@ -1,6 +1,6 @@
 <p-toast></p-toast>
-<app-sidenav></app-sidenav>
+<app-sidenav *ngIf="!isLoginPage"></app-sidenav>
 
-<div class="content">
+<div class="content" [class.login-container]="isLoginPage">
     <router-outlet></router-outlet>
 </div>

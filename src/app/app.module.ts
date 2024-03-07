@@ -33,6 +33,8 @@ import { TradeSheetComponent } from './components/trade-sheet/trade-sheet.compon
 import { SheetFormComponent } from './components/trade-sheet/sheet-form/sheet-form.component';
 import { SheetEntryDialogComponent } from './components/trade-sheet/sheet-entry-dialog/sheet-entry-dialog.component';
 import { LogoComponent } from './shared/logo/logo.component';
+import { AngularFireAuthModule } from '@angular/fire/compat/auth';
+import { LoginComponent } from './components/login/login.component';
 
 const firebaseConfig = {
   apiKey: "AIzaSyA7OCANxXbgxUiQ_0zB_co_22z3jgxJiFY",
@@ -58,7 +60,8 @@ const firebaseConfig = {
     TradeSheetComponent,
     SheetFormComponent,
     SheetEntryDialogComponent,
-    LogoComponent
+    LogoComponent,
+    LoginComponent
   ],
   imports: [
     BrowserModule,
@@ -76,7 +79,8 @@ const firebaseConfig = {
     ProgressSpinnerModule,
     ToastModule,
     ChartModule,
-    TooltipModule
+    TooltipModule,
+    AngularFireAuthModule
   ],
   providers: [DialogService, DatePipe, MessageService],
   bootstrap: [AppComponent]
