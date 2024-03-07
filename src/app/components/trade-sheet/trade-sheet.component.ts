@@ -12,6 +12,25 @@ import { SheetEntryDialogComponent } from './sheet-entry-dialog/sheet-entry-dial
 export class TradeSheetComponent implements OnInit{
 
   sheets: any[] = [];
+  markets: any[] = [
+    {
+      name: 'Nifty',
+      lot: 50
+    },
+    {
+      name: 'Bank Nifty',
+      lot: 15
+    },
+    {
+      name: 'Fin Nifty',
+      lot: 40
+    },
+    {
+      name: 'MidCap Nifty',
+      lot: 75
+    }
+  ]
+  selectedMarket = { name: 'Fin Nifty', lot: 40}
   
   constructor(
     private dialogService: DialogService,
@@ -27,6 +46,10 @@ export class TradeSheetComponent implements OnInit{
         sheet['expectedSheet'] = this.generateSheet(sheet)
         if(sheet) {
           sheet['targetAchieved'] = sheet.data.length == sheet.days ? sheet.expectedSheet[sheet.days - 1].finalCapital >= +this.calculateCapital(sheet.capital, sheet.roi, sheet.days) ? true : false : null;
+
+          if(sheet.data.length && sheet.expectedSheet[sheet.data.length - 1]?.finalCapital < 0) {
+            sheet['targetAchieved'] = false;
+          }
         }
       })
       sheets.sort((a, b) => {
@@ -95,5 +118,10 @@ export class TradeSheetComponent implements OnInit{
       data: {sheet, selectedRow, isEdit: true},
       header: 'Sheet Entry',
     })
+  }
+
+  onMarketSelect(sheet, market) {
+    console.log(sheet, market)
+    sheet.market = market;
   }
 }

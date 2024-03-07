@@ -44,9 +44,16 @@ export class AddTradeComponent implements OnInit{
   }
 
   addTrade() {
-    const formatedDate = this.datePipe.transform(this.tradeForm.value.date, 'dd/MM/yyyy')
     const payload = this.tradeForm.value;
-    payload.date = formatedDate;
+    if(!this.config.data) {
+      const formatedDate = this.datePipe.transform(this.tradeForm.value.date, 'dd/MM/yyyy')
+      payload.date = formatedDate;
+    } else {
+      let date = this.tradeForm.value.date.split('/')
+      date = `${date[1]}/${date[0]}/${date[2]}`
+      const formatedDate = this.datePipe.transform(date, 'dd/MM/yyyy')
+      payload.date = formatedDate;
+    }
     if(!this.config.data) {
       this.dataService.addTrade(this.tradeForm.value).then(() => {
         this.messageService.add({ severity: 'success', summary: 'Trade', detail: 'Trade Added Successfully!' });

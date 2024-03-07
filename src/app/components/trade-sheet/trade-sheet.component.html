@@ -7,10 +7,10 @@
         Generate Sheet
     </button>
 
-    <ng-container *ngFor="let sheet of sheets; let i = index">
+    <ng-container *ngFor="let sheet of sheets; let sheetIndex = index">
         <div class="sheet__card my-12">
             <div class="flex gap-2 items-center">
-                <h1 class="text-2xl font-semibold">Sheet {{i + 1}}</h1>
+                <h1 class="text-2xl font-semibold">Sheet {{sheetIndex + 1}}</h1>
                 <p *ngIf="sheet.targetAchieved" class="px-4 py-1 text-sm bg-green-500 border-green-900 rounded-lg text-white">Target Achieved</p>
 
             </div>
@@ -24,11 +24,21 @@
             </div>
 
             <div class="relative mt-4 overflow-x-auto shadow-sm">
-                <button (click)="addSheetEntry(sheet)"
-                class="block text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 ml-auto py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-                type="button">
-                    Add Entry
-                </button>
+                <div class="flex items-center justify-between">
+                    <div class="markets flex gap-4 flex-wrap" *ngIf="sheet.targetAchieved == null">
+                        <ng-container *ngFor="let market of markets; let i = index">
+                            <div>
+                                <input id="sheet_{{sheetIndex}}_{{i}}" type="radio" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" name="sheet_market_{{sheetIndex}}" value="{{market.lot}}" (change)="onMarketSelect(sheet, market)">
+                                <label for="sheet_{{sheetIndex}}_{{i}}" class="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">{{market.name}}</label>
+                            </div>
+                        </ng-container>
+                    </div>
+                    <button (click)="addSheetEntry(sheet)"
+                    class="block text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 ml-auto py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                    type="button">
+                        Add Entry
+                    </button>
+                </div>
 
                 <table
                     class="w-full mt-4 text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
@@ -46,6 +56,9 @@
                             </th>
                             <th scope="col" class="px-6 py-3">
                                 Expected Profit
+                            </th>
+                            <th scope="col" class="px-6 py-3" *ngIf="sheet.market">
+                                Point Needed <span>({{sheet.market.name}})</span>
                             </th>
                             <th scope="col" class="px-6 py-3">
                                 Current Profit
@@ -77,6 +90,9 @@
                                 </td>
                                 <td class="px-6 py-4">
                                     {{item.expectedProfit.toFixed(2)}}
+                                </td>
+                                <td class="px-6 py-4" *ngIf="sheet.market">
+                                    <span>{{(item.expectedProfit / sheet.market.lot).toFixed(2)}}</span>
                                 </td>
                                 <td class="px-6 py-4">
                                     <span class="profit" *ngIf="item.profit > 0">+{{item.profit}}</span>
