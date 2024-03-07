@@ -23,22 +23,23 @@
                 <p><strong>Expected Final Capital: </strong>{{calculateCapital(sheet.capital, sheet.roi, sheet.days)}}</p>
             </div>
 
-            <div class="relative mt-4 overflow-x-auto shadow-sm">
-                <div class="flex items-center justify-between">
-                    <div class="markets flex gap-4 flex-wrap" *ngIf="sheet.targetAchieved == null">
-                        <ng-container *ngFor="let market of markets; let i = index">
-                            <div>
-                                <input id="sheet_{{sheetIndex}}_{{i}}" type="radio" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" name="sheet_market_{{sheetIndex}}" value="{{market.lot}}" (change)="onMarketSelect(sheet, market)">
-                                <label for="sheet_{{sheetIndex}}_{{i}}" class="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">{{market.name}}</label>
-                            </div>
-                        </ng-container>
-                    </div>
-                    <button (click)="addSheetEntry(sheet)"
-                    class="block text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 ml-auto py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-                    type="button">
-                        Add Entry
-                    </button>
+            <div class="flex gap-4 mt-4 items-center justify-between">
+                <div class="markets flex gap-4 flex-wrap" *ngIf="sheet.targetAchieved == null">
+                    <ng-container *ngFor="let market of markets; let i = index">
+                        <div>
+                            <input id="sheet_{{sheetIndex}}_{{i}}" type="radio" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" name="sheet_market_{{sheetIndex}}" value="{{market.lot}}" (change)="onMarketSelect(sheet, market)">
+                            <label for="sheet_{{sheetIndex}}_{{i}}" class="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">{{market.name}}</label>
+                        </div>
+                    </ng-container>
                 </div>
+                <button (click)="addSheetEntry(sheet)"
+                class="block text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 ml-auto py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                type="button">
+                    Add Entry
+                </button>
+            </div>
+
+            <div class="relative mt-4 overflow-x-auto shadow-sm">
 
                 <table
                     class="w-full mt-4 text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
