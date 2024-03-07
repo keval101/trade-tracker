@@ -2,6 +2,6 @@
     @apply ml-64 p-8;
     
     @media screen and (max-width: 640px) {
-        @apply ml-0;
+        @apply ml-0 p-4;
     }
 }

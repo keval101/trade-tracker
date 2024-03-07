@@ -28,5 +28,7 @@
 
     @media screen and (max-width: 600px) {
         @apply mb-20;
+        height: 300px !important;
+        width: 300px !important;
     }
 }
