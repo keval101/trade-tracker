@@ -40,17 +40,36 @@ export class SheetEntryDialogComponent implements OnInit {
   }
 
   addSheetEntry() {
-    const formatedDate = this.datePipe.transform(this.sheetEntryForm.value.date, 'dd/MM/yyyy')
-    const entry = {
-      date: formatedDate,
-      profit: this.sheetEntryForm.value.profit
+    let entry;
+    const data = this.config.data;
+
+    if(!data.isEdit) {
+      const formatedDate = this.datePipe.transform(this.sheetEntryForm.value.date, 'dd/MM/yyyy')
+      entry = {
+        date: formatedDate,
+        profit: this.sheetEntryForm.value.profit
+      }
+    } else {
+      let date = this.sheetEntryForm.value.date.split('/')
+      date = `${date[1]}/${date[0]}/${date[2]}`
+      const formatedDate = this.datePipe.transform(date, 'dd/MM/yyyy')
+      entry = {
+        date: formatedDate,
+        profit: this.sheetEntryForm.value.profit
+      }
     }
 
-    const sheet = this.config.data;
-    sheet.data = [...sheet.data, entry];
-    delete sheet.expectedSheet
+    if(!data.isEdit) {    
+      data.data = [...data.data, entry];
+      delete data.expectedSheet
+    } else {
+      const index = data.sheet.data.findIndex(x => x.date == entry.date);
+      data.sheet.data[index] = entry;
+    }
 
-    this.dataService.updateSheet(sheet.id, sheet).then(() => {
+    const payload = !data.isEdit ? data : data.sheet;
+    const sheetId = !data.isEdit ? data.id : data.sheet.id;
+    this.dataService.updateSheet(sheetId, payload).then(() => {
       this.messageService.add({ severity: 'success', summary: 'Update Sheet', detail: 'Sheet Updated Successfully!' });
     })
     .catch((error) => {

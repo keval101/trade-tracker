@@ -121,7 +121,6 @@ export class TradeSheetComponent implements OnInit{
   }
 
   onMarketSelect(sheet, market) {
-    console.log(sheet, market)
     sheet.market = market;
   }
 }
