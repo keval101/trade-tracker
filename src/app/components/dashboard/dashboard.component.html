@@ -2,112 +2,121 @@
     <div class="w-full sm:w-1/3"> 
         <h1 class="text-4xl font-semibold mb-10">Overview</h1>
 
-        <div class="overview">
-            <div class="overview__week flex gap-4 py-5 justify-end">
-                <button (click)="prevWeek()"><img width="12" height="12" src="./../../../assets/icons/left-arrow.svg" alt=""></button>
-                <span>Week {{selectedWeek}}</span>
-                <button (click)="nextWeek()"><img width="12" height="12" src="./../../../assets/icons/right-arrow.svg" alt=""></button>
-            </div>
-            <div class="overview__card">
-                <p class="text-sm text-gray-400 mb-2">Current Week Investment</p>
-                <div class="flex items-center justify-between">
-                    <p class="text-3xl">₹{{selectedWeekData?.currentWeekInvestment}}</p>
+        <div class="overview">            
+            <ng-container *ngIf="selectedWeekData">
+                <div class="overview__week flex gap-4 py-5 justify-end">
+                    <button (click)="prevWeek()"><img width="12" height="12" src="./../../../assets/icons/left-arrow.svg" alt=""></button>
+                    <span>Week {{selectedWeek}}</span>
+                    <button (click)="nextWeek()"><img width="12" height="12" src="./../../../assets/icons/right-arrow.svg" alt=""></button>
                 </div>
-            </div>
-
-            <div class="overview__card mt-4 pt-4 border-t border-gray-100">
-                <p class="text-sm text-gray-400 mb-2">Goal Of Current Week Capital</p>
-                <div class="flex items-center justify-between">
-                    <p class="text-3xl">₹{{selectedWeekData?.currentWeekExpectedResult}}</p>
-                </div>
-            </div>
-
-            <div class="overview__card mt-4 pt-4 border-t border-gray-100">
-                <p class="text-sm text-gray-400 mb-2">Expected Daily ROI</p>
-                <div class="flex items-center justify-between">
-                    <p class="text-3xl">{{selectedWeekData?.currentWeekExpectedROI}}%</p>
-                </div>
-            </div>
-
-            <div class="overview__card mt-4 pt-4 border-t border-gray-100">
-                <p class="text-sm text-gray-400 mb-2">Week End Result</p>
-                <div class="flex items-center justify-between">
-                    <p class="text-3xl">₹{{selectedWeekData?.currentWeekCapital}}</p>
-                    <div class="overview__card-growth flex gap-1 justify-between items-center"
-                    [class.profit]="calculatePercentage(selectedWeekData) > 0" 
-                    [class.lose]="calculatePercentage(selectedWeekData) < 0">
-                        <img src="./assets/icons/up-arrow.png" alt="Up Arrow" width="20" height="20" 
-                        *ngIf="calculatePercentage(selectedWeekData) > 0">
-                        <img src="./assets/icons/down-arrow.png" alt="Up Arrow" width="20" height="20" 
-                        *ngIf="calculatePercentage(selectedWeekData) < 0">
-                        {{calculatePercentage(selectedWeekData).toFixed(2)}}%
+                <div class="overview__card">
+                    <p class="text-sm text-gray-400 mb-2">Current Week Investment</p>
+                    <div class="flex items-center justify-between">
+                        <p class="text-3xl">₹{{selectedWeekData?.currentWeekInvestment}}</p>
                     </div>
                 </div>
-            </div>
+    
+                <div class="overview__card mt-4 pt-4 border-t border-gray-100">
+                    <p class="text-sm text-gray-400 mb-2">Goal Of Current Week Capital</p>
+                    <div class="flex items-center justify-between">
+                        <p class="text-3xl">₹{{selectedWeekData?.currentWeekExpectedResult}}</p>
+                    </div>
+                </div>
+    
+                <div class="overview__card mt-4 pt-4 border-t border-gray-100">
+                    <p class="text-sm text-gray-400 mb-2">Expected Daily ROI</p>
+                    <div class="flex items-center justify-between">
+                        <p class="text-3xl">{{selectedWeekData?.currentWeekExpectedROI}}%</p>
+                    </div>
+                </div>
+    
+                <div class="overview__card mt-4 pt-4 border-t border-gray-100">
+                    <p class="text-sm text-gray-400 mb-2">Week End Result</p>
+                    <div class="flex items-center justify-between">
+                        <p class="text-3xl">₹{{selectedWeekData?.currentWeekCapital}}</p>
+                        <div class="overview__card-growth flex gap-1 justify-between items-center"
+                        [class.profit]="calculatePercentage(selectedWeekData) > 0" 
+                        [class.lose]="calculatePercentage(selectedWeekData) < 0">
+                            <img src="./assets/icons/up-arrow.png" alt="Up Arrow" width="20" height="20" 
+                            *ngIf="calculatePercentage(selectedWeekData) > 0">
+                            <img src="./assets/icons/down-arrow.png" alt="Up Arrow" width="20" height="20" 
+                            *ngIf="calculatePercentage(selectedWeekData) < 0">
+                            {{calculatePercentage(selectedWeekData).toFixed(2)}}%
+                        </div>
+                    </div>
+                </div>
+            </ng-container>
 
-            <div class="card mt-12 w-full flex justify-content-center chart">
+            <ng-container *ngIf="!selectedWeekData">
+                <p class="text-center">No Data Found</p>
+            </ng-container>
+
+            <div class="card mt-12 w-full flex justify-content-center chart" *ngIf="(trades$ | async).length">
                 <p-chart type="pie" [data]="data" [options]="options"></p-chart>
             </div>
 
         </div>
     </div>
     <div class="flex-grow">
-        <h1 class="text-4xl font-semibold mb-10">Recent Trades</h1>
-
-        <div class="relative mt-4 overflow-x-auto shadow-sm">
-            <table
-                class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
-                <thead
-                    class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-                    <tr>
-                        <th scope="col" class="px-6 py-3">
-                            Date
-                        </th>
-                        <th scope="col" class="px-6 py-3">
-                            Capital
-                        </th>
-                        <th scope="col" class="px-6 py-3">
-                            Profit/Lose
-                        </th>
-                        <th scope="col" class="px-6 py-3">
-                            Brokerage
-                        </th>
-                        <th scope="col" class="px-6 py-3">
-                            Net
-                        </th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <ng-container *ngFor="let trade of this.groupedData[selectedWeek - 1]">
-                        <tr
-                            class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-                            <th scope="row"
-                                class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                {{trade.date}}
-                            </th>
-                            <td class="px-6 py-4">
-                                {{trade.investment}}
-                            </td>
-                            <td class="px-6 py-4">
-                                <span class="profit" *ngIf="trade.isProfitable">+{{trade.profit}}</span>
-                                <span class="lose" *ngIf="!trade.isProfitable">-{{trade.lose}}</span>
-                            </td>
-                            <td class="px-6 py-4">
-                                {{trade.brokerage}}
-                            </td>
-                            <td class="px-6 py-4">
-                                <span class="profit" *ngIf="trade.isProfitable">{{+trade.investment + +trade.profit - +trade.brokerage}}</span>
+        <ng-container *ngIf="(trades$ | async).length">
+            <h1 class="text-4xl font-semibold mb-10">Recent Trades</h1>
     
-                                <span class="lose" *ngIf="!trade.isProfitable">{{+trade.investment - +trade.lose - +trade.brokerage}}</span>
-                            </td>
+            <div class="relative mt-4 overflow-x-auto shadow-sm">
+                <table
+                    class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+                    <thead
+                        class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                        <tr>
+                            <th scope="col" class="px-6 py-3">
+                                Date
+                            </th>
+                            <th scope="col" class="px-6 py-3">
+                                Capital
+                            </th>
+                            <th scope="col" class="px-6 py-3">
+                                Profit/Lose
+                            </th>
+                            <th scope="col" class="px-6 py-3">
+                                Brokerage
+                            </th>
+                            <th scope="col" class="px-6 py-3">
+                                Net
+                            </th>
                         </tr>
-                    </ng-container>
-                </tbody>
-            </table>
-        </div>
+                    </thead>
+                    <tbody>
+                        <ng-container *ngFor="let trade of this.groupedData[selectedWeek - 1]">
+                            <tr
+                                class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                                <th scope="row"
+                                    class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                                    {{trade.date}}
+                                </th>
+                                <td class="px-6 py-4">
+                                    {{trade.investment}}
+                                </td>
+                                <td class="px-6 py-4">
+                                    <span class="profit" *ngIf="trade.isProfitable">+{{trade.profit}}</span>
+                                    <span class="lose" *ngIf="!trade.isProfitable">-{{trade.lose}}</span>
+                                </td>
+                                <td class="px-6 py-4">
+                                    {{trade.brokerage}}
+                                </td>
+                                <td class="px-6 py-4">
+                                    <span class="profit" *ngIf="trade.isProfitable">{{+trade.investment + +trade.profit - +trade.brokerage}}</span>
+        
+                                    <span class="lose" *ngIf="!trade.isProfitable">{{+trade.investment - +trade.lose - +trade.brokerage}}</span>
+                                </td>
+                            </tr>
+                        </ng-container>
+                    </tbody>
+                </table>
+            </div>
 
-        <div class="card mt-12">
-            <p-chart type="bar" [data]="barData" [options]="barOptions"></p-chart>
-        </div>
+            <div class="card mt-12">
+                <p-chart type="bar" [data]="barData" [options]="barOptions"></p-chart>
+            </div>
+        </ng-container>
+
     </div>
 </div>

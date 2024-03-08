@@ -1,13 +1,14 @@
 <div class="account">
-    <h1 class="text-4xl font-semibold mb-10">My Profit</h1>
+    <h1 class="text-4xl font-semibold mb-10">My Profile</h1>
 
     <div class="account__card">
         <div class="flex flex-wrap items-center gap-6 border rounded-2xl border-gray-200 p-6">
             <img class="rounded-full w-20 h-20" src="./assets/images/user.png" alt="image description">
             <div class="account__card-content">
-                <p class="font-semibold text-2xl">Keval Vadhiya</p>
-                <p class="text-gray-400">Admin</p>
-                <p class="text-gray-300">Junagadh, Gujarat</p>
+                <p class="font-semibold text-2xl">
+                    {{ user?.firstName }} {{ user?.lastName }}
+                    <button type="button" class="text-white ml-4 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800" (click)="logout()">Logout</button></p>
+                <p class="text-gray-300">{{user?.email}}</p>
             </div>
             <p *ngIf="totalWithdrawalFunds > totalAddedFunds" class="bg-green-500 text-white px-4 py-2 ml-auto rounded-lg">
                 Overall Profitable With ₹{{totalWithdrawalFunds - totalAddedFunds | number}}</p>
@@ -53,6 +54,13 @@
                             </td>
                         </tr>
                     </ng-container>
+                    <ng-container *ngIf="!addFunds.length">
+                        <tr>
+                            <td colspan="8" scope="col" class="px-6 py-8">
+                                <p class="text-center">No Data Found</p>
+                            </td>
+                        </tr>
+                    </ng-container>
                 </tbody>
             </table>
         </div>
@@ -94,6 +102,14 @@
                             <td class="px-6 py-4 text-right">
                                 <button  (click)="openAddFundDialog('withdrawal' , item)"
                                     class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit</button>
+                            </td>
+                        </tr>
+                    </ng-container>
+
+                    <ng-container *ngIf="!withdrawalFunds.length">
+                        <tr>
+                            <td colspan="8" scope="col" class="px-6 py-8">
+                                <p class="text-center">No Data Found</p>
                             </td>
                         </tr>
                     </ng-container>

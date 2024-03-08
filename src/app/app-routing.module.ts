@@ -5,6 +5,8 @@ import { TradesComponent } from './components/trades/trades.component';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { TradeSheetComponent } from './components/trade-sheet/trade-sheet.component';
 import { LoginComponent } from './components/login/login.component';
+import { AuthGuard } from './guards/auth.guard';
+import { SignupComponent } from './components/signup/signup.component';
 
 const routes: Routes = [
   {
@@ -14,23 +16,31 @@ const routes: Routes = [
   },
   {
     path: 'account',
-    component: AccountComponent
+    component: AccountComponent,
+    canActivate: [AuthGuard]
   },
   {
     path: 'trades',
-    component: TradesComponent
+    component: TradesComponent,
+    canActivate: [AuthGuard]
   },
   {
     path: 'sheet',
-    component: TradeSheetComponent
+    component: TradeSheetComponent,
+    canActivate: [AuthGuard]
   },
   {
     path: 'dashboard',
-    component: DashboardComponent
+    component: DashboardComponent,
+    canActivate: [AuthGuard]
   },
   {
     path: 'login',
     component: LoginComponent
+  },
+  {
+    path: 'register',
+    component: SignupComponent
   }
 ];
 

@@ -7,11 +7,14 @@ import { Observable, map } from 'rxjs';
 export class DataService {
 
   constructor(private firestore: AngularFirestore) {}
+  api: string;
 
   // --------------------------------------- Trade API ---------------------------------------
   getTrades(): Observable<any> {
+    this.setUserId();
+
     return this.firestore
-      .collection('trades')
+      .collection(`${this.api}/trades`)
       .snapshotChanges()
       .pipe(
         map((actions) => {
@@ -25,24 +28,28 @@ export class DataService {
   }
 
   addTrade(payload: any) {
-    return this.firestore.collection('trades').add(payload);
+    this.setUserId();
+    return this.firestore.collection(`${this.api}/trades`).add(payload);
   }
 
   updateTrade(tradeId: string, payload: any) {
+    this.setUserId();
     return this.firestore
-      .collection('trades')
+      .collection(`${this.api}/trades`)
       .doc(tradeId)
       .set(payload, { merge: true });
   }
 
   deleteTrade(tradeId: string) {
-    return this.firestore.collection('trades').doc(tradeId).delete();
+    this.setUserId();
+    return this.firestore.collection(`${this.api}/trades`).doc(tradeId).delete();
   }
 
   // --------------------------------------- Add Fund API ---------------------------------------
   getAddFunds(): Observable<any> {
+    this.setUserId();
     return this.firestore
-      .collection('add-funds')
+      .collection(`${this.api}/add-funds`)
       .snapshotChanges()
       .pipe(
         map((actions) => {
@@ -56,20 +63,23 @@ export class DataService {
   }
 
   addFund(payload: any) {
-    return this.firestore.collection('addFunds').add(payload);
+    this.setUserId();
+    return this.firestore.collection(`${this.api}/add-funds`).add(payload);
   }
 
   updateFund(fundId: any, payload: any) {
+    this.setUserId();
     return this.firestore
-      .collection('add-funds')
+      .collection(`${this.api}/add-funds`)
       .doc(fundId)
       .set(payload, { merge: true });
   }
 
   // --------------------------------------- Add Withdrawal Fund API ---------------------------------------
   getWithdrawalFunds(): Observable<any> {
+    this.setUserId();
     return this.firestore
-      .collection('withdrawal-funds')
+      .collection(`${this.api}/withdrawal-funds`)
       .snapshotChanges()
       .pipe(
         map((actions) => {
@@ -83,20 +93,24 @@ export class DataService {
   }
 
   addWithdrawalFund(payload: any) {
-    return this.firestore.collection('withdrawal-funds').add(payload);
+    this.setUserId();
+    return this.firestore.collection(`${this.api}/withdrawal-funds`).add(payload);
   }
 
   updateWithdrawalFund(fundId: any, payload: any) {
+    this.setUserId();
     return this.firestore
-      .collection('withdrawal-funds')
+      .collection(`${this.api}/withdrawal-funds`)
       .doc(fundId)
       .set(payload, { merge: true });
   }
 
   // --------------------------------------- Sheet API ---------------------------------------
   getSheet(): Observable<any> {
+    this.setUserId();
+
     return this.firestore
-      .collection('sheet')
+      .collection(`${this.api}/sheet`)
       .snapshotChanges()
       .pipe(
         map((actions) => {
@@ -110,10 +124,18 @@ export class DataService {
   }
 
   addSheet(payload) {
-    return this.firestore.collection('sheet').add(payload);
+    this.setUserId();
+    return this.firestore.collection(`${this.api}/sheet`).add(payload);
   }
 
   updateSheet(sheetId: string, payload) {
-    return this.firestore.collection('sheet').doc(sheetId).set(payload, {merge: true});
+    this.setUserId();
+    return this.firestore.collection(`${this.api}/sheet`).doc(sheetId).set(payload, {merge: true});
   }
+
+  setUserId() {
+    const userId = localStorage.getItem('userId');
+    this.api = `users/${userId}`
+  }
+
 }

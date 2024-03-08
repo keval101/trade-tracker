@@ -24,7 +24,7 @@ export class DashboardComponent implements OnInit{
   options: any;
   data: any;
   trades: any[] = [];
-  trades$ = new BehaviorSubject({})
+  trades$ = new BehaviorSubject([])
   sheets: any[] = [];
   barOptions: any;
   barData: any;

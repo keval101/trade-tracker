@@ -2,5 +2,5 @@
 <app-sidenav *ngIf="!isLoginPage"></app-sidenav>
 
 <div class="content" [class.login-container]="isLoginPage">
-    <router-outlet></router-outlet>
+    <router-outlet (activate)="checkForLoginPage()"></router-outlet>
 </div>

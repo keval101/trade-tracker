@@ -2,6 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { DialogService } from 'primeng/dynamicdialog';
 import { FundDialogComponent } from './fund-dialog/fund-dialog.component';
 import { DataService } from 'src/app/service/data.service';
+import { AuthService } from 'src/app/service/auth.service';
+import { Router } from '@angular/router';
+import { MessageService } from 'primeng/api';
+import { BehaviorSubject } from 'rxjs';
 
 @Component({
   selector: 'app-account',
@@ -18,14 +22,23 @@ export class AccountComponent implements OnInit{
   totalAddedFunds = 0;
   totalWithdrawalFunds = 0;
 
+  user: any;
+
   constructor(
     private dialogService: DialogService,
-    private dataService: DataService
+    private dataService: DataService,
+    private authService: AuthService,
+    private router: Router,
+    private messageService: MessageService
     ) {}
 
   ngOnInit(): void {
     this.getAddFunds();
     this.getWithdrawalFunds();
+
+    this.authService.getCurrentUserDetail().subscribe(res => {
+      this.user = res;
+    })
   }
 
   openAddFundDialog(type: string, fundData?: any) {
@@ -68,5 +81,11 @@ export class AccountComponent implements OnInit{
       this.totalWithdrawalFunds = this.withdrawalFunds.reduce((total, current) => total + current.fund, 0);
 
     })
+  }
+
+  logout() {
+    this.authService.signOut();
+    this.router.navigate(['/login'])
+    this.messageService.add({ severity: 'success', summary: 'Logged Out', detail: 'Logged Out Successfully!' });
   }
 }

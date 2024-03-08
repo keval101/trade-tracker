@@ -35,6 +35,9 @@ import { SheetEntryDialogComponent } from './components/trade-sheet/sheet-entry-
 import { LogoComponent } from './shared/logo/logo.component';
 import { AngularFireAuthModule } from '@angular/fire/compat/auth';
 import { LoginComponent } from './components/login/login.component';
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
+import { AuthInterceptor } from './interceptor/auth.interceptor';
+import { SignupComponent } from './components/signup/signup.component';
 
 const firebaseConfig = {
   apiKey: "AIzaSyA7OCANxXbgxUiQ_0zB_co_22z3jgxJiFY",
@@ -61,7 +64,8 @@ const firebaseConfig = {
     SheetFormComponent,
     SheetEntryDialogComponent,
     LogoComponent,
-    LoginComponent
+    LoginComponent,
+    SignupComponent
   ],
   imports: [
     BrowserModule,
@@ -82,7 +86,12 @@ const firebaseConfig = {
     TooltipModule,
     AngularFireAuthModule
   ],
-  providers: [DialogService, DatePipe, MessageService],
+  providers: [
+    DialogService, DatePipe, MessageService, 
+    {
+      provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true
+    }
+],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
