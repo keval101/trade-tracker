@@ -29,13 +29,16 @@ export class FundDialogComponent {
       fund: [null, Validators.required]
     })
 
-    if(this.config.data) {
-      this.fundForm.patchValue(this.config.data)
+    if(this.config.data.fund) {
+      let date = this.config.data.fund.date.split('/')
+      date = `${date[1]}/${date[0]}/${date[2]}`
+      this.config.data.fund.date = this.datePipe.transform(new Date(date), 'dd/MM/yyyy');
+      this.fundForm.patchValue(this.config.data.fund)
     }
   }
 
   submit() {
-    const formatedDate = this.datePipe.transform(this.fundForm.value.date, 'dd/MM/yyyy')
+    const formatedDate = typeof(this.fundForm.value.date) != 'string' ? this.datePipe.transform(this.fundForm.value.date, 'dd/MM/yyyy') : this.fundForm.value.date
     const payload = {
       date: formatedDate,
       fund: this.fundForm.value.fund

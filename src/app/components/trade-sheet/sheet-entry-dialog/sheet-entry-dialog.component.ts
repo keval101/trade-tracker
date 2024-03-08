@@ -35,6 +35,9 @@ export class SheetEntryDialogComponent implements OnInit {
     this.sheetEntryForm.reset();
 
     if(this.config.data.isEdit) {
+      let date = this.config.data.selectedRow.date.split('/')
+      date = `${date[1]}/${date[0]}/${date[2]}`
+      this.config.data.selectedRow.date = this.datePipe.transform(new Date(date), 'dd/MM/yyyy');
       this.sheetEntryForm.patchValue(this.config.data.selectedRow)
     }
   }
@@ -50,9 +53,7 @@ export class SheetEntryDialogComponent implements OnInit {
         profit: this.sheetEntryForm.value.profit
       }
     } else {
-      let date = this.sheetEntryForm.value.date.split('/')
-      date = `${date[1]}/${date[0]}/${date[2]}`
-      const formatedDate = this.datePipe.transform(date, 'dd/MM/yyyy')
+      const formatedDate = typeof(this.sheetEntryForm.value.date) != 'string' ? this.datePipe.transform(this.sheetEntryForm.value.date, 'dd/MM/yyyy') : this.sheetEntryForm.value.date
       entry = {
         date: formatedDate,
         profit: this.sheetEntryForm.value.profit
@@ -63,7 +64,7 @@ export class SheetEntryDialogComponent implements OnInit {
       data.data = [...data.data, entry];
       delete data.expectedSheet
     } else {
-      const index = data.sheet.data.findIndex(x => x.date == entry.date);
+      const index = data.sheet.data.findIndex(x => x.date == this.config.data.selectedRow.date);
       data.sheet.data[index] = entry;
     }
 

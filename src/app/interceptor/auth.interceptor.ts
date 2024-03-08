@@ -25,7 +25,6 @@ export class AuthInterceptor implements HttpInterceptor {
         return next.handle(request);
       }),
       catchError(error => {
-        console.log(error)
         this.router.navigate(['/login'])
         // Handle any errors here
         return throwError(error);

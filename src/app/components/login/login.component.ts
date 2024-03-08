@@ -35,7 +35,6 @@ export class LoginComponent implements OnInit{
       this.messageService.add({ severity: 'success', summary: 'Logged In', detail: 'Logged In Successfully!' });
       this.router.navigate(['/dashboard'])
     }).catch(error => {
-      console.log(error.message)
       if(error.message.includes('invalid-credential')) {
         this.messageService.add({ severity: 'error', summary: 'Invalid Credential', detail: 'Invalid Credential' });
       } else if(error.message.includes('invalid-email')) {

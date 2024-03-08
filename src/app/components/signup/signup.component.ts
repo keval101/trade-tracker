@@ -33,13 +33,11 @@ export class SignupComponent implements OnInit{
 
 
   register() {
-    console.log(this.registerForm.value)
     const payload = {
       email: this.registerForm.value.email,
       password: this.registerForm.value.password
     }
     this.authService.signup(payload.email, payload.password).then(res => {
-      console.log(res);
       const user = res.user.multiFactor.user;
       const data = this.registerForm.value;
       data['uid'] = user.uid
@@ -47,7 +45,6 @@ export class SignupComponent implements OnInit{
       this.messageService.add({ severity: 'success', summary: 'Register', detail: 'Register Successfully!' });
       this.router.navigate(['/dashboard']);
     }).catch(error => {
-      console.log(error.message)
       if(error.message.includes('weak-password')) {
         this.messageService.add({ severity: 'error', summary: 'Week Password', detail: 'Password should be at least 6 characters' });
       } else if(error.message.includes('invalid-email')) {

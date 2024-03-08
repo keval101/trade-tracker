@@ -113,11 +113,13 @@ export class TradeSheetComponent implements OnInit{
   }
 
   updateSheetEntry(sheet: any, selectedRow: any) {
-    this.dialogService.open(SheetEntryDialogComponent, {
-      width: window.screen.availWidth < 992 ? '80vw' : '30vw',
-      data: {sheet, selectedRow, isEdit: true},
-      header: 'Sheet Entry',
-    })
+    if(!selectedRow.date.includes('-')) {
+      this.dialogService.open(SheetEntryDialogComponent, {
+        width: window.screen.availWidth < 992 ? '80vw' : '30vw',
+        data: {sheet, selectedRow, isEdit: true},
+        header: 'Sheet Entry',
+      })
+    }
   }
 
   onMarketSelect(sheet, market) {
