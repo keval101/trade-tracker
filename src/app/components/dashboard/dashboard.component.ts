@@ -183,15 +183,17 @@ export class DashboardComponent implements OnInit{
 
   setWeeklyData() {
     this.groupedData.map((x: any, index: number) => {
-      const finalCapital = x[x.length - 1]?.isProfitable == true ? +x[x.length - 1].investment + +x[x.length - 1].profit - +x[x.length - 1].brokerage : +x[x.length - 1].investment - +x[x.length - 1].lose - +x[x.length - 1].brokerage;
-      const object = {
-        currentWeekInvestment: x[0].investment,
-        currentWeekExpectedROI: this.roi,
-        currentWeekExpectedResult: this.calculateCapital(+x[0].investment, this.roi, x.length),
-        currentWeekCapital: finalCapital,
-        week: index + 1
+      if(x.length) {
+        const finalCapital = x[x.length - 1]?.isProfitable == true ? +x[x.length - 1].investment + +x[x.length - 1].profit - +x[x.length - 1].brokerage : +x[x.length - 1].investment - +x[x.length - 1].lose - +x[x.length - 1].brokerage;
+        const object = {
+          currentWeekInvestment: x[0].investment,
+          currentWeekExpectedROI: this.roi,
+          currentWeekExpectedResult: this.calculateCapital(+x[0].investment, this.roi, x.length),
+          currentWeekCapital: finalCapital,
+          week: index + 1
+        }
+        this.weeklyROIData.push(object)
       }
-      this.weeklyROIData.push(object)
     })
     this.selectedWeek = this.weeklyROIData.length;
     this.selectedWeekData = this.weeklyROIData[this.selectedWeek - 1];
