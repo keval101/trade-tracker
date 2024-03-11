@@ -23,6 +23,10 @@ export class AppComponent {
     setTimeout(() => {
       this.isLoginPage = this.router.url.includes('/login') || this.router.url.includes('/register');
     }, 50);
+
+    this.authService.getCurrentUserDetail().subscribe(res => {
+      localStorage.setItem('preferredMarket', res.preferredMarket)
+    })
   }
 
   checkForLoginPage() {

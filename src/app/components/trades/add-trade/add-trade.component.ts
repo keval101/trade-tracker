@@ -38,6 +38,10 @@ export class AddTradeComponent implements OnInit{
       brokerage: [0, Validators.required]
     })
 
+    const preferredMarket = localStorage.getItem('preferredMarket');
+    if(preferredMarket) {
+      this.tradeForm.get('market').setValue(preferredMarket);
+    }
     if(this.config.data) {
       let date = this.config.data.date.split('/');
       date = `${date[1]}/${date[0]}/${date[2]}`;
