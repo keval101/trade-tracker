@@ -32,14 +32,15 @@ export class AddTradeComponent implements OnInit{
       totalTrades: [null, Validators.required],
       market: [null, Validators.required],
       investment: [null, Validators.required],
-      isProfitable: [null, Validators.required],
-      profit: [null],
-      lose: [null],
-      brokerage: [null, Validators.required]
+      isProfitable: [false, Validators.required],
+      profit: [0],
+      lose: [0],
+      brokerage: [0, Validators.required]
     })
 
     if(this.config.data) {
       this.tradeForm.patchValue(this.config.data)
+      this.tradeForm.get('isProfitable').setValue(this.config.data.isProfitable ? true : false)
     }
   }
 

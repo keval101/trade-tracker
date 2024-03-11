@@ -157,6 +157,8 @@ export class DashboardComponent implements OnInit{
       return documentStyle.getPropertyValue('--green-500');
     } else if(marketValue > 0 && marketValue > 1000) {
       return documentStyle.getPropertyValue('--green-300');
+    } else if(marketValue > 0) {
+      return documentStyle.getPropertyValue('--green-200');
     }
   }
 
@@ -173,8 +175,13 @@ export class DashboardComponent implements OnInit{
       this.sheets.map(sheet => {
       this.trades$.subscribe((trades: any) => {
         const index = trades.findIndex(x => x.date == sheet.date)
-        const tradeData = trades.slice(index, index + sheet.data.length)
-        this.groupedData.push(tradeData)
+        console.log(index);
+        if(index >= 0) {
+          const tradeData = trades.slice(index, index + sheet.data.length)
+          tradeData['totalDays'] = sheet.days;
+          tradeData['roi'] = sheet.roi;
+          this.groupedData.push(tradeData)
+        }
       })
       })
       this.setWeeklyData();
@@ -183,12 +190,13 @@ export class DashboardComponent implements OnInit{
 
   setWeeklyData() {
     this.groupedData.map((x: any, index: number) => {
+      console.log(x);
       if(x.length) {
         const finalCapital = x[x.length - 1]?.isProfitable == true ? +x[x.length - 1].investment + +x[x.length - 1].profit - +x[x.length - 1].brokerage : +x[x.length - 1].investment - +x[x.length - 1].lose - +x[x.length - 1].brokerage;
         const object = {
           currentWeekInvestment: x[0].investment,
-          currentWeekExpectedROI: this.roi,
-          currentWeekExpectedResult: this.calculateCapital(+x[0].investment, this.roi, x.length),
+          currentWeekExpectedROI: x.roi,
+          currentWeekExpectedResult: this.calculateCapital(+x[0].investment, x.roi, x.totalDays),
           currentWeekCapital: finalCapital,
           week: index + 1
         }
