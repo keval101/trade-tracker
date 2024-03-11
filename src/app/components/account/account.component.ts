@@ -6,6 +6,7 @@ import { AuthService } from 'src/app/service/auth.service';
 import { Router } from '@angular/router';
 import { MessageService } from 'primeng/api';
 import { BehaviorSubject } from 'rxjs';
+import { DeleteFundComponent } from './delete-fund/delete-fund.component';
 
 @Component({
   selector: 'app-account',
@@ -62,7 +63,7 @@ export class AccountComponent implements OnInit{
       funds.sort((a, b) => {
         const dateA: any = new Date(a.date.split('/').reverse().join('/'));
         const dateB: any = new Date(b.date.split('/').reverse().join('/'));
-        return dateA - dateB;
+        return dateB - dateA;
       });
       this.addFunds = funds;
       this.totalAddedFunds = this.addFunds.reduce((total, current) => total + current.fund, 0);
@@ -75,7 +76,7 @@ export class AccountComponent implements OnInit{
       funds.sort((a, b) => {
         const dateA: any = new Date(a.date.split('/').reverse().join('/'));
         const dateB: any = new Date(b.date.split('/').reverse().join('/'));
-        return dateA - dateB;
+        return dateB - dateA;
       });
       this.withdrawalFunds = funds;
       this.totalWithdrawalFunds = this.withdrawalFunds.reduce((total, current) => total + current.fund, 0);
@@ -87,5 +88,22 @@ export class AccountComponent implements OnInit{
     this.authService.signOut();
     this.router.navigate(['/login'])
     this.messageService.add({ severity: 'success', summary: 'Logged Out', detail: 'Logged Out Successfully!' });
+  }
+
+  deleteFund(fund: any, type: string) {
+    const dialogRef = this.dialogService.open(DeleteFundComponent, {
+      width: window.screen.availWidth < 992 ? '80vw' : '30vw',
+      header: 'Delete Fund',
+      data: {fund, type}
+    })
+
+    dialogRef.onClose.subscribe(() => {
+      if(type == 'add-funds') {
+        this.getAddFunds();
+      } else {
+        this.getWithdrawalFunds()
+      }
+      dialogRef.destroy();
+    })
   }
 }

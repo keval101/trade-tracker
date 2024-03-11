@@ -75,6 +75,11 @@ export class DataService {
       .set(payload, { merge: true });
   }
 
+  deleteFund(fundId: string, type: string) {
+    this.setUserId();
+    return this.firestore.collection(`${this.api}/${type}`).doc(fundId).delete();
+  }
+
   // --------------------------------------- Add Withdrawal Fund API ---------------------------------------
   getWithdrawalFunds(): Observable<any> {
     this.setUserId();

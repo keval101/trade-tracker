@@ -10,10 +10,16 @@
                     <button type="button" class="text-white ml-4 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800" (click)="logout()">Logout</button></p>
                 <p class="text-gray-300">{{user?.email}}</p>
             </div>
-            <p *ngIf="totalWithdrawalFunds > totalAddedFunds" class="bg-green-500 text-white px-4 py-2 ml-auto rounded-lg">
-                Overall Profitable With ₹{{totalWithdrawalFunds - totalAddedFunds | number}}</p>
-            <p *ngIf="totalWithdrawalFunds < totalAddedFunds" class="bg-red-500 text-white px-4 py-2 ml-auto rounded-lg">
-                Overall In Lose Of ₹{{totalAddedFunds - totalWithdrawalFunds | number}}</p>
+            <div class="ml-auto flex flex-col gap-2">
+                <p class="bg-red-500 text-white px-4 py-2 ml-auto rounded-lg">
+                    Total Added Funds ₹{{totalAddedFunds | number}}</p>
+                <p class="bg-green-500 text-white px-4 py-2 ml-auto rounded-lg">
+                    Total Withdrawal Funds ₹{{totalWithdrawalFunds | number}}</p>
+                <p *ngIf="totalWithdrawalFunds > totalAddedFunds" class="bg-green-500 text-white px-4 py-2 ml-auto rounded-lg">
+                    Overall Profitable With ₹{{totalWithdrawalFunds - totalAddedFunds | number}}</p>
+                <p *ngIf="totalWithdrawalFunds < totalAddedFunds" class="bg-gray-500 text-white px-4 py-2 ml-auto rounded-lg">
+                    Overall In Lose Of ₹{{totalAddedFunds - totalWithdrawalFunds | number}}</p>
+            </div>
         </div>
     </div>
 
@@ -51,6 +57,8 @@
                             <td class="px-6 py-4 text-right">
                                 <button  (click)="openAddFundDialog('add', item)"
                                     class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit</button>
+                                <button  (click)="deleteFund(item, 'add-funds')"
+                                    class="font-medium mx-2 text-blue-600 dark:text-blue-500 hover:underline">Delete</button>
                             </td>
                         </tr>
                     </ng-container>
@@ -69,7 +77,7 @@
 
     <div class="fund mt-12">
         <div class="flex gap-4 flex-wrap justify-between items-center">
-            <h1 class="mb-4 sm:mb-8 text-2xl">Withdrawal Records</h1>
+            <h1 class="mb-4 sm:mb-8 text-2xl">Withdrawal Records </h1>
             <button type="button" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
             (click)="openAddFundDialog('withdrawal')">Withdrawal Fund</button>
         </div>
@@ -102,6 +110,8 @@
                             <td class="px-6 py-4 text-right">
                                 <button  (click)="openAddFundDialog('withdrawal' , item)"
                                     class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit</button>
+                                <button  (click)="deleteFund(item, 'withdrawal-funds')"
+                                    class="font-medium mx-2 text-blue-600 dark:text-blue-500 hover:underline">Delete</button>
                             </td>
                         </tr>
                     </ng-container>
