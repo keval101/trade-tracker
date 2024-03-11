@@ -38,21 +38,23 @@ export class FundDialogComponent {
   }
 
   submit() {
-    const formatedDate = typeof(this.fundForm.value.date) != 'string' ? this.datePipe.transform(this.fundForm.value.date, 'dd/MM/yyyy') : this.fundForm.value.date
-    const payload = {
-      date: formatedDate,
-      fund: this.fundForm.value.fund
+    if(this.fundForm.valid) {
+      const formatedDate = typeof(this.fundForm.value.date) != 'string' ? this.datePipe.transform(this.fundForm.value.date, 'dd/MM/yyyy') : this.fundForm.value.date
+      const payload = {
+        date: formatedDate,
+        fund: this.fundForm.value.fund
+      }
+      if(this.config.data.type === 'add') {
+        this.submitFund(payload);
+      } else if (this.config.data.type === 'withdrawal') {
+        this.submitWithdrawalFund(payload); 
+      }
+  
+      this.ref.close()
     }
-    if(this.config.data.type === 'add') {
-      this.submitFund(payload);
-    } else if (this.config.data.type === 'withdrawal') {
-      this.submitWithdrawalFund(payload); 
-    }
-
-    this.ref.close()
   }
 
-  submitFund(payload, ) {
+  submitFund(payload) {
     if(!this.config.data) {
       this.dataService.addFund(payload).then(() => {
         this.messageService.add({ severity: 'success', summary: 'Add Funds', detail: 'Funds Added Successfully!' });
@@ -70,7 +72,7 @@ export class FundDialogComponent {
     }
   }
 
-  submitWithdrawalFund(payload, ) {
+  submitWithdrawalFund(payload) {
     if(!this.config.data) {
       this.dataService.addWithdrawalFund(payload).then(() => {
         this.messageService.add({ severity: 'success', summary: 'Withdrawal Funds', detail: 'Funds Withdrawal Added Successfully!' });

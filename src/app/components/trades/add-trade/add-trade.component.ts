@@ -45,32 +45,34 @@ export class AddTradeComponent implements OnInit{
   }
 
   addTrade() {
-    const payload = this.tradeForm.value;
-    if(!this.config.data) {
-      const formatedDate = this.datePipe.transform(this.tradeForm.value.date, 'dd/MM/yyyy')
-      payload.date = formatedDate;
-    } else {
-      let date = this.tradeForm.value.date.split('/')
-      date = `${date[1]}/${date[0]}/${date[2]}`
-      const formatedDate = this.datePipe.transform(date, 'dd/MM/yyyy')
-      payload.date = formatedDate;
+    if(this.tradeForm.valid) {
+      const payload = this.tradeForm.value;
+      if(!this.config.data) {
+        const formatedDate = this.datePipe.transform(this.tradeForm.value.date, 'dd/MM/yyyy')
+        payload.date = formatedDate;
+      } else {
+        let date = this.tradeForm.value.date.split('/')
+        date = `${date[1]}/${date[0]}/${date[2]}`
+        const formatedDate = this.datePipe.transform(date, 'dd/MM/yyyy')
+        payload.date = formatedDate;
+      }
+      if(!this.config.data) {
+        this.dataService.addTrade(this.tradeForm.value).then(() => {
+          this.messageService.add({ severity: 'success', summary: 'Trade', detail: 'Trade Added Successfully!' });
+        })
+        .catch((error) => {
+          console.error('Error adding document: ', error);
+        });
+      } else {
+        this.dataService.updateTrade(this.config.data.id, this.tradeForm.value).then(() => {
+          this.messageService.add({ severity: 'success', summary: 'Trade', detail: 'Trade Updated Successfully!' });
+        })
+        .catch((error) => {
+          console.error('Error adding document: ', error);
+        });
+      }
+      
+      this.ref.close()
     }
-    if(!this.config.data) {
-      this.dataService.addTrade(this.tradeForm.value).then(() => {
-        this.messageService.add({ severity: 'success', summary: 'Trade', detail: 'Trade Added Successfully!' });
-      })
-      .catch((error) => {
-        console.error('Error adding document: ', error);
-      });
-    } else {
-      this.dataService.updateTrade(this.config.data.id, this.tradeForm.value).then(() => {
-        this.messageService.add({ severity: 'success', summary: 'Trade', detail: 'Trade Updated Successfully!' });
-      })
-      .catch((error) => {
-        console.error('Error adding document: ', error);
-      });
-    }
-    
-    this.ref.close()
   }
 }

@@ -37,12 +37,14 @@ export class SheetFormComponent implements OnInit{
   }
 
   addSheet() {
-    const payload = this.sheetForm.value
-    payload.date = this.datePipe.transform(this.sheetForm.value.date, 'dd/MM/yyyy')
-    payload['data'] = [];
-    this.dataService.addSheet(this.sheetForm.value).then(() => {
-      this.messageService.add({ severity: 'success', summary: 'Add Sheet', detail: 'Sheet Added Successfully!' });
-      this.ref.close();
-    })
+    if(this.sheetForm.valid) {
+      const payload = this.sheetForm.value
+      payload.date = this.datePipe.transform(this.sheetForm.value.date, 'dd/MM/yyyy')
+      payload['data'] = [];
+      this.dataService.addSheet(this.sheetForm.value).then(() => {
+        this.messageService.add({ severity: 'success', summary: 'Add Sheet', detail: 'Sheet Added Successfully!' });
+        this.ref.close();
+      })
+    }
   }
 }

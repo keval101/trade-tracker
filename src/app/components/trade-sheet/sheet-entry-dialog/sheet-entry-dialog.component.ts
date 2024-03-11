@@ -43,40 +43,42 @@ export class SheetEntryDialogComponent implements OnInit {
   }
 
   addSheetEntry() {
-    let entry;
-    const data = this.config.data;
-
-    if(!data.isEdit) {
-      const formatedDate = this.datePipe.transform(this.sheetEntryForm.value.date, 'dd/MM/yyyy')
-      entry = {
-        date: formatedDate,
-        profit: this.sheetEntryForm.value.profit
+    if(this.sheetEntryForm.valid) {
+      let entry;
+      const data = this.config.data;
+  
+      if(!data.isEdit) {
+        const formatedDate = this.datePipe.transform(this.sheetEntryForm.value.date, 'dd/MM/yyyy')
+        entry = {
+          date: formatedDate,
+          profit: this.sheetEntryForm.value.profit
+        }
+      } else {
+        const formatedDate = typeof(this.sheetEntryForm.value.date) != 'string' ? this.datePipe.transform(this.sheetEntryForm.value.date, 'dd/MM/yyyy') : this.sheetEntryForm.value.date
+        entry = {
+          date: formatedDate,
+          profit: this.sheetEntryForm.value.profit
+        }
       }
-    } else {
-      const formatedDate = typeof(this.sheetEntryForm.value.date) != 'string' ? this.datePipe.transform(this.sheetEntryForm.value.date, 'dd/MM/yyyy') : this.sheetEntryForm.value.date
-      entry = {
-        date: formatedDate,
-        profit: this.sheetEntryForm.value.profit
+  
+      if(!data.isEdit) {    
+        data.data = [...data.data, entry];
+        delete data.expectedSheet
+      } else {
+        const index = data.sheet.data.findIndex(x => x.date == this.config.data.selectedRow.date);
+        data.sheet.data[index] = entry;
       }
+  
+      const payload = !data.isEdit ? data : data.sheet;
+      const sheetId = !data.isEdit ? data.id : data.sheet.id;
+      this.dataService.updateSheet(sheetId, payload).then(() => {
+        this.messageService.add({ severity: 'success', summary: 'Update Sheet', detail: 'Sheet Updated Successfully!' });
+      })
+      .catch((error) => {
+        console.error('Error adding document: ', error);
+      });
+  
+      this.ref.close();
     }
-
-    if(!data.isEdit) {    
-      data.data = [...data.data, entry];
-      delete data.expectedSheet
-    } else {
-      const index = data.sheet.data.findIndex(x => x.date == this.config.data.selectedRow.date);
-      data.sheet.data[index] = entry;
-    }
-
-    const payload = !data.isEdit ? data : data.sheet;
-    const sheetId = !data.isEdit ? data.id : data.sheet.id;
-    this.dataService.updateSheet(sheetId, payload).then(() => {
-      this.messageService.add({ severity: 'success', summary: 'Update Sheet', detail: 'Sheet Updated Successfully!' });
-    })
-    .catch((error) => {
-      console.error('Error adding document: ', error);
-    });
-
-    this.ref.close();
   }
 }

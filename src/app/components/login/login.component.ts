@@ -27,19 +27,21 @@ export class LoginComponent implements OnInit{
   }
 
   signIn() {
-    this.authService.signIn(this.loginForm.value).then((res: any) => {
-      const token = res.user.multiFactor.user.accessToken
-      const userId = res.user.multiFactor.user.uid
-      localStorage.setItem('userId', userId);
-      localStorage.setItem('token', token);
-      this.messageService.add({ severity: 'success', summary: 'Logged In', detail: 'Logged In Successfully!' });
-      this.router.navigate(['/dashboard'])
-    }).catch(error => {
-      if(error.message.includes('invalid-credential')) {
-        this.messageService.add({ severity: 'error', summary: 'Invalid Credential', detail: 'Invalid Credential' });
-      } else if(error.message.includes('invalid-email')) {
-        this.messageService.add({ severity: 'error', summary: 'Invalid Email', detail: 'The email address is Invalid' });
-      }
-    })
+    if(this.loginForm.valid) {
+      this.authService.signIn(this.loginForm.value).then((res: any) => {
+        const token = res.user.multiFactor.user.accessToken
+        const userId = res.user.multiFactor.user.uid
+        localStorage.setItem('userId', userId);
+        localStorage.setItem('token', token);
+        this.messageService.add({ severity: 'success', summary: 'Logged In', detail: 'Logged In Successfully!' });
+        this.router.navigate(['/dashboard'])
+      }).catch(error => {
+        if(error.message.includes('invalid-credential')) {
+          this.messageService.add({ severity: 'error', summary: 'Invalid Credential', detail: 'Invalid Credential' });
+        } else if(error.message.includes('invalid-email')) {
+          this.messageService.add({ severity: 'error', summary: 'Invalid Email', detail: 'The email address is Invalid' });
+        }
+      })
+    }
   }
 }
