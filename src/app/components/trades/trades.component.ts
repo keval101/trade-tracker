@@ -16,6 +16,7 @@ export class TradesComponent implements OnInit {
   isLoading = true;
   tradeOverview: any;
   tradingAccuracy: any;
+  isProfitableTrader = false;
 
   constructor(
     private dialogService: DialogService,
@@ -26,10 +27,11 @@ export class TradesComponent implements OnInit {
   }
 
   openTradeForm(trade?: any) {
+    this.isProfitableTrader = (this.tradingAccuracy?.totalProfitableDays / this.tradingAccuracy?.totalDays) * 100 > 70 ? true : false;
     const dialogRef = this.dialogService.open(AddTradeComponent, {
       width: window.screen.availWidth < 992 ? '80vw' : '30vw',
       header: 'Add Trade',
-      data: trade
+      data: {trade, isProfitableTrader: this.isProfitableTrader}
     });
 
     dialogRef.onClose.subscribe(() => {
