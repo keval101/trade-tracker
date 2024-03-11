@@ -121,7 +121,7 @@
                         <tr>
                             <td class="px-6 py-4"></td>
                             <td class="px-6 py-4">
-                                {{tradeOverview.totalTrades}}
+                                {{tradeOverview.totalTrades ?? '-'}}
                             </td>
                             <td class="px-6 py-4"></td>
                             <td class="px-6 py-4"></td>
@@ -129,7 +129,7 @@
                                 <span class="profit" *ngIf="tradeOverview.profitLose > 0">+{{tradeOverview.profitLose}}</span>
                                 <span class="lose" *ngIf="tradeOverview.profitLose < 0">{{tradeOverview.profitLose}}</span>
                             </td>
-                            <td class="px-6 py-4">{{tradeOverview.brokerage}}</td>
+                            <td class="px-6 py-4">{{tradeOverview.brokerage ?? 0}}</td>
                         </tr>
                     </ng-container>
     

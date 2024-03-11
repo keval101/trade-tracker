@@ -175,7 +175,6 @@ export class DashboardComponent implements OnInit{
       this.sheets.map(sheet => {
       this.trades$.subscribe((trades: any) => {
         const index = trades.findIndex(x => x.date == sheet.date)
-        console.log(index);
         if(index >= 0) {
           const tradeData = trades.slice(index, index + sheet.data.length)
           tradeData['totalDays'] = sheet.days;
@@ -190,7 +189,6 @@ export class DashboardComponent implements OnInit{
 
   setWeeklyData() {
     this.groupedData.map((x: any, index: number) => {
-      console.log(x);
       if(x.length) {
         const finalCapital = x[x.length - 1]?.isProfitable == true ? +x[x.length - 1].investment + +x[x.length - 1].profit - +x[x.length - 1].brokerage : +x[x.length - 1].investment - +x[x.length - 1].lose - +x[x.length - 1].brokerage;
         const object = {

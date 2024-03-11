@@ -39,6 +39,9 @@ export class AddTradeComponent implements OnInit{
     })
 
     if(this.config.data) {
+      let date = this.config.data.date.split('/');
+      date = `${date[1]}/${date[0]}/${date[2]}`;
+      this.config.data.date = this.datePipe.transform(new Date(date), 'dd/MM/yyyy');
       this.tradeForm.patchValue(this.config.data)
       this.tradeForm.get('isProfitable').setValue(this.config.data.isProfitable ? true : false)
     }
@@ -51,9 +54,7 @@ export class AddTradeComponent implements OnInit{
         const formatedDate = this.datePipe.transform(this.tradeForm.value.date, 'dd/MM/yyyy')
         payload.date = formatedDate;
       } else {
-        let date = this.tradeForm.value.date.split('/')
-        date = `${date[1]}/${date[0]}/${date[2]}`
-        const formatedDate = this.datePipe.transform(date, 'dd/MM/yyyy')
+        const formatedDate = typeof(this.tradeForm.value.date) != 'string' ? this.datePipe.transform(this.tradeForm.value.date, 'dd/MM/yyyy') : this.tradeForm.value.date
         payload.date = formatedDate;
       }
       if(!this.config.data) {
