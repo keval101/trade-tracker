@@ -61,15 +61,20 @@ export class AddTradeComponent implements OnInit{
         const formatedDate = typeof(this.tradeForm.value.date) != 'string' ? this.datePipe.transform(this.tradeForm.value.date, 'dd/MM/yyyy') : this.tradeForm.value.date
         payload.date = formatedDate;
       }
+      if(payload.isProfitable) {
+        payload.lose = 0
+      } else {
+        payload.profit = 0
+      }
       if(!this.config.data) {
-        this.dataService.addTrade(this.tradeForm.value).then(() => {
+        this.dataService.addTrade(payload).then(() => {
           this.messageService.add({ severity: 'success', summary: 'Trade', detail: 'Trade Added Successfully!' });
         })
         .catch((error) => {
           console.error('Error adding document: ', error);
         });
       } else {
-        this.dataService.updateTrade(this.config.data.id, this.tradeForm.value).then(() => {
+        this.dataService.updateTrade(this.config.data.id, payload).then(() => {
           this.messageService.add({ severity: 'success', summary: 'Trade', detail: 'Trade Updated Successfully!' });
         })
         .catch((error) => {
