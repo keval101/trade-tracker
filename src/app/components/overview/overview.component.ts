@@ -106,7 +106,7 @@ export class OverviewComponent implements OnInit, OnDestroy{
 
         splitData[monthYear].forEach((trade, index) => {
             // Calculate total brokerage
-            totalBrokerage += parseInt(trade.brokerage);
+            totalBrokerage += trade.brokerage ? parseInt(trade.brokerage) : 0;
             totalProfit += trade.profit ? parseInt(trade.profit) : 0;
             totalLose += trade.lose ? parseInt(trade.lose) : 0;
 
