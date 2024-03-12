@@ -27,6 +27,11 @@ export class SidenavComponent {
       name: 'Sheet',
       route: 'sheet',
       icon: '/assets/icons/sheet.svg'
+    },
+    {
+      name: 'Overview',
+      route: 'overview',
+      icon: '/assets/icons/sheet.svg'
     }
   ]
 }

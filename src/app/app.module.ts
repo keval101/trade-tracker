@@ -39,6 +39,7 @@ import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AuthInterceptor } from './interceptor/auth.interceptor';
 import { SignupComponent } from './components/signup/signup.component';
 import { DeleteFundComponent } from './components/account/delete-fund/delete-fund.component';
+import { OverviewComponent } from './components/overview/overview.component';
 
 const firebaseConfig = {
   apiKey: "AIzaSyA7OCANxXbgxUiQ_0zB_co_22z3jgxJiFY",
@@ -67,7 +68,8 @@ const firebaseConfig = {
     LogoComponent,
     LoginComponent,
     SignupComponent,
-    DeleteFundComponent
+    DeleteFundComponent,
+    OverviewComponent
   ],
   imports: [
     BrowserModule,

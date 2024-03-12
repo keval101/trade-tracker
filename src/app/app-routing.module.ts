@@ -7,6 +7,7 @@ import { TradeSheetComponent } from './components/trade-sheet/trade-sheet.compon
 import { LoginComponent } from './components/login/login.component';
 import { AuthGuard } from './guards/auth.guard';
 import { SignupComponent } from './components/signup/signup.component';
+import { OverviewComponent } from './components/overview/overview.component';
 
 const routes: Routes = [
   {
@@ -32,6 +33,11 @@ const routes: Routes = [
   {
     path: 'dashboard',
     component: DashboardComponent,
+    canActivate: [AuthGuard]
+  },
+  {
+    path: 'overview',
+    component: OverviewComponent,
     canActivate: [AuthGuard]
   },
   {

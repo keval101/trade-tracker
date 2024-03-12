@@ -1,0 +1,32 @@
+<h1 class="text-4xl font-semibold mb-10">Analysis</h1>
+    
+    <div class="flex gap-16 mt-8 flex-wrap">
+        <ng-container *ngFor="let month of monthData | keyvalue">
+            <div>
+                <h1 class="text-2xl mb-4 font-semibold month-name" (click)="getMonthAnalysisData(month)">{{getMonthName(month.key)}}</h1>
+                <div class="pnl-grid">
+                    <ng-container *ngFor="let trade of getData(month.value)">
+                        <div class="pnl-grid-box"
+                            [class.bg-green-200]="trade.isProfitable && trade.profit < 500"
+                            [class.bg-green-300]="trade.isProfitable && trade.profit > 500"
+                            [class.bg-green-500]="trade.isProfitable && trade.profit > 1000"
+                            [class.bg-green-700]="trade.isProfitable && trade.profit > 2000"
+                            
+                            [class.bg-red-200]="!trade.isProfitable && trade.lose < 500"
+                            [class.bg-red-300]="!trade.isProfitable && trade.lose > 500"
+                            [class.bg-red-500]="!trade.isProfitable && trade.lose > 1000"
+                            [class.bg-red-700]="!trade.isProfitable && trade.lose > 2000"
+                            [pTooltip]="tooltipContent" tooltipStyleClass="custom-tooltip"></div>
+            
+                        <ng-template #tooltipContent>
+                            <div class="flex align-items-center">
+                                <span>
+                                    <b [class.profit]="trade.profit > 0" [class.lose]="trade.lose">{{trade.date}}:  {{trade.isProfitable ? '+' + trade.profit : '-' + trade.lose}}</b>
+                                </span>
+                            </div>
+                        </ng-template>
+                    </ng-container>
+                </div>
+            </div>
+        </ng-container>
+    </div>

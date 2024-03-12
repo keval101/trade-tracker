@@ -1,0 +1,25 @@
+.pnl-grid {
+    display: grid;
+    grid-template-columns: 20px 20px 20px 20px 20px;
+    grid-template-rows: 20px 20px 20px 20px 20px;
+    column-gap: 10px;
+    row-gap: 10px;
+    &-box {
+        width: 20px;
+        height: 20px;
+        border-radius: 3px;
+    }
+}
+
+.custom-tooltip.p-tooltip .p-tooltip-text {
+    background-color: #e8e8e8 !important;
+}
+
+.month-name {
+    transition: all 0.2s ease-in;
+
+    &:hover {
+        @apply text-blue-500 cursor-pointer;
+        transition: all 0.2s ease-in;
+    }
+}

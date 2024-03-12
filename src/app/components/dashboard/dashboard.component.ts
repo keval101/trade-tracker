@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { DataService } from 'src/app/service/data.service';
 
@@ -7,7 +7,7 @@ import { DataService } from 'src/app/service/data.service';
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.scss']
 })
-export class DashboardComponent implements OnInit{
+export class DashboardComponent implements OnInit, OnDestroy{
   expectedROI = {
     currentWeekInvestment: 2000,
     currentWeekExpectedROI: 10,
@@ -270,5 +270,9 @@ export class DashboardComponent implements OnInit{
 
         }
     };
+  }
+
+  ngOnDestroy(): void {
+      this.trades$.unsubscribe();
   }
 }
