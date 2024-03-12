@@ -36,6 +36,7 @@ export class OverviewComponent implements OnInit, OnDestroy{
     let object: any = {};
     object[data.key] = data.value
     this.selectedMonthData = this.analyzeSplitData(object)
+    console.log(this.selectedMonthData)
   }
 
   splitDataByMonth(data) {
@@ -100,10 +101,14 @@ export class OverviewComponent implements OnInit, OnDestroy{
         let maxLoseStreak = 0;
         let currentWinStreak = 0;
         let currentLoseStreak = 0;
+        let totalProfit = 0;
+        let totalLose = 0;
 
         splitData[monthYear].forEach((trade, index) => {
             // Calculate total brokerage
             totalBrokerage += parseInt(trade.brokerage);
+            totalProfit += trade.profit ? parseInt(trade.profit) : 0;
+            totalLose += trade.lose ? parseInt(trade.lose) : 0;
 
             // Count total days and total profitable days
             totalDays++;
@@ -137,14 +142,18 @@ export class OverviewComponent implements OnInit, OnDestroy{
             }
         });
 
-        result[monthYear] = {
+        result = {
             totalBrokerage,
             totalDays,
-            totalProfitableDays,
             maxLoseDay,
+            maxLoseStreak,
+            totalLose,
             maxProfitDay,
+            totalProfitableDays,
             maxWinStreak,
-            maxLoseStreak
+            totalProfit,
+            maxProfitAmount,
+            maxLoseAmount
         };
     }
 

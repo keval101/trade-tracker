@@ -23,3 +23,31 @@
         transition: all 0.2s ease-in;
     }
 }
+
+.streaks {
+    @apply mt-12;
+
+    &__item  {
+        @apply px-8;
+
+        @media screen and (max-width: 768px) {
+            @apply px-0 py-2;
+        }
+
+        &:not(:last-child) {
+            @apply border-r border-gray-200;
+
+            @media screen and (max-width: 768px) {
+                @apply border-r-0 border-b;
+            }
+        }
+
+        &:first-child {
+            @apply pl-0
+        }
+    }
+
+    @media screen and (max-width: 768px) {
+        @apply flex-col gap-2;
+    }
+}

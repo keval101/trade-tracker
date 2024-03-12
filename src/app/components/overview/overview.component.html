@@ -30,3 +30,57 @@
             </div>
         </ng-container>
     </div>
+
+    <ng-container *ngIf="selectedMonthData">
+        <div class="flex streaks flex-wrap">
+            <div class="streaks__item ">
+                <p class="mb-2">Longest Win Streak</p>
+                <p class="text-3xl text-green-500 font-semibold">{{selectedMonthData.maxWinStreak}}</p>
+            </div>
+
+            <div class="streaks__item">
+                <p class="mb-2">Longest Lose Streak</p>
+                <p class="text-3xl text-red-500 font-semibold">{{selectedMonthData.maxLoseStreak}}</p>
+            </div>
+        </div>
+
+        <div class="flex streaks flex-wrap">
+            <div class="streaks__item ">
+                <p class="mb-2">Most Profitable Day</p>
+                <p class="text-gray-400 mb-2">{{selectedMonthData.maxProfitDay}}</p>
+                <p class="text-3xl text-green-500 font-semibold">+{{selectedMonthData.maxProfitAmount}}</p>
+            </div>
+
+            <div class="streaks__item">
+                <p class="mb-2">Most Lose Day</p>
+                <p class="text-gray-400 mb-2">{{selectedMonthData.maxLoseDay}}</p>
+                <p class="text-3xl text-red-500 font-semibold">-{{selectedMonthData.maxLoseAmount}}</p>
+            </div>
+        </div>
+
+        <div class="flex streaks flex-wrap">
+            <div class="streaks__item ">
+                <p class="mb-2">Total Profit</p>
+                <p class="text-3xl text-green-500 font-semibold">+{{selectedMonthData.totalProfit}}</p>
+            </div>
+
+            <div class="streaks__item">
+                <p class="mb-2">Total Lose</p>
+                <p class="text-3xl text-red-500 font-semibold">-{{selectedMonthData.totalLose}}</p>
+            </div>
+
+            <div class="streaks__item">
+                <p class="mb-2">Total Brokerage</p>
+                <p class="text-3xl text-gray-500 font-semibold">
+                    {{selectedMonthData.totalBrokerage}}</p>
+            </div>
+
+            <div class="streaks__item">
+                <p class="mb-2">Overall Month</p>
+                <p class="text-3xl font-semibold"
+                [class.text-green-500]="selectedMonthData.totalProfit - selectedMonthData.totalLose - selectedMonthData.totalBrokerage > 0"
+                [class.text-red-500]="selectedMonthData.totalProfit - selectedMonthData.totalLose - selectedMonthData.totalBrokerage < 0">
+                <span>{{selectedMonthData.totalProfit - selectedMonthData.totalLose > 0 ? '+' : '-'}}</span>{{selectedMonthData.totalProfit - selectedMonthData.totalLose - selectedMonthData.totalBrokerage}}</p>
+            </div>
+        </div>
+    </ng-container>
