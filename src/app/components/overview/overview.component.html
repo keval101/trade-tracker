@@ -1,4 +1,8 @@
 <h1 class="text-4xl font-semibold mb-10">Analysis</h1>
+
+<div class="p-2 my-4 text-sm text-blue-800 rounded-lg bg-blue-50 dark:bg-gray-800 dark:text-blue-400" role="alert">
+    Please click on months to check monthly analysis.
+</div>
     
     <div class="flex gap-16 mt-8 flex-wrap">
         <ng-container *ngFor="let month of monthData | keyvalue">
@@ -16,7 +20,8 @@
                             [class.bg-red-300]="!trade.isProfitable && trade.lose > 500"
                             [class.bg-red-500]="!trade.isProfitable && trade.lose > 1000"
                             [class.bg-red-700]="!trade.isProfitable && trade.lose > 2000"
-                            [pTooltip]="tooltipContent" tooltipStyleClass="custom-tooltip"></div>
+                            [pTooltip]="tooltipContent" tooltipStyleClass="custom-tooltip"
+                            (click)="tradeDetail(trade)"></div>
             
                         <ng-template #tooltipContent>
                             <div class="flex align-items-center">
@@ -82,5 +87,77 @@
                 [class.text-red-500]="selectedMonthData.totalProfit - selectedMonthData.totalLose - selectedMonthData.totalBrokerage < 0">
                 <span>{{selectedMonthData.totalProfit - selectedMonthData.totalLose > 0 ? '+' : '-'}}</span>{{selectedMonthData.totalProfit - selectedMonthData.totalLose - selectedMonthData.totalBrokerage}}</p>
             </div>
+        </div>
+    </ng-container>
+
+    <ng-container *ngIf="selectedTrade">
+        <div class="relative mt-4 overflow-x-auto shadow-sm">
+            <table
+                class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+                <thead
+                    class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                    <tr>
+                        <th scope="col" class="px-6 py-3">
+                            Date
+                        </th>
+                        <th scope="col" class="px-6 py-3">
+                            Total Trades
+                        </th>
+                        <th scope="col" class="px-6 py-3">
+                            Market
+                        </th>
+                        <th scope="col" class="px-6 py-3">
+                            Investment
+                        </th>
+                        <th scope="col" class="px-6 py-3">
+                            Profit/Lose
+                        </th>
+                        <th scope="col" class="px-6 py-3">
+                            Brokerage
+                        </th>
+                        <th scope="col" class="px-6 py-3">
+                            ROI
+                        </th>
+                        <th scope="col" class="px-6 py-3">
+                            Net
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                        <tr
+                                class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                                <th scope="row"
+                                    class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                                    <!-- {{ newDate | date: 'dd-MM-yyyy'}} -->
+                                    {{selectedTrade.date}}
+                                </th>
+                                <td class="px-6 py-4">
+                                    {{selectedTrade.totalTrades}}
+                                </td>
+                                <td class="px-6 py-4">
+                                    {{selectedTrade.market}}
+                                </td>
+                                <td class="px-6 py-4">
+                                    {{selectedTrade.investment}}
+                                </td>
+                                <td class="px-6 py-4">
+                                    <span class="profit" *ngIf="selectedTrade.isProfitable">+{{selectedTrade.profit}}</span>
+                                    <span class="lose" *ngIf="!selectedTrade.isProfitable">-{{selectedTrade.lose}}</span>
+                                </td>
+                                <td class="px-6 py-4">
+                                    {{selectedTrade.brokerage}}
+                                </td>
+                                <td class="px-6 py-4">
+                                    <span class="profit" *ngIf="selectedTrade.isProfitable">+{{((selectedTrade.profit / selectedTrade.investment) * 100).toFixed(2)}}%</span>
+                                    <span class="lose" *ngIf="!selectedTrade.isProfitable">-{{((selectedTrade.lose / selectedTrade.investment) * 100).toFixed(2)}}%</span>
+                                </td>
+                                <td class="px-6 py-4">
+                                    <span class="profit" *ngIf="selectedTrade.isProfitable">{{+selectedTrade.investment + +selectedTrade.profit - +selectedTrade.brokerage}}</span>
+        
+                                    <span class="lose" *ngIf="!selectedTrade.isProfitable">{{+selectedTrade.investment - +selectedTrade.lose - +selectedTrade.brokerage}}</span>
+                                </td>
+                            </tr>
+                </tbody>
+            </table>
         </div>
     </ng-container>

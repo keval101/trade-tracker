@@ -13,6 +13,7 @@ export class OverviewComponent implements OnInit, OnDestroy{
   trades$ = new BehaviorSubject([]);
   monthData: any;
   selectedMonthData: any;
+  selectedTrade: any;
   
   constructor(private dataService: DataService) {}
 
@@ -37,6 +38,7 @@ export class OverviewComponent implements OnInit, OnDestroy{
     object[data.key] = data.value
     this.selectedMonthData = this.analyzeSplitData(object)
     console.log(this.selectedMonthData)
+    this.selectedTrade = undefined;
   }
 
   splitDataByMonth(data) {
@@ -180,6 +182,11 @@ getTotalDaysInMonth(month, year) {
     } else {
         return 'Invalid month number';
     }
+  }
+
+  tradeDetail(trade: any) {
+    this.selectedTrade = trade;
+    this.selectedMonthData = undefined;
   }
 
   ngOnDestroy(): void {
