@@ -138,6 +138,11 @@ export class DataService {
     return this.firestore.collection(`${this.api}/sheet`).doc(sheetId).set(payload, {merge: true});
   }
 
+  deleteSheet(sheetId: string) {
+    this.setUserId();
+    return this.firestore.collection(`${this.api}/sheet`).doc(sheetId).delete();
+  }
+
   setUserId() {
     const userId = localStorage.getItem('userId');
     this.api = `users/${userId}`

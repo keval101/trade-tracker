@@ -3,6 +3,7 @@ import { DialogService } from 'primeng/dynamicdialog';
 import { DataService } from 'src/app/service/data.service';
 import { SheetFormComponent } from './sheet-form/sheet-form.component';
 import { SheetEntryDialogComponent } from './sheet-entry-dialog/sheet-entry-dialog.component';
+import { SheetDeleteComponent } from './sheet-delete/sheet-delete.component';
 
 @Component({
   selector: 'app-trade-sheet',
@@ -124,5 +125,18 @@ export class TradeSheetComponent implements OnInit{
 
   onMarketSelect(sheet, market) {
     sheet.market = market;
+  }
+
+  deleteSheet(sheet: any) {
+    const dialogRef = this.dialogService.open(SheetDeleteComponent, {
+      width: window.screen.availWidth < 992 ? '80vw' : '30vw',
+      header: 'Delete Sheet',
+      data: {sheet}
+    })
+
+    dialogRef.onClose.subscribe(() => {
+      this.getSheets();
+      dialogRef.destroy();
+    })
   }
 }

@@ -13,6 +13,12 @@
                 <h1 class="text-2xl font-semibold">Sheet {{sheetIndex + 1}}</h1>
                 <p *ngIf="sheet.targetAchieved" class="px-4 py-1 text-sm bg-green-500 border-green-900 rounded-lg text-white">Target Achieved</p>
 
+                <button (click)="deleteSheet(sheet)" *ngIf="sheet.data.length != sheet.days && sheet.targetAchieved == null"
+                class="block text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-5 ml-auto py-2.5 text-center dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800"
+                type="button">
+                    Delete Sheet
+                </button>
+
             </div>
 
             <div class="sheet__card-overview flex justify-between flex-wrap gap-2 mt-4 p-4 bg-yellow-50 border border-yellow-100 rounded-lg">
