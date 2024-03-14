@@ -1,27 +1,21 @@
-# PaperTrading
+# Trade Tracker
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 16.2.9.
+To Start the Project install angular cli using
+npm install -g @angular/cli
 
-## Development server
+to run the project run following commands
+1. npm install 
+2. ng serve
+3. https://localhost:4200/
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+or you can see live link
+[https://tradetracker-io.vercel.app/](https://tradetracker-io.vercel.app/)
 
-## Code scaffolding
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
-
-## Build
-
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
-
-## Running unit tests
-
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
-
-## Running end-to-end tests
-
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
-
-## Further help
-
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+![0 dashboard](https://github.com/keval101/paper-trading/assets/62419921/4f31baed-9b20-4996-98f5-128175f0bd4a)
+![7 overview](https://github.com/keval101/paper-trading/assets/62419921/f0686846-6b00-4c53-be20-629fb406c812)
+![6 sheet-entry](https://github.com/keval101/paper-trading/assets/62419921/3f623603-0970-4fe2-abea-025183148d57)
+![5 trade-sheet](https://github.com/keval101/paper-trading/assets/62419921/65acff48-6642-47a7-80ac-973e1036a697)
+![4 add-trade](https://github.com/keval101/paper-trading/assets/62419921/0b77612e-1317-42ea-879e-662784d0e329)
+![3 trades](https://github.com/keval101/paper-trading/assets/62419921/cfb1c376-df0d-4cbc-a270-e37619f164c5)
+![1 account](https://github.com/keval101/paper-trading/assets/62419921/6c54329a-4d71-4bb9-8516-e061b503e442)
