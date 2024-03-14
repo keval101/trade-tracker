@@ -1,4 +1,5 @@
 import { Component, OnDestroy, OnInit, ViewEncapsulation } from '@angular/core';
+import { DomSanitizer } from '@angular/platform-browser';
 import { BehaviorSubject, retry } from 'rxjs';
 import { DataService } from 'src/app/service/data.service';
 
@@ -13,9 +14,12 @@ export class OverviewComponent implements OnInit, OnDestroy{
   trades$ = new BehaviorSubject([]);
   monthData: any;
   selectedMonthData: any;
+  previosMonthData: any;
   selectedTrade: any;
   
-  constructor(private dataService: DataService) {}
+  constructor(
+    private dataService: DataService,
+    private sanitizer: DomSanitizer) {}
 
   ngOnInit(): void {
       this.getTrades()
@@ -35,9 +39,14 @@ export class OverviewComponent implements OnInit, OnDestroy{
 
   getMonthAnalysisData(data) {
     let object: any = {};
-    object[data.key] = data.value
+    object[data.key] = data.value;
+    const previousDate = this.getPreviousMonth(data.key)
+    const previousData: any = {};
+    previousData[previousDate] = this.monthData[previousDate]
+    console.log(this.getPreviousMonth(data.key), this.monthData, this.monthData[previousDate])
     this.selectedMonthData = this.analyzeSplitData(object)
-    console.log(this.selectedMonthData)
+    this.previosMonthData = this.monthData[previousDate]?.length ? this.analyzeSplitData(previousData) : undefined
+    console.log(this.selectedMonthData, this.previosMonthData)
     this.selectedTrade = undefined;
   }
 
@@ -191,6 +200,39 @@ getTotalDaysInMonth(month, year) {
 
   ngOnDestroy(): void {
     this.trades$.unsubscribe();
+  }
+
+  getPreviousMonth(dateString) {
+    const [month, year] = dateString.split('/');
+    let prevMonth: any = parseInt(month, 10) - 1;
+    let prevYear = parseInt(year, 10);
+
+    if (prevMonth === 0) {
+        prevMonth = 12; // If the previous month is January, set it to December
+        prevYear--;     // Decrement the year
+    }
+
+    // Ensure month is formatted with leading zero if necessary
+    prevMonth = prevMonth < 10 ? '0' + prevMonth : prevMonth;
+
+    return `${prevMonth}/${prevYear}`;
+}
+
+  getMonthStatus() {
+    let comparisonText = '';
+    if (this.previosMonthData) {
+      const difference = this.selectedMonthData.totalProfit - this.previosMonthData.totalProfit;
+      if (difference > 0) {
+          comparisonText = `<p class="text-xl">You are <span class="text-2xl text-green-600 font-semibold">₹${difference}</span> ahead of last month.</p>`;
+      } else if (difference < 0) {
+          comparisonText = `<p class="text-xl">You are <span class="text-2xl text-red-600 font-semibold">₹${Math.abs(difference)}</span> behind last month.</p>`;
+      } else if( difference == 0){
+          comparisonText = `You made the same profit as last month.`;
+      } else {
+        comparisonText = ''
+      }
+    }
+    return this.sanitizer.bypassSecurityTrustHtml(comparisonText);
   }
 
 }

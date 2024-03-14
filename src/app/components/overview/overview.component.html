@@ -47,6 +47,10 @@
                 <p class="mb-2">Longest Lose Streak</p>
                 <p class="text-3xl text-red-500 font-semibold">{{selectedMonthData.maxLoseStreak}}</p>
             </div>
+
+            <div class="streaks__item">
+                <p-knob [strokeWidth]="5" [valueTemplate]="selectedMonthData.totalProfitableDays + '/' + selectedMonthData.totalDays" [(ngModel)]="selectedMonthData.totalProfitableDays" [max]="selectedMonthData.totalDays"></p-knob>
+            </div>
         </div>
 
         <div class="flex streaks flex-wrap">
@@ -88,6 +92,10 @@
                 <span>{{selectedMonthData.totalProfit - selectedMonthData.totalLose > 0 ? '+' : '-'}}</span>{{selectedMonthData.totalProfit - selectedMonthData.totalLose - selectedMonthData.totalBrokerage}}</p>
             </div>
         </div>
+        <div *ngIf="previosMonthData" class="p-2 w-fit mt-8 text-sm text-yellow-800 rounded-lg bg-yellow-100 dark:bg-gray-800 dark:text-blue-400" role="alert" [innerHTML]="getMonthStatus()">
+        </div>
+
+        
     </ng-container>
 
     <ng-container *ngIf="selectedTrade">

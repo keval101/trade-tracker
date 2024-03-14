@@ -51,3 +51,13 @@
         @apply flex-col gap-2;
     }
 }
+
+.p-knob-range {
+    @apply stroke-red-500;
+    transition: all 0.2s ease-in
+}
+
+.p-knob-value {
+    @apply stroke-green-500;
+    transition: all 0.2s ease-in
+}

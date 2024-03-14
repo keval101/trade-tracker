@@ -20,6 +20,7 @@ import { CalendarModule } from 'primeng/calendar';
 import { ToastModule } from 'primeng/toast';
 import { ChartModule } from 'primeng/chart';
 import { TooltipModule } from 'primeng/tooltip';
+import { KnobModule } from 'primeng/knob';
 
 // Firebase Modules
 import { AngularFireModule } from '@angular/fire/compat';
@@ -90,7 +91,8 @@ const firebaseConfig = {
     ToastModule,
     ChartModule,
     TooltipModule,
-    AngularFireAuthModule
+    AngularFireAuthModule,
+    KnobModule
   ],
   providers: [
     DialogService, DatePipe, MessageService, 
