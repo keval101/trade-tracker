@@ -17,6 +17,7 @@ export class TradesComponent implements OnInit {
   tradeOverview: any;
   tradingAccuracy: any;
   isProfitableTrader = false;
+  streakData: any;
 
   constructor(
     private dialogService: DialogService,
@@ -52,6 +53,7 @@ export class TradesComponent implements OnInit {
       this.trades = trades;
       this.tradingAccuracy = this.calculateTotalDaysAndProfitableDays(this.trades)
       this.isLoading = false;
+      this.streakData = this.countStreaks(trades);
 
       const totalProfit = this.trades.reduce((total, current) => total + +current.profit, 0)
       const totalLose = this.trades.reduce((total, current) => total + +current.lose, 0)
@@ -121,5 +123,25 @@ export class TradesComponent implements OnInit {
         totalDays,
         totalProfitableDays
     };
-}
+  }
+
+  countStreaks(trades) {
+    let profitableStreak = 0;
+    let losingStreak = 0;
+    let currentStreakType = null;
+
+    for (const trade of trades) {
+        if (trade.isProfitable && (currentStreakType === null || currentStreakType === 'profitable')) {
+            profitableStreak++;
+            currentStreakType = 'profitable';
+        } else if (!trade.isProfitable && (currentStreakType === null || currentStreakType === 'losing')) {
+            losingStreak++;
+            currentStreakType = 'losing';
+        } else {
+            break;
+        }
+    }
+
+    return { profitableStreak, losingStreak };
+  }
 }

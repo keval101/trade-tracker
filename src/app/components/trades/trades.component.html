@@ -11,6 +11,8 @@
     <div class="sheet__card-overview flex justify-between flex-wrap gap-2 mt-4 p-4 bg-yellow-50 border border-yellow-100 rounded-lg">
         <p><strong>Total Days: </strong>{{tradingAccuracy?.totalDays}}</p>
         <p><strong>Total Profitable Days: </strong>{{tradingAccuracy?.totalProfitableDays}}</p>
+        <p *ngIf="streakData?.profitableStreak > 0"><strong>Current Profitable Streak: </strong>{{streakData?.profitableStreak}}</p>
+        <p *ngIf="streakData?.losingStreak > 0"><strong>Current Losing Streak: </strong>{{streakData?.losingStreak}}</p>
         <p><strong>Success Ratio: </strong>{{((tradingAccuracy?.totalProfitableDays / tradingAccuracy?.totalDays) * 100).toFixed(2)}}%</p>
     </div>
 
