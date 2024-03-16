@@ -220,8 +220,11 @@ getTotalDaysInMonth(month, year) {
 
   getMonthStatus() {
     let comparisonText = '';
+    console.log(this.selectedMonthData, this.previosMonthData)
     if (this.previosMonthData) {
-      const difference = this.selectedMonthData.totalProfit - this.previosMonthData.totalProfit;
+      const previousMonthOverall = this.previosMonthData.totalProfit - this.previosMonthData.totalLose - this.previosMonthData.totalBrokerage
+      const currentMonthOverall = this.selectedMonthData.totalProfit - this.selectedMonthData.totalLose - this.selectedMonthData.totalBrokerage
+      const difference = currentMonthOverall - previousMonthOverall;
       if (difference > 0) {
           comparisonText = `<p class="text-xl">You are <span class="text-2xl text-green-600 font-semibold">₹${difference}</span> ahead of last month.</p>`;
       } else if (difference < 0) {

@@ -44,7 +44,7 @@
             </div>
 
             <div class="streaks__item">
-                <p class="mb-2">Longest Lose Streak</p>
+                <p class="mb-2">Longest Losing Streak</p>
                 <p class="text-3xl text-red-500 font-semibold">{{selectedMonthData.maxLoseStreak}}</p>
             </div>
 
@@ -61,7 +61,7 @@
             </div>
 
             <div class="streaks__item">
-                <p class="mb-2">Most Lose Day</p>
+                <p class="mb-2">Most Losing Day</p>
                 <p class="text-gray-400 mb-2">{{selectedMonthData.maxLoseDay}}</p>
                 <p class="text-3xl text-red-500 font-semibold">-{{selectedMonthData.maxLoseAmount}}</p>
             </div>
@@ -89,7 +89,7 @@
                 <p class="text-3xl font-semibold"
                 [class.text-green-500]="selectedMonthData.totalProfit - selectedMonthData.totalLose - selectedMonthData.totalBrokerage > 0"
                 [class.text-red-500]="selectedMonthData.totalProfit - selectedMonthData.totalLose - selectedMonthData.totalBrokerage < 0">
-                <span>{{selectedMonthData.totalProfit - selectedMonthData.totalLose > 0 ? '+' : '-'}}</span>{{selectedMonthData.totalProfit - selectedMonthData.totalLose - selectedMonthData.totalBrokerage}}</p>
+                <span>{{selectedMonthData.totalProfit - selectedMonthData.totalLose > 0 ? '+' : ''}}</span>{{selectedMonthData.totalProfit - selectedMonthData.totalLose - selectedMonthData.totalBrokerage}}</p>
             </div>
         </div>
         <div *ngIf="previosMonthData" class="p-2 w-fit mt-8 text-sm text-yellow-800 rounded-lg bg-yellow-100 dark:bg-gray-800 dark:text-blue-400" role="alert" [innerHTML]="getMonthStatus()">
