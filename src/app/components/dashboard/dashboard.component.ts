@@ -147,7 +147,9 @@ export class DashboardComponent implements OnInit, OnDestroy{
   }
 
   setColor(marketValue: any, documentStyle:any) {
-    if(marketValue < 0 && marketValue < -500) {
+    if(marketValue < 0 && marketValue < -1) {
+      return documentStyle.getPropertyValue('--red-200');
+    } else if(marketValue < 0 && marketValue < -500) {
       return documentStyle.getPropertyValue('--red-500');
     } else if (marketValue < 0 && marketValue < -1000) {
       return documentStyle.getPropertyValue('--red-300');
@@ -177,12 +179,15 @@ export class DashboardComponent implements OnInit, OnDestroy{
         const index = trades.findIndex(x => x.date == sheet.date)
         if(index >= 0) {
           const tradeData = trades.slice(index, index + sheet.data.length)
+          tradeData['totalProfit'] = sheet.data.reduce((total, trade) =>{ 
+            return total + trade.profit}, 0);
           tradeData['totalDays'] = sheet.days;
           tradeData['roi'] = sheet.roi;
-          this.groupedData.push(tradeData)
+          this.groupedData.push(tradeData);
         }
       })
-      })
+    })
+      this.trades$.unsubscribe();
       this.setWeeklyData();
     })
   }
@@ -191,13 +196,16 @@ export class DashboardComponent implements OnInit, OnDestroy{
     this.groupedData.map((x: any, index: number) => {
       if(x.length) {
         const finalCapital = x[x.length - 1]?.isProfitable == true ? +x[x.length - 1].investment + +x[x.length - 1].profit - +x[x.length - 1].brokerage : +x[x.length - 1].investment - +x[x.length - 1].lose - +x[x.length - 1].brokerage;
+        const totalBrokerage = x.reduce((total, trade) => total + +trade.brokerage ?? 0, 0)
         const object = {
           currentWeekInvestment: x[0].investment,
           currentWeekExpectedROI: x.roi,
           currentWeekExpectedResult: this.calculateCapital(+x[0].investment, x.roi, x.totalDays),
           currentWeekCapital: finalCapital,
+          currentWeekOverallResult: +x[0].investment + x.totalProfit - totalBrokerage,
           week: index + 1
         }
+        console.log(object)
         this.weeklyROIData.push(object)
       }
     })
@@ -213,7 +221,7 @@ export class DashboardComponent implements OnInit, OnDestroy{
     const surfaceBorder = documentStyle.getPropertyValue('--surface-border');
     const labels = this.weeklyROIData.map(x => `Week ${x.week}`);
     const weekInvestment = this.weeklyROIData.map(x => +x.currentWeekInvestment);
-    const weekEndResult = this.weeklyROIData.map(x => +x.currentWeekCapital);
+    const weekEndResult = this.weeklyROIData.map(x => +x.currentWeekOverallResult);
     const weekEndResultBarColors = this.weeklyROIData.map(x => +x.currentWeekCapital > +x.currentWeekInvestment ? documentStyle.getPropertyValue('--green-500') : documentStyle.getPropertyValue('--red-500'))
     this.barData = {
         labels: labels,
