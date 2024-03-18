@@ -69,6 +69,18 @@
 
         <div class="flex streaks flex-wrap">
             <div class="streaks__item ">
+                <p class="mb-2">Average profit per trade when you are in profit</p>
+                <p class="text-3xl text-green-500 font-semibold">+{{selectedMonthData.averageProfit.toFixed(2) ?? '-'}}</p>
+            </div>
+
+            <div class="streaks__item">
+                <p class="mb-2">Average lose per trade when you are in lose</p>
+                <p class="text-3xl text-red-500 font-semibold">-{{selectedMonthData.averageLose.toFixed(2) ?? '-'}}</p>
+            </div>
+        </div>
+
+        <div class="flex streaks flex-wrap">
+            <div class="streaks__item ">
                 <p class="mb-2">Total Profit</p>
                 <p class="text-3xl text-green-500 font-semibold">+{{selectedMonthData.totalProfit}}</p>
             </div>

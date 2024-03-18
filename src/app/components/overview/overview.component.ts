@@ -43,10 +43,8 @@ export class OverviewComponent implements OnInit, OnDestroy{
     const previousDate = this.getPreviousMonth(data.key)
     const previousData: any = {};
     previousData[previousDate] = this.monthData[previousDate]
-    console.log(this.getPreviousMonth(data.key), this.monthData, this.monthData[previousDate])
     this.selectedMonthData = this.analyzeSplitData(object)
     this.previosMonthData = this.monthData[previousDate]?.length ? this.analyzeSplitData(previousData) : undefined
-    console.log(this.selectedMonthData, this.previosMonthData)
     this.selectedTrade = undefined;
   }
 
@@ -114,6 +112,8 @@ export class OverviewComponent implements OnInit, OnDestroy{
         let currentLoseStreak = 0;
         let totalProfit = 0;
         let totalLose = 0;
+        let averageProfit = 0;
+        let averageLose = 0;
 
         splitData[monthYear].forEach((trade, index) => {
             // Calculate total brokerage
@@ -151,6 +151,10 @@ export class OverviewComponent implements OnInit, OnDestroy{
             if (currentLoseStreak > maxLoseStreak) {
                 maxLoseStreak = currentLoseStreak;
             }
+
+            // Average Profit/Lose
+            averageProfit = totalProfit && totalProfitableDays ? (totalProfit / totalProfitableDays) : 0;
+            averageLose = totalLose && totalProfitableDays ? (totalLose /  (totalDays - totalProfitableDays)) : 0;
         });
 
         result = {
@@ -164,7 +168,9 @@ export class OverviewComponent implements OnInit, OnDestroy{
             maxWinStreak,
             totalProfit,
             maxProfitAmount,
-            maxLoseAmount
+            maxLoseAmount,
+            averageLose,
+            averageProfit
         };
     }
 
@@ -220,7 +226,6 @@ getTotalDaysInMonth(month, year) {
 
   getMonthStatus() {
     let comparisonText = '';
-    console.log(this.selectedMonthData, this.previosMonthData)
     if (this.previosMonthData) {
       const previousMonthOverall = this.previosMonthData.totalProfit - this.previosMonthData.totalLose - this.previosMonthData.totalBrokerage
       const currentMonthOverall = this.selectedMonthData.totalProfit - this.selectedMonthData.totalLose - this.selectedMonthData.totalBrokerage
