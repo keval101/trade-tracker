@@ -53,7 +53,7 @@
                                 {{ item.date }}
                             </th>
                             <td class="px-6 py-4 text-red-600 font-semibold">
-                                {{ item.fund }}
+                                {{ item.fund | number }}
                             </td>
                             <td class="px-6 py-4 text-right">
                                 <button  (click)="openAddFundDialog('add', item)"
@@ -106,7 +106,7 @@
                                 {{ item.date }}
                             </th>
                             <td class="px-6 py-4 text-green-600 font-semibold">
-                                {{ item.fund }}
+                                {{ item.fund | number }}
                             </td>
                             <td class="px-6 py-4 text-right">
                                 <button  (click)="openAddFundDialog('withdrawal' , item)"

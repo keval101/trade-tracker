@@ -23,7 +23,7 @@
 
             <div class="sheet__card-overview flex justify-between flex-wrap gap-2 mt-4 p-4 bg-yellow-50 border border-yellow-100 rounded-lg">
                 <p><strong>Date: </strong>{{sheet.date}}</p>
-                <p><strong>Starting Capital: </strong>{{sheet.capital}}</p>
+                <p><strong>Starting Capital: </strong>{{sheet.capital | number}}</p>
                 <p><strong>Expected ROI: </strong>{{sheet.roi}}</p>
                 <p><strong>Number Of Days: </strong>{{sheet.days}}</p>
                 <p><strong>Expected Final Capital: </strong>{{calculateCapital(sheet.capital, sheet.roi, sheet.days)}}</p>
@@ -90,27 +90,27 @@
                                     {{item.date}}
                                 </th>
                                 <td class="px-6 py-4">
-                                    {{item.capital.toFixed(2)}}
+                                    {{+(item.capital.toFixed(2)) | number}}
                                 </td>
                                 <td class="px-6 py-4">
-                                    {{ item.startingCapital.toFixed(2) }}
+                                    {{ +(item.startingCapital.toFixed(2)) | number }}
                                 </td>
                                 <td class="px-6 py-4">
-                                    {{item.expectedProfit.toFixed(2)}}
+                                    {{+(item.expectedProfit.toFixed(2)) | number}}
                                 </td>
                                 <td class="px-6 py-4" *ngIf="sheet.market">
-                                    <span>{{(item.expectedProfit / sheet.market.lot).toFixed(2)}}</span>
+                                    <span>{{((item.expectedProfit / sheet.market.lot).toFixed(2)) | number}}</span>
                                 </td>
                                 <td class="px-6 py-4">
-                                    <span class="profit" *ngIf="item.profit > 0">+{{item.profit}}</span>
-                                    <span class="lose" *ngIf="item.profit < 0">{{item.profit}}</span>
+                                    <span class="profit" *ngIf="item.profit > 0">+{{item.profit | number}}</span>
+                                    <span class="lose" *ngIf="item.profit < 0">{{item.profit | number}}</span>
                                 </td>
                                 <td class="px-6 py-4">
                                     <span class="profit" *ngIf="item.profit > 0">+{{((item.profit / item.startingCapital) * 100).toFixed(2)}}%</span>
                                     <span class="lose" *ngIf="item.profit < 0">{{((item.profit / item.startingCapital) * 100).toFixed(2)}}%</span>
                                 </td>
                                 <td class="px-6 py-4">
-                                    <span [class.profit]="item.profit > 0" [class.lose]="item.profit < 0">{{item.startingCapital + +item.profit}}</span>
+                                    <span [class.profit]="item.profit > 0" [class.lose]="item.profit < 0">{{(item.startingCapital + +item.profit) | number}}</span>
                                 </td>
                             </tr>
                             <!-- <tr *ngIf="item.isAddFund">

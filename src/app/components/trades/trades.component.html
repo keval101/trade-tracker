@@ -92,23 +92,23 @@
                                 {{trade.market}}
                             </td>
                             <td class="px-6 py-4">
-                                {{trade.investment}}
+                                {{trade.investment | number}}
                             </td>
                             <td class="px-6 py-4">
-                                <span class="profit" *ngIf="trade.isProfitable">+{{trade.profit}}</span>
-                                <span class="lose" *ngIf="!trade.isProfitable">-{{trade.lose}}</span>
+                                <span class="profit" *ngIf="trade.isProfitable">+{{trade.profit | number}}</span>
+                                <span class="lose" *ngIf="!trade.isProfitable">-{{trade.lose | number}}</span>
                             </td>
                             <td class="px-6 py-4">
-                                {{trade.brokerage}}
+                                {{trade.brokerage | number}}
                             </td>
                             <td class="px-6 py-4">
                                 <span class="profit" *ngIf="trade.isProfitable">+{{((trade.profit / trade.investment) * 100).toFixed(2)}}%</span>
                                 <span class="lose" *ngIf="!trade.isProfitable">-{{((trade.lose / trade.investment) * 100).toFixed(2)}}%</span>
                             </td>
                             <td class="px-6 py-4">
-                                <span class="profit" *ngIf="trade.isProfitable">{{+trade.investment + +trade.profit - +trade.brokerage}}</span>
+                                <span class="profit" *ngIf="trade.isProfitable">{{(+trade.investment + +trade.profit - +trade.brokerage) | number }}</span>
     
-                                <span class="lose" *ngIf="!trade.isProfitable">{{+trade.investment - +trade.lose - +trade.brokerage}}</span>
+                                <span class="lose" *ngIf="!trade.isProfitable">{{(+trade.investment - +trade.lose - +trade.brokerage) | number }}</span>
                             </td>
                             <td class="px-6 py-4 text-right">
                                 <button  (click)="openTradeForm(trade)"
@@ -128,10 +128,10 @@
                             <td class="px-6 py-4"></td>
                             <td class="px-6 py-4"></td>
                             <td class="px-6 py-4">
-                                <span class="profit" *ngIf="tradeOverview.profitLose > 0">+{{tradeOverview.profitLose}}</span>
-                                <span class="lose" *ngIf="tradeOverview.profitLose < 0">{{tradeOverview.profitLose}}</span>
+                                <span class="profit" *ngIf="tradeOverview.profitLose > 0">+{{tradeOverview.profitLose | number}}</span>
+                                <span class="lose" *ngIf="tradeOverview.profitLose < 0">{{tradeOverview.profitLose | number}}</span>
                             </td>
-                            <td class="px-6 py-4">{{tradeOverview.brokerage ?? 0}}</td>
+                            <td class="px-6 py-4">{{(tradeOverview.brokerage | number) ?? 0}}</td>
                         </tr>
                     </ng-container>
     

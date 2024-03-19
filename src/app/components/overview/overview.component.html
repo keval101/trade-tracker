@@ -57,13 +57,13 @@
             <div class="streaks__item ">
                 <p class="mb-2">Most Profitable Day</p>
                 <p class="text-gray-400 mb-2">{{selectedMonthData.maxProfitDay}}</p>
-                <p class="text-3xl text-green-500 font-semibold">+{{selectedMonthData.maxProfitAmount}}</p>
+                <p class="text-3xl text-green-500 font-semibold">+{{selectedMonthData.maxProfitAmount | number}}</p>
             </div>
 
             <div class="streaks__item">
                 <p class="mb-2">Most Losing Day</p>
                 <p class="text-gray-400 mb-2">{{selectedMonthData.maxLoseDay}}</p>
-                <p class="text-3xl text-red-500 font-semibold">-{{selectedMonthData.maxLoseAmount}}</p>
+                <p class="text-3xl text-red-500 font-semibold">-{{selectedMonthData.maxLoseAmount | number}}</p>
             </div>
         </div>
 
@@ -82,18 +82,18 @@
         <div class="flex streaks flex-wrap">
             <div class="streaks__item ">
                 <p class="mb-2">Total Profit</p>
-                <p class="text-3xl text-green-500 font-semibold">+{{selectedMonthData.totalProfit}}</p>
+                <p class="text-3xl text-green-500 font-semibold">+{{selectedMonthData.totalProfit | number}}</p>
             </div>
 
             <div class="streaks__item">
                 <p class="mb-2">Total Lose</p>
-                <p class="text-3xl text-red-500 font-semibold">-{{selectedMonthData.totalLose}}</p>
+                <p class="text-3xl text-red-500 font-semibold">-{{selectedMonthData.totalLose | number}}</p>
             </div>
 
             <div class="streaks__item">
                 <p class="mb-2">Total Brokerage</p>
                 <p class="text-3xl text-gray-500 font-semibold">
-                    {{selectedMonthData.totalBrokerage}}</p>
+                    {{selectedMonthData.totalBrokerage | number}}</p>
             </div>
 
             <div class="streaks__item">
@@ -158,11 +158,11 @@
                                     {{selectedTrade.market}}
                                 </td>
                                 <td class="px-6 py-4">
-                                    {{selectedTrade.investment}}
+                                    {{selectedTrade.investment | number}}
                                 </td>
                                 <td class="px-6 py-4">
-                                    <span class="profit" *ngIf="selectedTrade.isProfitable">+{{selectedTrade.profit}}</span>
-                                    <span class="lose" *ngIf="!selectedTrade.isProfitable">-{{selectedTrade.lose}}</span>
+                                    <span class="profit" *ngIf="selectedTrade.isProfitable">+{{selectedTrade.profit | number}}</span>
+                                    <span class="lose" *ngIf="!selectedTrade.isProfitable">-{{selectedTrade.lose | number}}</span>
                                 </td>
                                 <td class="px-6 py-4">
                                     {{selectedTrade.brokerage}}
@@ -172,9 +172,9 @@
                                     <span class="lose" *ngIf="!selectedTrade.isProfitable">-{{((selectedTrade.lose / selectedTrade.investment) * 100).toFixed(2)}}%</span>
                                 </td>
                                 <td class="px-6 py-4">
-                                    <span class="profit" *ngIf="selectedTrade.isProfitable">{{+selectedTrade.investment + +selectedTrade.profit - +selectedTrade.brokerage}}</span>
+                                    <span class="profit" *ngIf="selectedTrade.isProfitable">{{(+selectedTrade.investment + +selectedTrade.profit - +selectedTrade.brokerage) | number}}</span>
         
-                                    <span class="lose" *ngIf="!selectedTrade.isProfitable">{{+selectedTrade.investment - +selectedTrade.lose - +selectedTrade.brokerage}}</span>
+                                    <span class="lose" *ngIf="!selectedTrade.isProfitable">{{(+selectedTrade.investment - +selectedTrade.lose - +selectedTrade.brokerage) | number}}</span>
                                 </td>
                             </tr>
                 </tbody>
