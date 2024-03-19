@@ -183,6 +183,7 @@ export class DashboardComponent implements OnInit, OnDestroy{
             return total + trade.profit}, 0);
           tradeData['totalDays'] = sheet.days;
           tradeData['roi'] = sheet.roi;
+          tradeData['startingWeekCapital'] = sheet.capital
           this.groupedData.push(tradeData);
         }
       })
@@ -198,14 +199,13 @@ export class DashboardComponent implements OnInit, OnDestroy{
         const finalCapital = x[x.length - 1]?.isProfitable == true ? +x[x.length - 1].investment + +x[x.length - 1].profit - +x[x.length - 1].brokerage : +x[x.length - 1].investment - +x[x.length - 1].lose - +x[x.length - 1].brokerage;
         const totalBrokerage = x.reduce((total, trade) => total + +trade.brokerage ?? 0, 0)
         const object = {
-          currentWeekInvestment: x[0].investment,
+          currentWeekInvestment: x.startingWeekCapital,
           currentWeekExpectedROI: x.roi,
-          currentWeekExpectedResult: this.calculateCapital(+x[0].investment, x.roi, x.totalDays),
+          currentWeekExpectedResult: this.calculateCapital(+x.startingWeekCapital, x.roi, x.totalDays),
           currentWeekCapital: finalCapital,
-          currentWeekOverallResult: +x[0].investment + x.totalProfit - totalBrokerage,
+          currentWeekOverallResult: +x.startingWeekCapital + x.totalProfit - totalBrokerage,
           week: index + 1
         }
-        console.log(object)
         this.weeklyROIData.push(object)
       }
     })
