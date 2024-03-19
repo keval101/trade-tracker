@@ -33,7 +33,7 @@
                 <div class="overview__card mt-4 pt-4 border-t border-gray-100">
                     <p class="text-sm text-gray-400 mb-2">Week End Result</p>
                     <div class="flex items-center justify-between">
-                        <p class="text-3xl">₹{{selectedWeekData?.currentWeekCapital}}</p>
+                        <p class="text-3xl">₹{{selectedWeekData?.currentWeekOverallResult}}</p>
                         <div class="overview__card-growth flex gap-1 justify-between items-center"
                         [class.profit]="calculatePercentage(selectedWeekData) > 0" 
                         [class.lose]="calculatePercentage(selectedWeekData) < 0">
