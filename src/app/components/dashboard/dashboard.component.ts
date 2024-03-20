@@ -84,7 +84,7 @@ export class DashboardComponent implements OnInit, OnDestroy{
 
   calculatePercentage(data)  {
     if(data) {
-      const percentage = ((data.currentWeekCapital - data.currentWeekExpectedResult) * 100) / data.currentWeekExpectedResult;
+      const percentage = ((data.currentWeekOverallResult - data.currentWeekExpectedResult) * 100) / data.currentWeekExpectedResult;
       return percentage;
     } else {
       return 0;
