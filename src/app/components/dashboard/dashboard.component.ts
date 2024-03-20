@@ -222,7 +222,7 @@ export class DashboardComponent implements OnInit, OnDestroy{
     const labels = this.weeklyROIData.map(x => `Week ${x.week}`);
     const weekInvestment = this.weeklyROIData.map(x => +x.currentWeekInvestment);
     const weekEndResult = this.weeklyROIData.map(x => +x.currentWeekOverallResult);
-    const weekEndResultBarColors = this.weeklyROIData.map(x => +x.currentWeekCapital > +x.currentWeekInvestment ? documentStyle.getPropertyValue('--green-500') : documentStyle.getPropertyValue('--red-500'))
+    const weekEndResultBarColors = this.weeklyROIData.map(x => +x.currentWeekOverallResult > +x.currentWeekInvestment ? documentStyle.getPropertyValue('--green-500') : documentStyle.getPropertyValue('--red-500'))
     this.barData = {
         labels: labels,
         datasets: [
