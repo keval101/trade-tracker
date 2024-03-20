@@ -13,16 +13,23 @@ export class OverviewComponent implements OnInit, OnDestroy{
 
   trades$ = new BehaviorSubject([]);
   monthData: any;
+  addFundsData: any;
+  withdrawalFundsData: any;
   selectedMonthData: any;
   previosMonthData: any;
+  selectedAddedFund: any;
+  previosAddedFund: any;
   selectedTrade: any;
+  fundData: any;
   
   constructor(
     private dataService: DataService,
     private sanitizer: DomSanitizer) {}
 
   ngOnInit(): void {
-      this.getTrades()
+      this.getTrades();
+      this.getAddedFundAmount();
+      this.getWithdrawalFundAmount();
   }
 
   getTrades() {
@@ -37,6 +44,28 @@ export class OverviewComponent implements OnInit, OnDestroy{
     })
   }
 
+  getAddedFundAmount() {
+    this.dataService.getAddFunds().subscribe(funds => {
+      funds.sort((a, b) => {
+        const dateA: any = new Date(a.date.split('/').reverse().join('/'));
+        const dateB: any = new Date(b.date.split('/').reverse().join('/'));
+        return dateA - dateB;
+      });
+      this.addFundsData = this.splitDataByMonth(funds);
+    })
+  }
+
+  getWithdrawalFundAmount() {
+    this.dataService.getWithdrawalFunds().subscribe(funds => {
+      funds.sort((a, b) => {
+        const dateA: any = new Date(a.date.split('/').reverse().join('/'));
+        const dateB: any = new Date(b.date.split('/').reverse().join('/'));
+        return dateA - dateB;
+      });
+      this.withdrawalFundsData = this.splitDataByMonth(funds);
+    })
+  }
+
   getMonthAnalysisData(data) {
     let object: any = {};
     object[data.key] = data.value;
@@ -46,21 +75,26 @@ export class OverviewComponent implements OnInit, OnDestroy{
     this.selectedMonthData = this.analyzeSplitData(object)
     this.previosMonthData = this.monthData[previousDate]?.length ? this.analyzeSplitData(previousData) : undefined
     this.selectedTrade = undefined;
+    const totalAddedFundTotal = this.addFundsData[data.key]?.length ? this.addFundsData[data.key]?.reduce((total, item) => total + item.fund, 0) : 0;
+    const totalWithdrawalFundTotal = this.withdrawalFundsData[data.key]?.length ? this.withdrawalFundsData[data.key]?.reduce((total, item) => total + item.fund, 0) : 0;
+    const totalPreviousMonthAddedFundTotal = this.addFundsData[previousDate]?.length ? this.addFundsData[previousDate].reduce((total, item) => total + item.fund, 0) : 0;
+    const totalPreviousWithdrawalFundTotal = this.withdrawalFundsData[previousDate]?.length ? this.withdrawalFundsData[previousDate].reduce((total, item) => total + item.fund, 0) : 0;
+    this.fundData = {totalAddedFundTotal, totalWithdrawalFundTotal, totalPreviousMonthAddedFundTotal, totalPreviousWithdrawalFundTotal}
   }
 
   splitDataByMonth(data) {
     let splitData = {};
 
-    data.forEach(trade => {
+    data.forEach(item => {
         // Extracting month and year from the date
-        let [day, month, year] = trade.date.split('/');
+        let [day, month, year] = item.date.split('/');
         let monthYear = `${month}/${year}`;
 
         if (!splitData[monthYear]) {
             splitData[monthYear] = [];
         }
 
-        splitData[monthYear].push(trade);
+        splitData[monthYear].push(item);
     });
 
     return splitData;
