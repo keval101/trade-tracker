@@ -12,14 +12,14 @@
                     <ng-container *ngFor="let trade of getData(month.value)">
                         <div class="pnl-grid-box"
                             [class.bg-green-200]="trade.isProfitable && trade.profit < 500"
-                            [class.bg-green-300]="trade.isProfitable && trade.profit > 500"
-                            [class.bg-green-500]="trade.isProfitable && trade.profit > 1000"
-                            [class.bg-green-700]="trade.isProfitable && trade.profit > 2000"
+                            [class.bg-green-300]="trade.isProfitable && trade.profit >= 500"
+                            [class.bg-green-500]="trade.isProfitable && trade.profit >= 1000"
+                            [class.bg-green-700]="trade.isProfitable && trade.profit >= 2000"
                             
                             [class.bg-red-200]="!trade.isProfitable && trade.lose < 500"
-                            [class.bg-red-300]="!trade.isProfitable && trade.lose > 500"
-                            [class.bg-red-500]="!trade.isProfitable && trade.lose > 1000"
-                            [class.bg-red-700]="!trade.isProfitable && trade.lose > 2000"
+                            [class.bg-red-300]="!trade.isProfitable && trade.lose >= 500"
+                            [class.bg-red-500]="!trade.isProfitable && trade.lose >= 1000"
+                            [class.bg-red-700]="!trade.isProfitable && trade.lose >= 2000"
                             [pTooltip]="tooltipContent" tooltipStyleClass="custom-tooltip"
                             (click)="tradeDetail(trade)"></div>
             
@@ -49,7 +49,14 @@
             </div>
 
             <div class="streaks__item">
-                <p-knob [strokeWidth]="5" [valueTemplate]="selectedMonthData.totalProfitableDays + '/' + selectedMonthData.totalDays" [(ngModel)]="selectedMonthData.totalProfitableDays" [disabled]="true" [max]="selectedMonthData.totalDays"></p-knob>
+                <div class="flex gap-4">
+                    <p-knob [strokeWidth]="5" [valueTemplate]="selectedMonthData.totalProfitableDays + '/' + selectedMonthData.totalDays" [(ngModel)]="selectedMonthData.totalProfitableDays" [disabled]="true" [max]="selectedMonthData.totalDays"></p-knob>
+
+                    <div>
+                        <p class="mb-2">Success Ratio</p>
+                        <p class="text-3xl font-semibold">{{((selectedMonthData.totalProfitableDays / selectedMonthData.totalDays) * 100).toFixed(2)}}%</p>
+                    </div>
+                </div>
             </div>
         </div>
 
@@ -76,6 +83,11 @@
             <div class="streaks__item">
                 <p class="mb-2">Total Withdrawal Funds</p>
                 <p class="text-3xl text-green-500 font-semibold">{{fundData.totalWithdrawalFundTotal | number}}</p>
+            </div>
+
+            <div class="streaks__item">
+                <p class="mb-2">Overall Funds</p>
+                <p class="text-3xl text-gray-500 font-semibold">{{fundData.totalWithdrawalFundTotal - fundData.totalAddedFundTotal | number}}</p>
             </div>
         </div>
 

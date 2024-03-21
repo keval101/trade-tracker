@@ -147,12 +147,12 @@ export class DashboardComponent implements OnInit, OnDestroy{
   }
 
   setColor(marketValue: any, documentStyle:any) {
-    if(marketValue < 0 && marketValue < -1) {
-      return documentStyle.getPropertyValue('--red-200');
-    } else if(marketValue < 0 && marketValue < -500) {
+    if(marketValue < 0 && marketValue < -1000) {
       return documentStyle.getPropertyValue('--red-500');
-    } else if (marketValue < 0 && marketValue < -1000) {
+    } else if(marketValue < 0 && marketValue < -500) {
       return documentStyle.getPropertyValue('--red-300');
+    } else if (marketValue < 0 && marketValue < -1) {
+      return documentStyle.getPropertyValue('--red-200');
     } else if(marketValue > 0 && marketValue > 3000) {
       return documentStyle.getPropertyValue('--green-600');
     } else if(marketValue > 0 && marketValue > 2000) {
