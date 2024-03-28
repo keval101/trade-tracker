@@ -36,7 +36,7 @@ const routes: Routes = [
     canActivate: [AuthGuard]
   },
   {
-    path: 'overview',
+    path: 'analytics',
     component: OverviewComponent,
     canActivate: [AuthGuard]
   },
