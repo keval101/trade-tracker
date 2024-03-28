@@ -185,7 +185,17 @@ export class OverviewComponent implements OnInit, OnDestroy{
     let goodDay = Object.keys(profitCountByDay).reduce((a, b) => profitCountByDay[a] > profitCountByDay[b] ? a : b);
     let badDay = Object.keys(lossingCountByDay).reduce((a, b) => lossingCountByDay[a] > lossingCountByDay[b] ? a : b);
 
-    return {goodDay, badDay};
+    const maxProfitCount = Math.max(...Object.values(profitCountByDay));
+    let goodDays: any = Object.keys(profitCountByDay)
+        .filter(day => profitCountByDay[day] === maxProfitCount);
+    goodDays = goodDays.length > 1 ? goodDays.join(' and ') : goodDays[0]
+
+    const maxLosingCount = Math.max(...Object.values(lossingCountByDay));
+    let badDays: any = Object.keys(lossingCountByDay)
+        .filter(day => lossingCountByDay[day] === maxLosingCount);
+    badDays = badDays.length > 1 ? badDays.join(' and ') : badDays[0]
+
+    return {goodDay, badDay, goodDays, badDays};
 }
 
   analyzeSplitData(splitData) {
