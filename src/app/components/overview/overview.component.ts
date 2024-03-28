@@ -21,6 +21,7 @@ export class OverviewComponent implements OnInit, OnDestroy{
   previosAddedFund: any;
   selectedTrade: any;
   fundData: any;
+  dayData: any;
   
   constructor(
     private dataService: DataService,
@@ -41,6 +42,42 @@ export class OverviewComponent implements OnInit, OnDestroy{
       });
       this.trades$.next(trades);
       this.monthData = this.splitDataByMonth(trades);
+
+      for (const property in this.monthData) {
+        const [month, year] = property.split('/');
+        const totalDays = this.getTotalDaysOfMonth(month, year);
+        const days = [];
+        for(let i = 1; i <= totalDays; i++) {
+          const date = i < 10 ? '0'+i : i
+          days.push(`${date}/${month}/${year}`)
+        }
+        this.monthData[property].map(x => {
+          days.map(day => {
+            const selectedData = this.monthData[property].filter(x => x.date === day);
+            if(day !== x.date && !selectedData.length) {
+              const object = {
+                market: null,
+                id: null,
+                isProfitable: null,
+                totalTrades: 0,
+                lose: 0,
+                date: day,
+                investment: 0,
+                profit: 0,
+                brokerage: 0,
+                noTradingDay: true
+              }
+              this.monthData[property].push(object)
+            }
+          })
+        })
+
+        this.monthData[property].sort((a, b) => {
+          const dateA: any = new Date(a.date.split('/').reverse().join('/'));
+          const dateB: any = new Date(b.date.split('/').reverse().join('/'));
+          return dateA - dateB;
+        });
+      }
     })
   }
 
@@ -73,6 +110,7 @@ export class OverviewComponent implements OnInit, OnDestroy{
     const previousData: any = {};
     previousData[previousDate] = this.monthData[previousDate]
     this.selectedMonthData = this.analyzeSplitData(object)
+    this.dayData = this.findGoodAndBadDayOfWeek(object)
     this.previosMonthData = this.monthData[previousDate]?.length ? this.analyzeSplitData(previousData) : undefined
     this.selectedTrade = undefined;
     const totalAddedFundTotal = this.addFundsData[data.key]?.length ? this.addFundsData[data.key]?.reduce((total, item) => total + item.fund, 0) : 0;
@@ -100,7 +138,13 @@ export class OverviewComponent implements OnInit, OnDestroy{
     return splitData;
   }
 
-  findGoodDayOfWeek(splitData) {
+  getTotalDaysOfMonth(month, year) {
+    // Month is 0-based index in JavaScript Date object, so subtract 1 from the month value
+    const lastDayOfMonth = new Date(year, month, 0);
+    return lastDayOfMonth.getDate();
+}
+
+  findGoodAndBadDayOfWeek(splitData) {
     let profitCountByDay = {
         "Sunday": 0,
         "Monday": 0,
@@ -111,22 +155,37 @@ export class OverviewComponent implements OnInit, OnDestroy{
         "Saturday": 0
     };
 
+    let lossingCountByDay = {
+      "Sunday": 0,
+      "Monday": 0,
+      "Tuesday": 0,
+      "Wednesday": 0,
+      "Thursday": 0,
+      "Friday": 0,
+      "Saturday": 0
+  };
+
     for (let monthYear in splitData) {
         splitData[monthYear].forEach(trade => {
             let dateParts = trade.date.split('/');
             let date = new Date(dateParts[2], dateParts[1] - 1, dateParts[0]);
             let dayOfWeek = date.toLocaleDateString('en-US', { weekday: 'long' });
 
-            if (trade.isProfitable) {
-                profitCountByDay[dayOfWeek]++;
+            if(!trade.noTradingDay) {
+              if (trade.isProfitable) {
+                  profitCountByDay[dayOfWeek]++;
+              } else {
+                lossingCountByDay[dayOfWeek]++;
+              }
             }
         });
     }
 
     // Find the day with the highest profit count
     let goodDay = Object.keys(profitCountByDay).reduce((a, b) => profitCountByDay[a] > profitCountByDay[b] ? a : b);
+    let badDay = Object.keys(lossingCountByDay).reduce((a, b) => lossingCountByDay[a] > lossingCountByDay[b] ? a : b);
 
-    return goodDay;
+    return {goodDay, badDay};
 }
 
   analyzeSplitData(splitData) {
@@ -156,7 +215,9 @@ export class OverviewComponent implements OnInit, OnDestroy{
             totalLose += trade.lose ? parseInt(trade.lose) : 0;
 
             // Count total days and total profitable days
-            totalDays++;
+            if(!trade.noTradingDay) {
+              totalDays++;
+            }
             if (trade.isProfitable) {
                 totalProfitableDays++;
             }
@@ -211,13 +272,7 @@ export class OverviewComponent implements OnInit, OnDestroy{
     return result;
 }
 
-getTotalDaysInMonth(month, year) {
-  // JavaScript month is 0-indexed, so we need to subtract 1 from the month number
-  // to get the correct month index.
-  return new Date(year, month, 0).getDate();
-}
-
-  getData(data) {
+  getData(data): any[] {
     return data;
   }
 
@@ -275,6 +330,14 @@ getTotalDaysInMonth(month, year) {
       }
     }
     return this.sanitizer.bypassSecurityTrustHtml(comparisonText);
+  }
+
+  getDayOfWeek(dateString) {
+    const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+    const parts = dateString.split('/');
+    const date = new Date(`${parts[2]}-${parts[1]}-${parts[0]}`);
+    const dayIndex = date.getDay();
+    return days[dayIndex];
   }
 
 }

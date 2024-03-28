@@ -9,24 +9,30 @@
             <div>
                 <h1 class="text-2xl mb-4 font-semibold month-name" (click)="getMonthAnalysisData(month)">{{getMonthName(month.key)}}</h1>
                 <div class="pnl-grid">
-                    <ng-container *ngFor="let trade of getData(month.value)">
-                        <div class="pnl-grid-box"
-                            [class.bg-green-200]="trade.isProfitable && trade.profit < 500"
-                            [class.bg-green-300]="trade.isProfitable && trade.profit >= 500"
-                            [class.bg-green-500]="trade.isProfitable && trade.profit >= 1000"
-                            [class.bg-green-700]="trade.isProfitable && trade.profit >= 2000"
+                    <ng-container *ngFor="let trade of getData(month.value); let i = index">
+                        <div class="pnl-grid-box" [ngClass]="i === 0 && getDayOfWeek(trade.date)"
+                            *ngIf="!trade?.noTradingDay"
+                            [class.bg-green-200]="trade.isProfitable && trade.profit < 500 && trade.profit !== 0"
+                            [class.bg-green-300]="trade.isProfitable && trade.profit >= 500 && trade.profit !== 0"
+                            [class.bg-green-500]="trade.isProfitable && trade.profit >= 1000 && trade.profit !== 0"
+                            [class.bg-green-700]="trade.isProfitable && trade.profit >= 2000 && trade.profit !== 0"
                             
-                            [class.bg-red-200]="!trade.isProfitable && trade.lose < 500"
-                            [class.bg-red-300]="!trade.isProfitable && trade.lose >= 500"
-                            [class.bg-red-500]="!trade.isProfitable && trade.lose >= 1000"
-                            [class.bg-red-700]="!trade.isProfitable && trade.lose >= 2000"
+                            [class.bg-red-200]="!trade.isProfitable && trade.lose < 500 && trade.lose !== 0"
+                            [class.bg-red-300]="!trade.isProfitable && trade.lose >= 500 && trade.lose !== 0"
+                            [class.bg-red-500]="!trade.isProfitable && trade.lose >= 1000 && trade.lose !== 0"
+                            [class.bg-red-700]="!trade.isProfitable && trade.lose >= 2000 && trade.lose !== 0"
+
                             [pTooltip]="tooltipContent" tooltipStyleClass="custom-tooltip"
                             (click)="tradeDetail(trade)"></div>
+
+                            <div class="pnl-grid-box bg-gray-300" [ngClass]="i === 0 && getDayOfWeek(trade.date)" *ngIf="trade?.noTradingDay">
+                            </div>
             
                         <ng-template #tooltipContent>
                             <div class="flex align-items-center">
                                 <span>
-                                    <b [class.profit]="trade.profit > 0" [class.lose]="trade.lose">{{trade.date}}:  {{trade.isProfitable ? '+' + trade.profit : '-' + trade.lose}}</b>
+                                    <b [class.profit]="trade.profit > 0" [class.lose]="trade.lose">
+                                        {{getDayOfWeek(trade.date)}} <br> {{trade.date}}:  {{trade.isProfitable ? '+' + trade.profit : '-' + trade.lose}}</b>
                                 </span>
                             </div>
                         </ng-template>
@@ -73,6 +79,18 @@
                 <p class="text-3xl text-red-500 font-semibold">-{{selectedMonthData.maxLoseAmount | number}}</p>
             </div>
         </div>
+        
+        <ng-container *ngIf="dayData">
+            <div class="streaks">
+                <div  class="p-2 w-fit mt-4 text-sm text-green-800 rounded-lg bg-green-100 dark:bg-gray-800 dark:text-blue-400"        role="alert">
+                    On <span class="text-xl font-semibold">{{dayData.goodDay}}</span>, God is with you. Make money without hesitation..🤑
+                </div>
+    
+                <div  class="p-2 w-fit mt-4 text-sm text-red-800 rounded-lg bg-red-100 dark:bg-gray-800 dark:text-blue-400"        role="alert">
+                    On <span class="text-xl font-semibold">{{dayData.badDay}}</span>, Usually, your luck isn't working. Don't Trade on This Day. If it's possible. ☠️
+                </div>
+            </div>
+        </ng-container>
 
         <div class="flex streaks flex-wrap">
             <div class="streaks__item ">
