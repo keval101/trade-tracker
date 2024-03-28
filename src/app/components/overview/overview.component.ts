@@ -219,15 +219,14 @@ export class OverviewComponent implements OnInit, OnDestroy{
         let averageLose = 0;
 
         splitData[monthYear].forEach((trade, index) => {
+          if(!trade.noTradingDay) {
             // Calculate total brokerage
             totalBrokerage += trade.brokerage ? parseInt(trade.brokerage) : 0;
             totalProfit += trade.profit ? parseInt(trade.profit) : 0;
             totalLose += trade.lose ? parseInt(trade.lose) : 0;
 
             // Count total days and total profitable days
-            if(!trade.noTradingDay) {
-              totalDays++;
-            }
+            totalDays++;
             if (trade.isProfitable) {
                 totalProfitableDays++;
             }
@@ -260,6 +259,7 @@ export class OverviewComponent implements OnInit, OnDestroy{
             // Average Profit/Lose
             averageProfit = totalProfit && totalProfitableDays ? (totalProfit / totalProfitableDays) : 0;
             averageLose = totalLose && totalProfitableDays ? (totalLose /  (totalDays - totalProfitableDays)) : 0;
+          }
         });
 
         result = {
