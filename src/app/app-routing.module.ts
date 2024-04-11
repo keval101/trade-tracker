@@ -8,6 +8,7 @@ import { LoginComponent } from './components/login/login.component';
 import { AuthGuard } from './guards/auth.guard';
 import { SignupComponent } from './components/signup/signup.component';
 import { OverviewComponent } from './components/overview/overview.component';
+import { HolidayListComponent } from './components/holiday-list/holiday-list.component';
 
 const routes: Routes = [
   {
@@ -39,6 +40,10 @@ const routes: Routes = [
     path: 'analytics',
     component: OverviewComponent,
     canActivate: [AuthGuard]
+  },
+  {
+    path: 'market-holidays',
+    component: HolidayListComponent,
   },
   {
     path: 'login',

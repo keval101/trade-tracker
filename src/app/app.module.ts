@@ -42,6 +42,7 @@ import { SignupComponent } from './components/signup/signup.component';
 import { DeleteFundComponent } from './components/account/delete-fund/delete-fund.component';
 import { OverviewComponent } from './components/overview/overview.component';
 import { SheetDeleteComponent } from './components/trade-sheet/sheet-delete/sheet-delete.component';
+import { HolidayListComponent } from './components/holiday-list/holiday-list.component';
 
 const firebaseConfig = {
   apiKey: "AIzaSyA7OCANxXbgxUiQ_0zB_co_22z3jgxJiFY",
@@ -72,7 +73,8 @@ const firebaseConfig = {
     SignupComponent,
     DeleteFundComponent,
     OverviewComponent,
-    SheetDeleteComponent
+    SheetDeleteComponent,
+    HolidayListComponent
   ],
   imports: [
     BrowserModule,

@@ -32,6 +32,11 @@ export class SidenavComponent {
       name: 'Analytics',
       route: 'analytics',
       icon: '/assets/icons/analytics.svg'
+    },
+    {
+      name: 'Market Holidays',
+      route: 'market-holidays',
+      icon: '/assets/icons/sleeping-facecom.svg'
     }
   ]
 }

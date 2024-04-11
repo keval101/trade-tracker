@@ -1,0 +1,6 @@
+.grid {
+    &-item {
+        @apply grid py-4 px-2 border-b border-b-gray-200;
+        grid-template-columns: 1fr 1fr 1fr;
+    }
+}

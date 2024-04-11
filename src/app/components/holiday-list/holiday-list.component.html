@@ -1,0 +1,11 @@
+<h1 class="text-4xl font-semibold mb-10">Market Holidays</h1>
+
+<div class="grid-container">
+    <ng-container *ngFor="let holiday of holidays">
+        <div class="grid-item" [class.bg-red-200]="checkDateIsOutDated(holiday.tradingDate)">
+            <p>{{holiday.tradingDate}}</p>
+            <p>{{holiday.weekDay}}</p>
+            <p>{{holiday.description}}</p>
+        </div>
+    </ng-container>
+</div>
