@@ -23,6 +23,13 @@
     }
 }
 
+.celebration {
+    position: absolute;
+    top: -45px;
+    right: -80px;
+    transform: rotate(85deg);
+}
+
 ::ng-deep .chart canvas {
     height: 400px !important;
 

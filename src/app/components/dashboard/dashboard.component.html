@@ -44,6 +44,7 @@
                             {{calculatePercentage(selectedWeekData).toFixed(2)}}%
                         </div>
                     </div>
+                    <div class="flex w-fit items-center relative" *ngIf="calculatePercentage(selectedWeekData) >= 100"><span class="text-xl relative z-10 text-green-500">More than Doubled</span> <img src="./../../../assets/images/Party Popper.gif" class="celebration" alt="celebration" width="100" height="100"></div>
                 </div>
             </ng-container>
 
