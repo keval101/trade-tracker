@@ -1,16 +1,22 @@
 <div class="sheet">
     <h1 class="text-4xl font-semibold mb-10">Trade Sheet</h1>
 
-    <button (click)="addSheet()"
-    class="block text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 ml-auto py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-    type="button">
-        Generate Sheet
-    </button>
+    <div class="flex w-full justify-between items-center">
+        <button class="py-2 px-3 bg-blue-700 rounded-lg hover:bg-blue-800 text-white flex gap-2 items-center" [class.bg-blue-800]="isShortSheets" (click)="shortSheets()">
+            <img src="https://freepcgames.netlify.app/assets/icons/sort.svg" alt="short"> Short Sheet
+        </button>
+
+        <button (click)="addSheet()"
+        class="block text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 ml-auto py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+        type="button">
+            Generate Sheet
+        </button>
+    </div>
 
     <ng-container *ngFor="let sheet of sheets; let sheetIndex = index">
         <div class="sheet__card my-12">
             <div class="flex gap-2 items-center">
-                <h1 class="text-2xl font-semibold">Sheet {{sheetIndex + 1}}</h1>
+                <h1 class="text-2xl font-semibold">Sheet {{sheet.number}}</h1>
                 <p *ngIf="sheet.targetAchieved" class="px-4 py-1 text-sm bg-green-500 border-green-900 rounded-lg text-white">Target Achieved</p>
 
                 <button (click)="deleteSheet(sheet)" *ngIf="sheet.data.length != sheet.days && sheet.targetAchieved == null"

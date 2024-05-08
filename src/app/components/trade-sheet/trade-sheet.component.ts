@@ -32,6 +32,7 @@ export class TradeSheetComponent implements OnInit{
     }
   ]
   selectedMarket = { name: 'Fin Nifty', lot: 40}
+  isShortSheets: boolean = true;
   
   constructor(
     private dialogService: DialogService,
@@ -43,8 +44,9 @@ export class TradeSheetComponent implements OnInit{
 
   getSheets() {
     this.dataService.getSheet().subscribe(sheets => {
-      sheets.map(sheet => {
+      sheets.map((sheet, index) => {
         sheet['expectedSheet'] = this.generateSheet(sheet)
+        sheet['number'] = index + 1;
         if(sheet) {
           sheet['targetAchieved'] = sheet.data.length == sheet.days ? sheet.expectedSheet[sheet.days - 1].finalCapital >= +this.calculateCapital(sheet.capital, sheet.roi, sheet.days) ? true : false : null;
 
@@ -58,8 +60,15 @@ export class TradeSheetComponent implements OnInit{
         const dateB: any = new Date(b.date.split('/').reverse().join('/'));
         return dateA - dateB;
       });
+      sheets.map((x, index) => x['number'] = index + 1)
       this.sheets = sheets;
+      this.shortSheets();
     })
+  }
+
+  shortSheets() {
+    this.sheets = this.sheets.reverse();
+    this.isShortSheets = !this.isShortSheets
   }
 
   generateSheet(sheet: any) {

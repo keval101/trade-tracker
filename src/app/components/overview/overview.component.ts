@@ -106,9 +106,14 @@ export class OverviewComponent implements OnInit, OnDestroy{
   getMonthAnalysisData(data) {
     let object: any = {};
     object[data.key] = data.value;
-    const previousDate = this.getPreviousMonth(data.key)
-    const previousData: any = {};
+    let previousDate = this.getPreviousMonth(data.key)
+    let previousData: any = {};
     previousData[previousDate] = this.monthData[previousDate]
+    if(!previousData[previousDate]) {
+      previousData = {};
+      previousDate = this.getPreviousMonth(previousDate)
+      previousData[previousDate] = this.monthData[previousDate]
+    }
     this.selectedMonthData = this.analyzeSplitData(object)
     this.dayData = this.findGoodAndBadDayOfWeek(object)
     this.previosMonthData = this.monthData[previousDate]?.length ? this.analyzeSplitData(previousData) : undefined
@@ -328,7 +333,7 @@ export class OverviewComponent implements OnInit, OnDestroy{
     if (this.previosMonthData) {
       const previousMonthOverall = this.previosMonthData.totalProfit - this.previosMonthData.totalLose - this.previosMonthData.totalBrokerage
       const currentMonthOverall = this.selectedMonthData.totalProfit - this.selectedMonthData.totalLose - this.selectedMonthData.totalBrokerage
-      const difference = currentMonthOverall - previousMonthOverall;
+      const difference = previousMonthOverall > 0 ? currentMonthOverall - previousMonthOverall : currentMonthOverall + previousMonthOverall;
       if (difference > 0) {
           comparisonText = `<p class="text-xl">You are <span class="text-2xl text-green-600 font-semibold">₹${difference}</span> ahead of last month.</p>`;
       } else if (difference < 0) {
