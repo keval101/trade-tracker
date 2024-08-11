@@ -143,7 +143,6 @@ export class HolidayListComponent {
       const monthNumber = months.findIndex( m => m == month);
       const fMonthNumber = months.findIndex(m => m == fmonth);
 
-      console.log({fday, day, fmonth, month, fyear, year, monthNumber, fMonthNumber})
       if((+fday >= +day && +fMonthNumber >= +monthNumber && +fyear >= +year)) {
         isOutDate = true
       } else if(+fday <= +day && +fMonthNumber > +monthNumber && +fyear >= +year){

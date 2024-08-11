@@ -33,6 +33,7 @@ export class TradeSheetComponent implements OnInit{
   ]
   selectedMarket = { name: 'Fin Nifty', lot: 40}
   isShortSheets: boolean = true;
+  totalTargetAchievedSheets = 0
   
   constructor(
     private dialogService: DialogService,
@@ -53,6 +54,9 @@ export class TradeSheetComponent implements OnInit{
           if(sheet.data.length && sheet.expectedSheet[sheet.data.length - 1]?.finalCapital < 0) {
             sheet['targetAchieved'] = false;
           }
+        }
+        if(sheet.targetAchieved === true) {
+          this.totalTargetAchievedSheets = this.totalTargetAchievedSheets + 1
         }
       })
       sheets.sort((a, b) => {

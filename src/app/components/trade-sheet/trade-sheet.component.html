@@ -6,6 +6,10 @@
             <img src="https://freepcgames.netlify.app/assets/icons/sort.svg" alt="short"> Short Sheet
         </button>
 
+        <button class="py-2 px-3 mx-4 bg-green-500 rounded-lg hover:bg-green-600 text-white flex gap-2 items-center" *ngIf="sheets.length">
+            Target Achieved {{((totalTargetAchievedSheets/sheets.length)*100).toFixed(2)+'%'}} ({{totalTargetAchievedSheets}}/{{sheets.length}})
+        </button>
+
         <button (click)="addSheet()"
         class="block text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 ml-auto py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
         type="button">
