@@ -4,6 +4,7 @@ import { DataService } from 'src/app/service/data.service';
 import { SheetFormComponent } from './sheet-form/sheet-form.component';
 import { SheetEntryDialogComponent } from './sheet-entry-dialog/sheet-entry-dialog.component';
 import { SheetDeleteComponent } from './sheet-delete/sheet-delete.component';
+import { AddTradeComponent } from '../trades/add-trade/add-trade.component';
 
 @Component({
   selector: 'app-trade-sheet',
@@ -75,18 +76,21 @@ export class TradeSheetComponent implements OnInit{
     const data = [];
     let capital = sheet.capital;
     for (let i = 1; i <= sheet.days; i++) {
-        const profit = (capital * sheet.roi) / 100;
-        const index = i - 1;
-        const startingCapital = i == 1 ? capital : data[index - 1]?.finalCapital;
+      const profit = (capital * sheet.roi) / 100;
+      const index = i - 1;
+        const startingCapital = i == 1 ? +capital : +data[index - 1]?.finalCapital;
         const object = {
           capital: capital,
           expectedProfit: profit,
-          profit: sheet.data[index]?.profit ? sheet.data[index].profit : 0,
+          profit: sheet.data[index]?.profit ? sheet.data[index].profit : sheet.data[index]?.lose ? -sheet.data[index]?.lose : 0,
           date: sheet.data[index]?.date ? sheet.data[index].date : '-',
           startingCapital: startingCapital,
-          finalCapital: sheet.data[index]?.profit ? startingCapital + sheet.data[index]?.profit : sheet.data.length ? data[index - 1].finalCapital : 0
+          finalCapital: sheet.data[index]?.profit ? startingCapital + +sheet.data[index]?.profit : sheet.data.length ? data[index - 1].finalCapital : 0
         }
         capital += profit;
+        if(sheet.data[index]?.tradeId) {
+          object['tradeId'] = sheet.data[index].tradeId
+        }
         data.push(object)
     }
     return data;
@@ -95,7 +99,7 @@ export class TradeSheetComponent implements OnInit{
 
   addSheet() {
     const dialogRef = this.dialogService.open(SheetFormComponent, {
-      width: window.screen.availWidth < 992 ? '80vw' : '30vw',
+      width: window.innerWidth < 992 ? '80vw' : '30vw',
       header: "Generate Sheet"
     })
 
@@ -115,18 +119,20 @@ export class TradeSheetComponent implements OnInit{
   }
 
   addSheetEntry(sheet: any) {
-    this.dialogService.open(SheetEntryDialogComponent, {
-      width: window.screen.availWidth < 992 ? '80vw' : '30vw',
-      data: sheet,
+    this.dialogService.open(AddTradeComponent, {
+      width: window.innerWidth < 992 ? '80vw' : '30vw',
+      // data: sheet,
+      data: {sheet, isSheetEntry: true},
       header: 'Sheet Entry'
     })
   }
 
   updateSheetEntry(sheet: any, selectedRow: any) {
+    console.log(sheet, selectedRow)
     if(!selectedRow.date.includes('-')) {
-      this.dialogService.open(SheetEntryDialogComponent, {
-        width: window.screen.availWidth < 992 ? '80vw' : '30vw',
-        data: {sheet, selectedRow, isEdit: true},
+      this.dialogService.open(AddTradeComponent, {
+        width: window.innerWidth < 992 ? '80vw' : '30vw',
+        data: {sheet, selectedRow, isSheetEntry: true, isEdit: true},
         header: 'Sheet Entry',
       })
     }
@@ -138,7 +144,7 @@ export class TradeSheetComponent implements OnInit{
 
   deleteSheet(sheet: any) {
     const dialogRef = this.dialogService.open(SheetDeleteComponent, {
-      width: window.screen.availWidth < 992 ? '80vw' : '30vw',
+      width: window.innerWidth < 992 ? '80vw' : '30vw',
       header: 'Delete Sheet',
       data: {sheet}
     })
