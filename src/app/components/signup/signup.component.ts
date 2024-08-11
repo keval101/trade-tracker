@@ -12,6 +12,7 @@ import { AuthService } from 'src/app/service/auth.service';
 export class SignupComponent implements OnInit{
 
   registerForm: FormGroup;
+  seePassword = false
   ERROR_MESSAGES = {
     weekPassword: 'Password should be at least 6 characters',
   }

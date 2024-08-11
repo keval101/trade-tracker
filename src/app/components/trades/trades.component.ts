@@ -30,7 +30,7 @@ export class TradesComponent implements OnInit {
   openTradeForm(trade?: any) {
     this.isProfitableTrader = (this.tradingAccuracy?.totalProfitableDays / this.tradingAccuracy?.totalDays) * 100 > 70 ? true : false;
     const dialogRef = this.dialogService.open(AddTradeComponent, {
-      width: window.screen.availWidth < 992 ? '80vw' : '30vw',
+      width: window.innerWidth < 992 ? '80vw' : '30vw',
       header: 'Add Trade',
       data: {trade, isProfitableTrader: this.isProfitableTrader}
     });
@@ -69,7 +69,7 @@ export class TradesComponent implements OnInit {
 
   deleteTrade(trade: any) {
     const dialogRef = this.dialogService.open(DeleteTradeComponent, {
-      width: window.screen.availWidth < 992 ? '80vw' : '30vw',
+      width: window.innerWidth < 992 ? '80vw' : '30vw',
       header: 'Delete Trade',
       data: trade
     })

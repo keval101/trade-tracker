@@ -45,7 +45,7 @@ export class AccountComponent implements OnInit{
   openAddFundDialog(type: string, fundData?: any) {
     const fund = fundData ? fundData : '';
     const dialogRef = this.dialogService.open(FundDialogComponent, {
-      width: window.screen.availWidth < 992 ? '80vw' : '30vw',
+      width: window.innerWidth < 992 ? '80vw' : '30vw',
       header: type == 'add' ? 'Add Fund' : 'Add Withdrawal Fund',
       data: {fund, type}
     })
@@ -92,7 +92,7 @@ export class AccountComponent implements OnInit{
 
   deleteFund(fund: any, type: string) {
     const dialogRef = this.dialogService.open(DeleteFundComponent, {
-      width: window.screen.availWidth < 992 ? '80vw' : '30vw',
+      width: window.innerWidth < 992 ? '80vw' : '30vw',
       header: 'Delete Fund',
       data: {fund, type}
     })

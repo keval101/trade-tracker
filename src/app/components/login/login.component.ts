@@ -12,6 +12,7 @@ import { AuthService } from 'src/app/service/auth.service';
 export class LoginComponent implements OnInit{
 
   loginForm: FormGroup;
+  seePassword = false
 
   constructor(
     private authService: AuthService,
