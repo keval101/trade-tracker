@@ -4,6 +4,7 @@ import { DataService } from 'src/app/service/data.service';
 import { SheetFormComponent } from './sheet-form/sheet-form.component';
 import { SheetEntryDialogComponent } from './sheet-entry-dialog/sheet-entry-dialog.component';
 import { SheetDeleteComponent } from './sheet-delete/sheet-delete.component';
+import { AddTradeComponent } from '../trades/add-trade/add-trade.component';
 
 @Component({
   selector: 'app-trade-sheet',
@@ -102,7 +103,7 @@ export class TradeSheetComponent implements OnInit{
 
   addSheet() {
     const dialogRef = this.dialogService.open(SheetFormComponent, {
-      width: window.screen.availWidth < 992 ? '80vw' : '30vw',
+      width: window.innerWidth < 992 ? '80vw' : '30vw',
       header: "Generate Sheet"
     })
 
@@ -122,18 +123,20 @@ export class TradeSheetComponent implements OnInit{
   }
 
   addSheetEntry(sheet: any) {
-    this.dialogService.open(SheetEntryDialogComponent, {
-      width: window.screen.availWidth < 992 ? '80vw' : '30vw',
-      data: sheet,
+    this.dialogService.open(AddTradeComponent, {
+      width: window.innerWidth < 992 ? '80vw' : '30vw',
+      // data: sheet,
+      data: {sheet, isSheetEntry: true},
       header: 'Sheet Entry'
     })
   }
 
   updateSheetEntry(sheet: any, selectedRow: any) {
+    console.log(sheet, selectedRow)
     if(!selectedRow.date.includes('-')) {
-      this.dialogService.open(SheetEntryDialogComponent, {
-        width: window.screen.availWidth < 992 ? '80vw' : '30vw',
-        data: {sheet, selectedRow, isEdit: true},
+      this.dialogService.open(AddTradeComponent, {
+        width: window.innerWidth < 992 ? '80vw' : '30vw',
+        data: {sheet, selectedRow, isSheetEntry: true, isEdit: true},
         header: 'Sheet Entry',
       })
     }
@@ -145,7 +148,7 @@ export class TradeSheetComponent implements OnInit{
 
   deleteSheet(sheet: any) {
     const dialogRef = this.dialogService.open(SheetDeleteComponent, {
-      width: window.screen.availWidth < 992 ? '80vw' : '30vw',
+      width: window.innerWidth < 992 ? '80vw' : '30vw',
       header: 'Delete Sheet',
       data: {sheet}
     })
