@@ -79,18 +79,21 @@ export class TradeSheetComponent implements OnInit{
     const data = [];
     let capital = sheet.capital;
     for (let i = 1; i <= sheet.days; i++) {
-        const profit = (capital * sheet.roi) / 100;
-        const index = i - 1;
-        const startingCapital = i == 1 ? capital : data[index - 1]?.finalCapital;
+      const profit = (capital * sheet.roi) / 100;
+      const index = i - 1;
+        const startingCapital = i == 1 ? +capital : +data[index - 1]?.finalCapital;
         const object = {
           capital: capital,
           expectedProfit: profit,
-          profit: sheet.data[index]?.profit ? sheet.data[index].profit : 0,
+          profit: sheet.data[index]?.profit ? sheet.data[index].profit : sheet.data[index]?.lose ? -sheet.data[index]?.lose : 0,
           date: sheet.data[index]?.date ? sheet.data[index].date : '-',
           startingCapital: startingCapital,
-          finalCapital: sheet.data[index]?.profit ? startingCapital + sheet.data[index]?.profit : sheet.data.length ? data[index - 1].finalCapital : 0
+          finalCapital: sheet.data[index]?.profit ? startingCapital + +sheet.data[index]?.profit : sheet.data.length ? data[index - 1].finalCapital : 0
         }
         capital += profit;
+        if(sheet.data[index]?.tradeId) {
+          object['tradeId'] = sheet.data[index].tradeId
+        }
         data.push(object)
     }
     return data;
