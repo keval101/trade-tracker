@@ -180,7 +180,7 @@ export class DashboardComponent implements OnInit, OnDestroy{
         if(index >= 0) {
           const tradeData = trades.slice(index, index + sheet.data.length)
           tradeData['totalProfit'] = sheet.data.reduce((total, trade) =>{ 
-            return total + trade.profit}, 0);
+            return total + (+trade?.profit ?? 0) - (trade?.lose ?? 0)}, 0);
           tradeData['totalDays'] = sheet.days;
           tradeData['roi'] = sheet.roi;
           tradeData['startingWeekCapital'] = sheet.capital
