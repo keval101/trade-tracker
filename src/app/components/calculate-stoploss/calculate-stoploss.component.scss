@@ -1,0 +1,8 @@
+.stoploss {
+    transition: all 0.2s ease-in;
+    &.active,
+    &:hover {
+        @apply bg-red-500 text-white;
+        transition: all 0.2s ease-in;
+    }
+}

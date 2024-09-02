@@ -9,6 +9,7 @@ import { AuthGuard } from './guards/auth.guard';
 import { SignupComponent } from './components/signup/signup.component';
 import { OverviewComponent } from './components/overview/overview.component';
 import { HolidayListComponent } from './components/holiday-list/holiday-list.component';
+import { CalculateStoplossComponent } from './components/calculate-stoploss/calculate-stoploss.component';
 
 const routes: Routes = [
   {
@@ -39,6 +40,11 @@ const routes: Routes = [
   {
     path: 'analytics',
     component: OverviewComponent,
+    canActivate: [AuthGuard]
+  },
+  {
+    path: 'calculate-stoploss',
+    component: CalculateStoplossComponent,
     canActivate: [AuthGuard]
   },
   {
