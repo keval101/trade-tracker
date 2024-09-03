@@ -1,13 +1,22 @@
+<h1 class="text-4xl font-semibold mb-10">Stocks</h1>
+<button (click)="openStockForm()"
+class="block text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 ml-auto py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+type="button">
+    Add Stock
+</button>
 <div class="grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-5">
     <div class="stocks border border-blue-300 rounded-lg p-3 sm:p-8" *ngFor="let stock of stocks"
-    [class.bg-green-50]="(((stock.totalQuantity * stock.sellPrice - stock.totalQuantity * stock.buyPrice)/(stock.totalQuantity * stock.buyPrice))* 100) > 0"
-    [class.bg-red-50]="(((stock.totalQuantity * stock.sellPrice - stock.totalQuantity * stock.buyPrice)/(stock.totalQuantity * stock.buyPrice))* 100) < 0"
-    [class.border-green-500]="(((stock.totalQuantity * stock.sellPrice - stock.totalQuantity * stock.buyPrice)/(stock.totalQuantity * stock.buyPrice))* 100) > 0"
-    [class.border-red-500]="(((stock.totalQuantity * stock.sellPrice - stock.totalQuantity * stock.buyPrice)/(stock.totalQuantity * stock.buyPrice))* 100) < 0">
+    [class.bg-green-50]="stock.status !='Hold' && (((stock.totalQuantity * stock.sellPrice - stock.totalQuantity * stock.buyPrice)/(stock.totalQuantity * stock.buyPrice))* 100) > 0"
+    [class.bg-red-50]="stock.status !='Hold' && (((stock.totalQuantity * stock.sellPrice - stock.totalQuantity * stock.buyPrice)/(stock.totalQuantity * stock.buyPrice))* 100) < 0"
+    [class.bg-gray-50]="stock.status ==='Hold'"
+    [class.border-gray-500]="stock.status ==='Hold'"
+    [class.border-green-500]="stock.status !='Hold' && (((stock.totalQuantity * stock.sellPrice - stock.totalQuantity * stock.buyPrice)/(stock.totalQuantity * stock.buyPrice))* 100) > 0"
+    [class.border-red-500]="stock.status !='Hold' && (((stock.totalQuantity * stock.sellPrice - stock.totalQuantity * stock.buyPrice)/(stock.totalQuantity * stock.buyPrice))* 100) < 0">
         <div class="stocks__header flex items-center gap-4">
             <img [src]="stock.logo" [alt]="stock.name" width="50" height="50">
-            <h1 class="flex gap-2">{{stock.name}}
-                <span>(<a [href]="stock.link" class="text-blue-600 hover:underline" target="_blank">{{stock.code}}</a>)</span>
+            <h1 class="flex w-full gap-2">{{stock.name}}
+                <span>(<a href="{{'https://www.screener.in/company/'+stock.code+'/consolidated/#analysis'}}" class="text-blue-600 hover:underline" target="_blank">{{stock.code}}</a>)</span>
+                <span class="inline-block text-gray-400 ml-auto">{{stock.date}}</span>
             </h1>
         </div>
     

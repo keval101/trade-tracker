@@ -31,7 +31,7 @@ export class SidenavComponent {
     {
       name: 'Stocks',
       route: 'stocks',
-      icon: ''
+      icon: '/assets/icons/savings.svg'
     },
     {
       name: 'Stoploss Calculator',

@@ -1,4 +1,7 @@
 import { Component } from '@angular/core';
+import { DialogService } from 'primeng/dynamicdialog';
+import { AddStockComponent } from './add-stock/add-stock.component';
+import { DataService } from 'src/app/service/data.service';
 
 @Component({
   selector: 'app-stocks',
@@ -6,32 +9,33 @@ import { Component } from '@angular/core';
   styleUrls: ['./stocks.component.scss']
 })
 export class StocksComponent {
-  // Share Name
-  // Share Code
-  // Share Buy Price
-  // Total Share Quantity
-  // Total Amount
-  // Share Sell Price
-  
-  // Total Profit per share
-  // Total Profit
-  // Total ROI
+  public stocks = []
 
-  public stocks = [
-    {
-      name: 'Jio Financial Services',
-      logo: 'https://upload.wikimedia.org/wikipedia/en/thumb/8/86/Jio_Financial_Services_Logo.svg/1200px-Jio_Financial_Services_Logo.svg.png',
-      code: 'JIOFIN',
-      link: 'https://www.screener.in/company/JIOFIN/consolidated/#analysis',
-      buyPrice: 345.70,
-      status: 'Hold',
-      sellPrice: 0,
-      totalQuantity: 29,
-      totalAmount: 10025.3,
-      profit: 0,
-      lose: 0,
-      roi: 0
-    }
-  ]
-  constructor() {}
+  constructor(
+    private dialogService: DialogService,
+    private dataService: DataService) {}
+
+  ngOnInit() {
+    this.getStocks();
+  }
+
+  openStockForm(stock?: any) {
+    const dialogRef = this.dialogService.open(AddStockComponent, {
+      width: window.innerWidth < 992 ? '80vw' : '40%',
+      header: 'Add Stock',
+      data: {stock}
+    });
+
+    dialogRef.onClose.subscribe(() => {
+      this.getStocks();
+      dialogRef.destroy();
+    });
+  }
+
+  getStocks() {
+    this.dataService.getStocks().subscribe(stocks => {
+      this.stocks = stocks;
+    })
+  }
+
 }

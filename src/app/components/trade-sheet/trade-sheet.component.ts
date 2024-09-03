@@ -132,7 +132,6 @@ export class TradeSheetComponent implements OnInit{
   }
 
   updateSheetEntry(sheet: any, selectedRow: any) {
-    console.log(sheet, selectedRow)
     if(!selectedRow.date.includes('-')) {
       this.dialogService.open(AddTradeComponent, {
         width: window.innerWidth < 992 ? '80vw' : '30vw',

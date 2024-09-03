@@ -25,7 +25,6 @@ export class AppComponent {
     }, 50);
 
     this.authService.getCurrentUserDetail().subscribe(res => {
-      console.log(res)
       if(!res) {
         this.router.url.includes('/login')
         return;

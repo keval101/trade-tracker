@@ -148,4 +148,35 @@ export class DataService {
     this.api = `users/${userId}`
   }
 
+  // --------------------------------------- Stocks API ---------------------------------------
+  getStocks(): Observable<any> {
+    this.setUserId();
+
+    return this.firestore
+      .collection(`${this.api}/stocks`)
+      .snapshotChanges()
+      .pipe(
+        map((actions) => {
+          return actions.map((a) => {
+            const data: any = a.payload.doc.data();
+            const id = a.payload.doc.id;
+            return { ...data, id };
+          });
+        })
+      );
+  }
+
+  addStock(payload: any) {
+    this.setUserId();
+    return this.firestore.collection(`${this.api}/stocks`).add(payload);
+  }
+
+  updateStock(tradeId: string, payload: any) {
+    this.setUserId();
+    return this.firestore
+      .collection(`${this.api}/stocks`)
+      .doc(tradeId)
+      .set(payload, { merge: true });
+  }
+
 }

@@ -45,6 +45,7 @@ import { SheetDeleteComponent } from './components/trade-sheet/sheet-delete/shee
 import { HolidayListComponent } from './components/holiday-list/holiday-list.component';
 import { CalculateStoplossComponent } from './components/calculate-stoploss/calculate-stoploss.component';
 import { StocksComponent } from './components/stocks/stocks.component';
+import { AddStockComponent } from './components/stocks/add-stock/add-stock.component';
 
 const firebaseConfig = {
   apiKey: "AIzaSyA7OCANxXbgxUiQ_0zB_co_22z3jgxJiFY",
@@ -78,7 +79,8 @@ const firebaseConfig = {
     SheetDeleteComponent,
     HolidayListComponent,
     CalculateStoplossComponent,
-    StocksComponent
+    StocksComponent,
+    AddStockComponent
   ],
   imports: [
     BrowserModule,
