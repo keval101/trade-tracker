@@ -10,6 +10,7 @@ import { SignupComponent } from './components/signup/signup.component';
 import { OverviewComponent } from './components/overview/overview.component';
 import { HolidayListComponent } from './components/holiday-list/holiday-list.component';
 import { CalculateStoplossComponent } from './components/calculate-stoploss/calculate-stoploss.component';
+import { StocksComponent } from './components/stocks/stocks.component';
 
 const routes: Routes = [
   {
@@ -45,6 +46,11 @@ const routes: Routes = [
   {
     path: 'calculate-stoploss',
     component: CalculateStoplossComponent,
+    canActivate: [AuthGuard]
+  },
+  {
+    path: 'stocks',
+    component: StocksComponent,
     canActivate: [AuthGuard]
   },
   {

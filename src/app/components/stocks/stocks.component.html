@@ -1,0 +1,50 @@
+<div class="grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-5">
+    <div class="stocks border border-blue-300 rounded-lg p-3 sm:p-8" *ngFor="let stock of stocks"
+    [class.bg-green-50]="(((stock.totalQuantity * stock.sellPrice - stock.totalQuantity * stock.buyPrice)/(stock.totalQuantity * stock.buyPrice))* 100) > 0"
+    [class.bg-red-50]="(((stock.totalQuantity * stock.sellPrice - stock.totalQuantity * stock.buyPrice)/(stock.totalQuantity * stock.buyPrice))* 100) < 0"
+    [class.border-green-500]="(((stock.totalQuantity * stock.sellPrice - stock.totalQuantity * stock.buyPrice)/(stock.totalQuantity * stock.buyPrice))* 100) > 0"
+    [class.border-red-500]="(((stock.totalQuantity * stock.sellPrice - stock.totalQuantity * stock.buyPrice)/(stock.totalQuantity * stock.buyPrice))* 100) < 0">
+        <div class="stocks__header flex items-center gap-4">
+            <img [src]="stock.logo" [alt]="stock.name" width="50" height="50">
+            <h1 class="flex gap-2">{{stock.name}}
+                <span>(<a [href]="stock.link" class="text-blue-600 hover:underline" target="_blank">{{stock.code}}</a>)</span>
+            </h1>
+        </div>
+    
+        <div class="stock__detail grid grid-cols-3 gap-4 flex-wrap mt-8">
+            <div class="stock__detail-group">
+                <p class="text-gray-400">Quantity</p>
+                <p class="text-blue-600 text-2xl font-semibold">{{stock.totalQuantity}}</p>
+            </div>
+            <div class="stock__detail-group">
+                <p class="text-gray-400">Buy Price</p>
+                <p class="text-green-600 text-2xl font-semibold">{{stock.buyPrice}}</p>
+            </div>
+            <div class="stock__detail-group" *ngIf="stock.status !='Hold'">
+                <p class="text-gray-400">Sell Price</p>
+                <p class="text-red-600 text-2xl font-semibold">{{stock.sellPrice}}</p>
+            </div>
+            <div class="stock__detail-group">
+                <p class="text-gray-400">Status</p>
+                <p class="text-2xl font-semibold" [class.text-gray-600]="stock.status ==='Hold'" [class.text-red-600]="stock.status ==='Sell'">{{stock.status}}</p>
+            </div>
+            <div class="stock__detail-group">
+                <p class="text-gray-400">Amount</p>
+                <p class="text-blue-600 text-2xl font-semibold">{{(stock.totalQuantity * stock.buyPrice).toFixed(2)}}</p>
+            </div>
+            <div class="stock__detail-group" *ngIf="(stock.sellPrice > stock.buyPrice) && stock.sellPrice != 0">
+                <p class="text-gray-400">Profit</p>
+                <p class="text-green-600 text-2xl font-semibold">{{((stock.totalQuantity * stock.sellPrice) - (stock.totalQuantity * stock.buyPrice)).toFixed(2)}}</p>
+            </div>
+            <div class="stock__detail-group" *ngIf="(stock.sellPrice < stock.buyPrice) && stock.sellPrice != 0">
+                <p class="text-gray-400">Loss</p>
+                <p class="text-red-600 text-2xl font-semibold">{{((stock.totalQuantity * stock.sellPrice) - (stock.totalQuantity * stock.buyPrice)).toFixed(2)}}</p>
+            </div>
+            <div class="stock__detail-group" *ngIf="stock.status === 'Sell'">
+                <p class="text-gray-400">ROI</p>
+                <p class="text-green-600 text-2xl font-semibold"
+                [class.text-red-600]="(((stock.totalQuantity * stock.sellPrice - stock.totalQuantity * stock.buyPrice)/(stock.totalQuantity * stock.buyPrice))* 100) < 0">{{(((stock.totalQuantity * stock.sellPrice - stock.totalQuantity * stock.buyPrice)/(stock.totalQuantity * stock.buyPrice))* 100).toFixed(2)}}</p>
+            </div>
+        </div>
+    </div>
+</div>
