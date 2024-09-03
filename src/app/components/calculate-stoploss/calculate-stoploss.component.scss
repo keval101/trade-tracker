@@ -6,3 +6,12 @@
         transition: all 0.2s ease-in;
     }
 }
+
+.target {
+    transition: all 0.2s ease-in;
+    &.active,
+    &:hover {
+        @apply bg-green-500 text-white;
+        transition: all 0.2s ease-in;
+    }
+}
