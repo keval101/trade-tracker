@@ -4,15 +4,19 @@ class="block text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline
 type="button">
     Add Stock
 </button>
-<div class="grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-5">
-    <div class="stocks border border-blue-300 rounded-lg p-3 sm:p-8" *ngFor="let stock of stocks"
+<div class="grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-5 mt-4">
+    <div class="stocks border border-blue-300 rounded-lg p-3 !pt-4 sm:p-8" *ngFor="let stock of stocks"
     [class.bg-green-50]="stock.status !='Hold' && (((stock.totalQuantity * stock.sellPrice - stock.totalQuantity * stock.buyPrice)/(stock.totalQuantity * stock.buyPrice))* 100) > 0"
     [class.bg-red-50]="stock.status !='Hold' && (((stock.totalQuantity * stock.sellPrice - stock.totalQuantity * stock.buyPrice)/(stock.totalQuantity * stock.buyPrice))* 100) < 0"
     [class.bg-gray-50]="stock.status ==='Hold'"
     [class.border-gray-500]="stock.status ==='Hold'"
     [class.border-green-500]="stock.status !='Hold' && (((stock.totalQuantity * stock.sellPrice - stock.totalQuantity * stock.buyPrice)/(stock.totalQuantity * stock.buyPrice))* 100) > 0"
     [class.border-red-500]="stock.status !='Hold' && (((stock.totalQuantity * stock.sellPrice - stock.totalQuantity * stock.buyPrice)/(stock.totalQuantity * stock.buyPrice))* 100) < 0">
-        <div class="stocks__header flex items-center gap-4">
+        <div class="stocks__action flex gap-2 justify-end items-center">
+            <button class="flex justify-center items-center" (click)="openStockForm(stock)"><img src="./assets/icons/edit.svg" alt="edit" width="28px" height="28px"></button>
+            <button class="flex justify-center items-center" (click)="deleteTrade(stock)"><img src="./assets/icons/delete.svg" alt="edit" width="20px" height="20px"></button>
+        </div>
+        <div class="stocks__header flex items-center gap-4 flex-wrap">
             <img [src]="stock.logo" [alt]="stock.name" width="50" height="50">
             <h1 class="flex w-full gap-2">{{stock.name}}
                 <span>(<a href="{{'https://www.screener.in/company/'+stock.code+'/consolidated/#analysis'}}" class="text-blue-600 hover:underline" target="_blank">{{stock.code}}</a>)</span>

@@ -46,6 +46,7 @@ import { HolidayListComponent } from './components/holiday-list/holiday-list.com
 import { CalculateStoplossComponent } from './components/calculate-stoploss/calculate-stoploss.component';
 import { StocksComponent } from './components/stocks/stocks.component';
 import { AddStockComponent } from './components/stocks/add-stock/add-stock.component';
+import { DeleteStockComponent } from './components/stocks/delete-stock/delete-stock.component';
 
 const firebaseConfig = {
   apiKey: "AIzaSyA7OCANxXbgxUiQ_0zB_co_22z3jgxJiFY",
@@ -80,7 +81,8 @@ const firebaseConfig = {
     HolidayListComponent,
     CalculateStoplossComponent,
     StocksComponent,
-    AddStockComponent
+    AddStockComponent,
+    DeleteStockComponent
   ],
   imports: [
     BrowserModule,

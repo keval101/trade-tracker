@@ -50,11 +50,12 @@ export class AddStockComponent {
       totalAmount: [0, Validators.required],
     })
 
+    console.log(this.config.data.stock)
     if(this.config.data.stock) {
       let date = this.config.data.stock.date.split('/');
       date = `${date[1]}/${date[0]}/${date[2]}`;
       this.config.data.stock.date = this.datePipe.transform(new Date(date), 'dd/MM/yyyy');
-      this.stockForm.patchValue(this.config.data.trade)
+      this.stockForm.patchValue(this.config.data.stock)
     }
 
   }
@@ -98,8 +99,8 @@ export class AddStockComponent {
 
   updateTrade(payload) {
     let id;
-    if(this.config.data?.trade?.id) {
-      id = this.config.data.trade.id
+    if(this.config.data?.stock?.id) {
+      id = this.config.data.stock.id
     } else if(this.config.data?.selectedRow?.tradeId) {
       id = this.config.data.selectedRow.tradeId
     }

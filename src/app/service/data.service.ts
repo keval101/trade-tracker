@@ -171,12 +171,17 @@ export class DataService {
     return this.firestore.collection(`${this.api}/stocks`).add(payload);
   }
 
-  updateStock(tradeId: string, payload: any) {
+  updateStock(stockId: string, payload: any) {
     this.setUserId();
     return this.firestore
       .collection(`${this.api}/stocks`)
-      .doc(tradeId)
+      .doc(stockId)
       .set(payload, { merge: true });
+  }
+
+  deleteStock(stockId: string) {
+    this.setUserId();
+    return this.firestore.collection(`${this.api}/stocks`).doc(stockId).delete();
   }
 
 }

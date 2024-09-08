@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { DialogService } from 'primeng/dynamicdialog';
 import { AddStockComponent } from './add-stock/add-stock.component';
 import { DataService } from 'src/app/service/data.service';
+import { DeleteStockComponent } from './delete-stock/delete-stock.component';
 
 @Component({
   selector: 'app-stocks',
@@ -37,5 +38,19 @@ export class StocksComponent {
       this.stocks = stocks;
     })
   }
+
+  deleteTrade(stock: any) {
+    const dialogRef = this.dialogService.open(DeleteStockComponent, {
+      width: window.innerWidth < 992 ? '80vw' : '40%',
+      header: 'Delete Stock',
+      data: stock
+    })
+
+    dialogRef.onClose.subscribe(() => {
+      this.getStocks();
+      dialogRef.destroy();
+    })
+  }
+
 
 }
