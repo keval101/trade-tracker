@@ -1,0 +1,7 @@
+.hide-in-mobile {
+    @apply hidden md:flex;
+}
+
+.hide-in-desktop {
+    @apply flex md:hidden;
+}
