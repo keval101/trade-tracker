@@ -27,16 +27,6 @@ export class AddStockComponent {
     private datePipe: DatePipe) {}
 
   ngOnInit(): void {
-    // name: 'Jio Financial Services',
-    // date: '03/09/2024',
-    // logo: 'https://upload.wikimedia.org/wikipedia/en/thumb/8/86/Jio_Financial_Services_Logo.svg/1200px-Jio_Financial_Services_Logo.svg.png',
-    // code: 'JIOFIN',
-    // link: 'https://www.screener.in/company/JIOFIN/consolidated/#analysis',
-    // buyPrice: 345.70,
-    // status: 'Hold',
-    // sellPrice: 0,
-    // totalQuantity: 29,
-    // totalAmount: 10025.3,
     this.stockForm = this.fb.group({
       name: [null, Validators.required],
       date: [null, Validators.required],
@@ -47,10 +37,10 @@ export class AddStockComponent {
       isSold: [false],
       sellPrice: [0, Validators.required],
       totalQuantity: [0, Validators.required],
-      totalAmount: [0, Validators.required],
+      totalBuyAmount: [{value: 0,disabled: true}, Validators.required],
+      totalSellAmount: [{value: 0, disabled: true}],
     })
 
-    console.log(this.config.data.stock)
     if(this.config.data.stock) {
       let date = this.config.data.stock.date.split('/');
       date = `${date[1]}/${date[0]}/${date[2]}`;
@@ -62,8 +52,13 @@ export class AddStockComponent {
 
   setAmount() {
     const data = this.stockForm.value;
-    const amount = data.isSold ? data.sellPrice * data.totalQuantity : data.buyPrice * data.totalQuantity
-    this.stockForm.get('totalAmount').setValue(amount)
+    if(data.isSold) {
+      const amount = data.sellPrice * data.totalQuantity;
+      this.stockForm.get('totalSellAmount').setValue(amount)
+    } else {
+      const amount = data.buyPrice * data.totalQuantity;
+      this.stockForm.get('totalBuyAmount').setValue(amount)
+    }
   }
 
   addTrade() {
@@ -77,14 +72,20 @@ export class AddStockComponent {
         payload.date = formatedDate;
       }
       payload.status = payload.isSold ? 'Sell' : 'Hold'
-      payload.amount = payload.isSold ? payload.sellPrice * payload.totalQuantity : payload.buyPrice * payload.totalQuantity
-      if(!this.config.data.stock && !this.config.data.selectedRow) {
-        this.addNewTrade(payload);
-      } else {
-        this.updateTrade(payload)
+      payload.amount = payload.isSold ? payload.sellPrice * payload.totalQuantity : payload.buyPrice * payload.totalQuantity;
+      if(payload.isSold) {
+        const sellDate = new Date()
+        payload['sellOn'] = this.datePipe.transform(sellDate, 'dd/MM/yyyy')
       }
+
+      console.log('payload', payload)
+      // if(!this.config.data.stock && !this.config.data.selectedRow) {
+      //   this.addNewTrade(payload);
+      // } else {
+      //   this.updateTrade(payload)
+      // }
       
-      this.ref.close()
+      // this.ref.close()
     }
   }
 

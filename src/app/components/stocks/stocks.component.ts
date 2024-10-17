@@ -35,9 +35,17 @@ export class StocksComponent {
 
   getStocks() {
     this.dataService.getStocks().subscribe(stocks => {
-      this.stocks = stocks;
+      this.stocks = this.sortByDate(stocks);
     })
   }
+
+  sortByDate(data) {
+    return data.sort((a, b) => {
+        const dateA: any = new Date(a.date.split('/').reverse().join('-'));
+        const dateB: any = new Date(b.date.split('/').reverse().join('-'));
+        return dateB - dateA;
+    });
+}
 
   deleteTrade(stock: any) {
     const dialogRef = this.dialogService.open(DeleteStockComponent, {

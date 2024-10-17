@@ -1,5 +1,5 @@
 
-<div class="flex gap-8">
+<div class="flex gap-8 flex-wrap">
     <div class="flex gap-4 flex-wrap flex-col">
         <div class="bg-red-50 p-4 border border-red-300 rounded-md w-fit">
             <form class="space-y-4 md:space-y-6" [formGroup]="stoplossForm">
@@ -56,8 +56,8 @@
                     <input type="number" name="amount" id="amount" class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-green-600 focus:border-green-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-green-500 dark:focus:border-green-500" placeholder="Please enter amount" formControlName="amount">
                 </div>
                 <div>
-                    <label for="stoploss" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Stoploss</label>
-                    <div class="relative" *ngIf="customStoplossLimit">
+                    <label for="stoploss" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Target</label>
+                    <div class="relative" *ngIf="customTargetLimit">
                         <div class="absolute m-0.5 bg-gray-200 inset-y-0 start-0 top-0 flex items-center px-3.5 rounded-s-md pointer-events-none">
                             %
                         </div>
@@ -75,7 +75,7 @@
                         <div class="target cursor-pointer bg-green-50 border border-green-300 px-4 text-green-800 font-semibold py-2 rounded-md flex justify-center items-center"
                         (click)="setTargetLimit(25)" [class.active]="targetForm.value.target === 25">25%</div>
                         <div class="target cursor-pointer bg-green-50 border border-green-300 px-4 text-green-800 font-semibold py-2 rounded-md flex justify-center items-center"
-                        (click)="customStoplossLimit = true">Custom</div>
+                        (click)="customTargetLimit = true">Custom</div>
                     </div>
                 </div>
                 <button type="submit" class="w-full text-white bg-green-600 hover:bg-green-700 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800" (click)="calculateTargetPrice()">Calculate Target</button>

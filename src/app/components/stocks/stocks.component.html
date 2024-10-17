@@ -24,7 +24,7 @@ type="button">
             </h1>
         </div>
     
-        <div class="stock__detail grid grid-cols-3 gap-4 flex-wrap mt-8">
+        <div class="stock__detail grid grid-cols-2 gap-4 flex-wrap mt-8 lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-1">
             <div class="stock__detail-group">
                 <p class="text-gray-400">Quantity</p>
                 <p class="text-blue-600 text-2xl font-semibold">{{stock.totalQuantity}}</p>
@@ -42,8 +42,12 @@ type="button">
                 <p class="text-2xl font-semibold" [class.text-gray-600]="stock.status ==='Hold'" [class.text-red-600]="stock.status ==='Sell'">{{stock.status}}</p>
             </div>
             <div class="stock__detail-group">
-                <p class="text-gray-400">Amount</p>
-                <p class="text-blue-600 text-2xl font-semibold">{{(stock.totalQuantity * stock.buyPrice).toFixed(2)}}</p>
+                <p class="text-gray-400">Buy Amount</p>
+                <p class="text-blue-600 text-2xl font-semibold">{{(stock.totalBuyAmount).toFixed(2)}}</p>
+            </div>
+            <div class="stock__detail-group" *ngIf="stock.status !='Hold'">
+                <p class="text-gray-400">Sell Amount</p>
+                <p class="text-blue-600 text-2xl font-semibold">{{(stock.totalSellAmount).toFixed(2)}}</p>
             </div>
             <div class="stock__detail-group" *ngIf="(stock.sellPrice > stock.buyPrice) && stock.sellPrice != 0">
                 <p class="text-gray-400">Profit</p>
@@ -56,7 +60,7 @@ type="button">
             <div class="stock__detail-group" *ngIf="stock.status === 'Sell'">
                 <p class="text-gray-400">ROI</p>
                 <p class="text-green-600 text-2xl font-semibold"
-                [class.text-red-600]="(((stock.totalQuantity * stock.sellPrice - stock.totalQuantity * stock.buyPrice)/(stock.totalQuantity * stock.buyPrice))* 100) < 0">{{(((stock.totalQuantity * stock.sellPrice - stock.totalQuantity * stock.buyPrice)/(stock.totalQuantity * stock.buyPrice))* 100).toFixed(2)}}</p>
+                [class.text-red-600]="(((stock.totalQuantity * stock.sellPrice - stock.totalQuantity * stock.buyPrice)/(stock.totalQuantity * stock.buyPrice))* 100) < 0">{{(((stock.totalQuantity * stock.sellPrice - stock.totalQuantity * stock.buyPrice)/(stock.totalQuantity * stock.buyPrice))* 100).toFixed(2)}}%</p>
             </div>
         </div>
     </div>

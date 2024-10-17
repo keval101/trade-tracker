@@ -45,8 +45,13 @@
                                 <input formControlName="sellPrice" type="number" id="sellPrice" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Share Per Price" required (input)="setAmount()"/>
                             </div>
 
+                            <div *ngIf="stockForm.value.isSold">
+                                <label for="totalSellAmount" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Total Sell Amount</label>
+                                <input formControlName="totalSellAmount" type="number" id="totalSellAmount" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Total Sell Amount" required />
+                            </div>
+
                             <div>
-                                <label for="totalAmount" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Total Amount</label>
+                                <label for="totalAmount" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Total Buy Amount</label>
                                 <input formControlName="totalAmount" type="number" id="totalAmount" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Total Amount" required />
                             </div>
                             
