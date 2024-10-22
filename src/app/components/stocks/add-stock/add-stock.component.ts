@@ -79,13 +79,13 @@ export class AddStockComponent {
       }
 
       console.log('payload', payload)
-      // if(!this.config.data.stock && !this.config.data.selectedRow) {
-      //   this.addNewTrade(payload);
-      // } else {
-      //   this.updateTrade(payload)
-      // }
+      if(!this.config.data.stock && !this.config.data.selectedRow) {
+        this.addNewTrade(payload);
+      } else {
+        this.updateTrade(payload)
+      }
       
-      // this.ref.close()
+      this.ref.close()
     }
   }
 
