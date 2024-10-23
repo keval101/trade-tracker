@@ -37,8 +37,8 @@ export class AddStockComponent {
       isSold: [false],
       sellPrice: [0, Validators.required],
       totalQuantity: [0, Validators.required],
-      totalBuyAmount: [{value: 0,disabled: true}, Validators.required],
-      totalSellAmount: [{value: 0, disabled: true}],
+      totalBuyAmount: [0],
+      totalSellAmount: [0],
     })
 
     if(this.config.data.stock) {
@@ -52,16 +52,18 @@ export class AddStockComponent {
 
   setAmount() {
     const data = this.stockForm.value;
-    if(data.isSold) {
+    if(data.sellPrice) {
       const amount = data.sellPrice * data.totalQuantity;
       this.stockForm.get('totalSellAmount').setValue(amount)
-    } else {
+    }
+    if(data.buyPrice) {
       const amount = data.buyPrice * data.totalQuantity;
       this.stockForm.get('totalBuyAmount').setValue(amount)
     }
   }
 
   addTrade() {
+    this.setAmount();
     if(this.stockForm.valid) {
       const payload = this.stockForm.value;
       if(!this.config.data.stock) {

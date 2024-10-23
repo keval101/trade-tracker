@@ -36,6 +36,7 @@ export class StocksComponent {
   getStocks() {
     this.dataService.getStocks().subscribe(stocks => {
       this.stocks = this.sortByDate(stocks);
+      console.log(this.stocks)
     })
   }
 

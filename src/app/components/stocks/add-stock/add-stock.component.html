@@ -47,12 +47,12 @@
 
                             <div *ngIf="stockForm.value.isSold">
                                 <label for="totalSellAmount" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Total Sell Amount</label>
-                                <input formControlName="totalSellAmount" type="number" id="totalSellAmount" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Total Sell Amount" required />
+                                <input id="disabled-input" aria-label="disabled input" formControlName="totalSellAmount" type="number" id="totalSellAmount" class="bg-gray-50 border border-gray-300 text-gray-600 text-sm rounded-lg block cursor-not-allowed w-full p-2.5" placeholder="Total Sell Amount" required readonly/>
                             </div>
 
                             <div>
-                                <label for="totalAmount" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Total Buy Amount</label>
-                                <input formControlName="totalAmount" type="number" id="totalAmount" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Total Amount" required />
+                                <label for="totalBuyAmount" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Total Buy Amount</label>
+                                <input id="disabled-input-2" aria-label="disabled input 2" formControlName="totalBuyAmount" type="number" id="totalBuyAmount" class="bg-gray-50 border border-gray-300 text-gray-600 text-sm rounded-lg block w-full p-2.5 cursor-not-allowed" placeholder="Total Buy Amount" required readonly/>
                             </div>
                             
                         </div>
