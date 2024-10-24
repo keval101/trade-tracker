@@ -19,7 +19,7 @@ type="button">
         <div class="stocks__header flex items-center gap-4 flex-wrap">
             <img [src]="stock.logo" [alt]="stock.name" width="50" height="50">
             <h1 class="flex w-full gap-2">{{stock.name}}
-                <span>(<a href="{{'https://www.screener.in/company/'+stock.code+'/consolidated/#analysis'}}" class="text-blue-600 hover:underline" target="_blank">{{stock.code}}</a>)</span>
+                <span>(<a href="{{'https://www.screener.in/company/'+stock.code+'/consolidated/'}}" class="text-blue-600 hover:underline" target="_blank">{{stock.code}}</a>)</span>
                 <span class="inline-block text-gray-400 ml-auto">{{stock.date}}</span>
             </h1>
         </div>
