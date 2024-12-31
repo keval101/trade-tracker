@@ -17,7 +17,7 @@ export class TradeSheetComponent implements OnInit{
   markets: any[] = [
     {
       name: 'Nifty',
-      lot: 25
+      lot: 75
     },
     {
       name: 'Bank Nifty',
