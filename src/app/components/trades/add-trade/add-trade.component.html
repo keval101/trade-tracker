@@ -28,7 +28,7 @@
 
                             <div>
                                 <label for="investment" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Investment</label>
-                                <input formControlName="investment" type="text" id="investment" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Investment" required />
+                                <input formControlName="investment" type="number" id="investment" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Investment" required />
                             </div>
 
                             <div>
@@ -38,17 +38,17 @@
 
                             <div *ngIf="tradeForm.value.isProfitable">
                                 <label for="profit" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Profit</label>
-                                <input formControlName="profit" type="text" id="profit" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Profit" required />
+                                <input formControlName="profit" type="number" id="profit" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Profit" required />
                             </div>
 
                             <div *ngIf="!tradeForm.value.isProfitable">
                                 <label for="lose" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Lose</label>
-                                <input formControlName="lose" type="text" id="lose" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Lose" required />
+                                <input formControlName="lose" type="number" id="lose" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Lose" required />
                             </div>
 
                             <div>
                                 <label for="brokerage" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Brokerage</label>
-                                <input formControlName="brokerage" type="text" id="brokerage" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Brokerage" required />
+                                <input formControlName="brokerage" type="number" id="brokerage" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Brokerage" required />
                             </div>
 
                         </div>
