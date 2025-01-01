@@ -13,6 +13,7 @@ export class OverviewComponent implements OnInit, OnDestroy{
 
   trades$ = new BehaviorSubject([]);
   monthData: any;
+  monthSortedData: any[] = [];
   addFundsData: any;
   withdrawalFundsData: any;
   selectedMonthData: any;
@@ -77,6 +78,23 @@ export class OverviewComponent implements OnInit, OnDestroy{
           const dateB: any = new Date(b.date.split('/').reverse().join('/'));
           return dateA - dateB;
         });
+
+        // Convert the keys into an array and sort them
+        const sortedKeys = Object.keys(this.monthData).sort((a, b) => {
+          // Parse the dates into year/month for comparison
+          const [monthA, yearA] = a.split('/').map(Number);
+          const [monthB, yearB] = b.split('/').map(Number);
+          // Sort by year descending, then month descending
+          return yearB - yearA || monthB - monthA;
+        });
+        const sortedData = [];
+        sortedKeys.forEach((key) => {
+          sortedData.push({
+              key,
+              value: this.monthData[key]
+          });
+        });
+        this.monthSortedData = sortedData;
       }
     })
   }

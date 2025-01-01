@@ -5,7 +5,7 @@
 </div>
     
     <div class="flex gap-16 mt-8 flex-wrap">
-        <ng-container *ngFor="let month of monthData | keyvalue">
+        <ng-container *ngFor="let month of monthSortedData">
             <div>
                 <h1 class="text-2xl mb-4 font-semibold month-name" (click)="getMonthAnalysisData(month)">{{getMonthName(month.key)}}</h1>
                 <div class="pnl-grid">
