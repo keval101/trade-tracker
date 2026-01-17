@@ -51,6 +51,7 @@ export class TradesComponent implements OnInit {
         return dateB - dateA;
       });
       this.trades = trades;
+      console.log(this.trades);
       this.tradingAccuracy = this.calculateTotalDaysAndProfitableDays(this.trades)
       this.isLoading = false;
       this.streakData = this.countStreaks(trades);

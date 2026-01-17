@@ -89,6 +89,7 @@ export class AddTradeComponent implements OnInit{
           this.addSheetEntry();
         } else {
           this.updateTrade(payload);
+          this.addSheetEntry(this.config.data.selectedRow.tradeId);
         }
       }
       

@@ -1,4 +1,7 @@
 import { Component } from '@angular/core';
+import { Router } from '@angular/router';
+import { AuthService } from '../../service/auth.service';
+import { MessageService } from 'primeng/api';
 
 @Component({
   selector: 'app-sidenav',
@@ -6,6 +9,12 @@ import { Component } from '@angular/core';
   styleUrls: ['./sidenav.component.scss']
 })
 export class SidenavComponent {
+
+  constructor(
+    private authService: AuthService,
+    private router: Router,
+    private messageService: MessageService
+  ) {}
 
   navigations = [
     {
@@ -49,4 +58,21 @@ export class SidenavComponent {
       icon: '/assets/icons/sleeping-facecom.svg'
     }
   ]
+
+  logout() {
+    this.authService.signOut().then(() => {
+      this.router.navigate(['/login']);
+      this.messageService.add({ 
+        severity: 'success', 
+        summary: 'Logged Out', 
+        detail: 'Logged Out Successfully!' 
+      });
+    }).catch((error) => {
+      this.messageService.add({ 
+        severity: 'error', 
+        summary: 'Logout Error', 
+        detail: 'Failed to logout. Please try again.' 
+      });
+    });
+  }
 }

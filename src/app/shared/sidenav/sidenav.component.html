@@ -18,6 +18,15 @@
                    <span class="ml-3">{{ item.name }}</span>
                </a>
            </li>
+           <li class="mt-4 pt-4 border-t border-gray-200 dark:border-gray-700">
+               <button (click)="logout()" class="flex nav-item items-center w-full p-2 text-base font-normal text-gray-900 rounded-lg transition duration-75 hover:bg-gray-100 dark:hover:bg-gray-700 dark:text-white group">
+                    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path opacity="0.5" d="M12 20C7.58172 20 4 16.4183 4 12C4 7.58172 7.58172 4 12 4" stroke="#1C274C" stroke-width="1.5" stroke-linecap="round"/>
+                        <path d="M10 12H20M20 12L17 9M20 12L17 15" stroke="#1C274C" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                   <span class="ml-3">Logout</span>
+               </button>
+           </li>
        </ul>
    </div>
  </aside>

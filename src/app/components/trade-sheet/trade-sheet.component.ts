@@ -67,6 +67,7 @@ export class TradeSheetComponent implements OnInit{
       });
       sheets.map((x, index) => x['number'] = index + 1)
       this.sheets = sheets;
+      console.log('sheets', this.sheets);
       this.shortSheets();
     })
   }
@@ -127,7 +128,7 @@ export class TradeSheetComponent implements OnInit{
       width: window.innerWidth < 992 ? '80vw' : '30vw',
       // data: sheet,
       data: {sheet, isSheetEntry: true},
-      header: 'Sheet Entry'
+      header: 'Add Trade'
     })
   }
 
@@ -136,7 +137,7 @@ export class TradeSheetComponent implements OnInit{
       this.dialogService.open(AddTradeComponent, {
         width: window.innerWidth < 992 ? '80vw' : '30vw',
         data: {sheet, selectedRow, isSheetEntry: true, isEdit: true},
-        header: 'Sheet Entry',
+        header: 'Edit Trade',
       })
     }
   }

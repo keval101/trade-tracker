@@ -42,20 +42,23 @@ export class DashboardComponent implements OnInit, OnDestroy{
     const textColor = documentStyle.getPropertyValue('--text-color');
 
     this.data = {
-        labels: ['Bank Nifty', 'Nifty', 'Fin Nifty', 'MidCap Nifty'],
+        labels: ['Bank Nifty', 'Nifty', 'Fin Nifty', 'MidCap Nifty', 'Sensex'],
         datasets: [
             {
-                data: [this.chartData.bank_nifty, this.chartData.nifty, this.chartData.fin_nifty, this.chartData.midcap_nifty] ,
+                data: [this.chartData.bank_nifty, this.chartData.nifty, this.chartData.fin_nifty, this.chartData.midcap_nifty, this.chartData.sensex] ,
                 backgroundColor: [
                   this.setColor(this.chartData.bank_nifty, documentStyle),
                   this.setColor(this.chartData.nifty, documentStyle),
                   this.setColor(this.chartData.fin_nifty, documentStyle),
-                  this.setColor(this.chartData.midcap_nifty, documentStyle)],
+                  this.setColor(this.chartData.midcap_nifty, documentStyle),
+                  this.setColor(this.chartData.sensex, documentStyle)
+                ],
                 hoverBackgroundColor: [
                   this.setColor(this.chartData.bank_nifty, documentStyle),
                   this.setColor(this.chartData.nifty, documentStyle),
                   this.setColor(this.chartData.fin_nifty, documentStyle),
-                  this.setColor(this.chartData.midcap_nifty, documentStyle)
+                  this.setColor(this.chartData.midcap_nifty, documentStyle),
+                  this.setColor(this.chartData.sensex, documentStyle)
                 ]
             }
         ]
@@ -99,6 +102,7 @@ export class DashboardComponent implements OnInit, OnDestroy{
         return dateA - dateB;
       });
       this.chartData = this.calculateMarketProfits(trades)
+      console.log('chartData', this.chartData);
       this.setChart();
       this.trades$.next(trades);
     })
@@ -161,6 +165,8 @@ export class DashboardComponent implements OnInit, OnDestroy{
       return documentStyle.getPropertyValue('--green-300');
     } else if(marketValue > 0) {
       return documentStyle.getPropertyValue('--green-200');
+    } else if(marketValue == 0) {
+      return documentStyle.getPropertyValue('--gray-500');
     }
   }
 
@@ -178,12 +184,13 @@ export class DashboardComponent implements OnInit, OnDestroy{
       this.trades$.subscribe((trades: any) => {
         const index = trades.findIndex(x => x.date == sheet.date)
         if(index >= 0) {
-          const tradeData = trades.slice(index, index + sheet.data.length)
-          tradeData['totalProfit'] = sheet.data.reduce((total, trade) =>{ 
-            return total + (+trade?.profit ?? 0) - (trade?.lose ?? 0)}, 0);
+          const tradeData = trades.slice(index, index + sheet.data.length);
+          tradeData['totalProfit'] = sheet.data.reduce((total, trade) => { 
+            return total + Number(trade?.profit) - Number(trade?.lose);
+          }, 0);
           tradeData['totalDays'] = sheet.days;
           tradeData['roi'] = sheet.roi;
-          tradeData['startingWeekCapital'] = sheet.capital
+          tradeData['startingWeekCapital'] = sheet.capital;
           this.groupedData.push(tradeData);
         }
       })
@@ -196,8 +203,11 @@ export class DashboardComponent implements OnInit, OnDestroy{
   setWeeklyData() {
     this.groupedData.map((x: any, index: number) => {
       if(x.length) {
-        const finalCapital = x[x.length - 1]?.isProfitable == true ? +x[x.length - 1].investment + +x[x.length - 1].profit - +x[x.length - 1].brokerage : +x[x.length - 1].investment - +x[x.length - 1].lose - +x[x.length - 1].brokerage;
-        const totalBrokerage = x.reduce((total, trade) => total + +trade.brokerage ?? 0, 0)
+        const lastTrade = x[x.length - 1];
+        const finalCapital = lastTrade?.isProfitable === true
+          ? +lastTrade.investment + +lastTrade.profit - +lastTrade.brokerage
+          : +lastTrade.investment - +lastTrade.lose - +lastTrade.brokerage;
+        const totalBrokerage = x.reduce((total, trade) => total + (+trade.brokerage || 0), 0);
         const object = {
           currentWeekInvestment: x.startingWeekCapital,
           currentWeekExpectedROI: x.roi,
