@@ -214,3 +214,276 @@ body {
 .custom-tooltip {
     @apply bg-slate-800 text-gray-100 border border-slate-700 rounded-lg shadow-xl;
 }
+
+/* PrimeNG Dialog Dark Theme Overrides */
+.p-dialog {
+    @apply bg-slate-800 border border-slate-700 rounded-xl shadow-2xl;
+    
+    .p-dialog-header {
+        @apply bg-slate-800 border-b border-slate-700 text-gray-100 rounded-t-xl px-6 py-4;
+        
+        .p-dialog-title {
+            @apply text-gray-100 font-semibold;
+        }
+        
+        .p-dialog-header-icons {
+            .p-dialog-header-icon {
+                @apply text-gray-400 hover:text-gray-200 hover:bg-slate-700 rounded-lg;
+                
+                &:focus {
+                    @apply ring-2 ring-blue-500/30;
+                }
+            }
+        }
+    }
+    
+    .p-dialog-content {
+        @apply bg-slate-800 text-gray-100 px-6 py-4;
+    }
+    
+    .p-dialog-footer {
+        @apply bg-slate-800 border-t border-slate-700 rounded-b-xl px-6 py-4;
+    }
+}
+
+/* PrimeNG Dialog Mask */
+.p-dialog-mask {
+    @apply bg-black/60 backdrop-blur-sm;
+}
+
+/* PrimeNG Calendar Dark Theme Overrides */
+.p-calendar {
+    .p-inputtext {
+        @apply bg-slate-800 border border-slate-600 text-gray-100 rounded-lg p-3;
+        
+        &:focus {
+            @apply border-blue-500 ring-2 ring-blue-500/20 outline-none;
+        }
+        
+        &::placeholder {
+            @apply text-gray-500;
+        }
+    }
+}
+
+.p-datepicker {
+    @apply bg-slate-800 border border-slate-700 rounded-xl shadow-xl text-gray-100;
+    
+    .p-datepicker-header {
+        @apply bg-slate-800 border-b border-slate-700 text-gray-100 rounded-t-xl;
+        
+        .p-datepicker-title {
+            @apply text-gray-100;
+            
+            .p-datepicker-month,
+            .p-datepicker-year {
+                @apply text-gray-100 hover:text-blue-400;
+            }
+        }
+        
+        .p-datepicker-prev,
+        .p-datepicker-next {
+            @apply text-gray-400 hover:text-gray-200 hover:bg-slate-700 rounded-lg;
+        }
+    }
+    
+    table {
+        th {
+            @apply text-gray-400 text-xs font-semibold;
+        }
+        
+        td {
+            > span {
+                @apply text-gray-300 hover:bg-slate-700 rounded-lg;
+                
+                &.p-highlight {
+                    @apply bg-blue-600 text-white;
+                }
+                
+                &.p-disabled {
+                    @apply text-gray-600;
+                }
+            }
+        }
+    }
+    
+    .p-datepicker-today {
+        > span {
+            @apply bg-slate-700 text-gray-100;
+        }
+    }
+    
+    .p-timepicker {
+        @apply border-t border-slate-700 text-gray-100;
+        
+        span {
+            @apply text-gray-100;
+        }
+        
+        button {
+            @apply text-gray-400 hover:text-gray-200 hover:bg-slate-700;
+        }
+    }
+    
+    .p-monthpicker,
+    .p-yearpicker {
+        .p-monthpicker-month,
+        .p-yearpicker-year {
+            @apply text-gray-300 hover:bg-slate-700 rounded-lg;
+            
+            &.p-highlight {
+                @apply bg-blue-600 text-white;
+            }
+        }
+    }
+}
+
+/* PrimeNG Dropdown Dark Theme Overrides */
+.p-dropdown {
+    @apply bg-slate-800 border border-slate-600 rounded-lg;
+    
+    .p-dropdown-label {
+        @apply text-gray-100;
+    }
+    
+    .p-dropdown-trigger {
+        @apply text-gray-400;
+    }
+    
+    &:hover {
+        @apply border-slate-500;
+    }
+    
+    &.p-focus {
+        @apply border-blue-500 ring-2 ring-blue-500/20;
+    }
+}
+
+.p-dropdown-panel {
+    @apply bg-slate-800 border border-slate-700 rounded-lg shadow-xl;
+    
+    .p-dropdown-items {
+        .p-dropdown-item {
+            @apply text-gray-300 hover:bg-slate-700;
+            
+            &.p-highlight {
+                @apply bg-blue-600/20 text-blue-400;
+            }
+        }
+    }
+}
+
+/* PrimeNG InputText Dark Theme */
+.p-inputtext {
+    @apply bg-slate-800 border border-slate-600 text-gray-100;
+    
+    &:focus {
+        @apply border-blue-500 ring-2 ring-blue-500/20 outline-none;
+    }
+    
+    &::placeholder {
+        @apply text-gray-500;
+    }
+}
+
+/* PrimeNG Button overrides */
+.p-button {
+    &.p-button-text {
+        @apply text-gray-400 hover:text-gray-200 hover:bg-slate-700;
+    }
+}
+
+/* PrimeNG Toast Dark Theme */
+.p-toast {
+    .p-toast-message {
+        @apply bg-slate-800 border border-slate-700 rounded-lg shadow-xl;
+        
+        .p-toast-message-content {
+            @apply text-gray-100;
+        }
+        
+        &.p-toast-message-success {
+            @apply border-l-4 border-l-emerald-500;
+        }
+        
+        &.p-toast-message-error {
+            @apply border-l-4 border-l-red-500;
+        }
+        
+        &.p-toast-message-warn {
+            @apply border-l-4 border-l-yellow-500;
+        }
+        
+        &.p-toast-message-info {
+            @apply border-l-4 border-l-blue-500;
+        }
+    }
+}
+
+/* PrimeNG Checkbox Dark Theme */
+.p-checkbox {
+    .p-checkbox-box {
+        @apply bg-slate-800 border border-slate-600;
+        
+        &.p-highlight {
+            @apply bg-blue-600 border-blue-600;
+        }
+        
+        &:hover {
+            @apply border-slate-500;
+        }
+    }
+}
+
+/* PrimeNG InputSwitch Dark Theme */
+.p-inputswitch {
+    .p-inputswitch-slider {
+        @apply bg-slate-600;
+        
+        &:before {
+            @apply bg-gray-300;
+        }
+    }
+    
+    &.p-inputswitch-checked {
+        .p-inputswitch-slider {
+            @apply bg-blue-600;
+        }
+    }
+}
+
+/* PrimeNG ConfirmDialog Dark Theme */
+.p-confirm-dialog {
+    @apply bg-slate-800 border border-slate-700 rounded-xl;
+    
+    .p-dialog-content {
+        @apply text-gray-100;
+    }
+}
+
+/* Native Select Dark Theme */
+select.form-input {
+    @apply bg-slate-800 border border-slate-600 text-gray-100 rounded-lg block w-full p-3;
+    
+    option {
+        @apply bg-slate-800 text-gray-100;
+    }
+    
+    &:focus {
+        @apply border-blue-500 ring-2 ring-blue-500/20 outline-none;
+    }
+}
+
+/* Native Checkbox Dark Theme */
+input[type="checkbox"] {
+    @apply w-4 h-4 text-blue-600 bg-slate-700 border-slate-600 rounded focus:ring-blue-500 focus:ring-2;
+}
+
+/* PrimeNG Knob Dark Theme */
+.p-knob {
+    svg {
+        text {
+            fill: #e5e7eb !important;
+        }
+    }
+}
