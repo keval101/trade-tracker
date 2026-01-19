@@ -8,12 +8,12 @@
 
             <div *ngIf="!sheetEntryForm.value.isAddedFund && !sheetEntryForm.value.isWithdrawalFund">
                 <label for="profit" class="block mb-2 text-sm font-medium text-gray-300">Profit/Loss</label>
-                <input type="number" id="profit" class="form-input" placeholder="Enter profit (positive) or loss (negative)" required formControlName="profit" />
+                <input type="number" id="profit" class="form-input" placeholder="Enter profit (positive) or loss (negative)" required formControlName="profit" min="0"/>
             </div>
 
             <div *ngIf="sheetEntryForm.value.isAddedFund || sheetEntryForm.value.isWithdrawalFund">
                 <label for="fund" class="block mb-2 text-sm font-medium text-gray-300">Fund Amount</label>
-                <input type="number" id="fund" class="form-input" placeholder="Fund Amount" required formControlName="fund" />
+                <input type="number" id="fund" class="form-input" placeholder="Fund Amount" required formControlName="fund" min="0"/>
             </div>
         </div>
         <button type="submit"

@@ -56,11 +56,12 @@ export class TradesComponent implements OnInit {
       this.isLoading = false;
       this.streakData = this.countStreaks(trades);
 
-      const totalProfit = this.trades.reduce((total, current) => total + +current.profit, 0)
-      const totalLose = this.trades.reduce((total, current) => total + +current.lose, 0)
+      // Use Math.abs to handle any accidentally entered negative values
+      const totalProfit = this.trades.reduce((total, current) => total + Math.abs(+current.profit || 0), 0)
+      const totalLose = this.trades.reduce((total, current) => total + Math.abs(+current.lose || 0), 0)
       this.tradeOverview = {
-        totalTrades: this.trades.reduce((total, current) => total + current.totalTrades, 0),
-        brokerage: this.trades.reduce((total, current) => total + +current.brokerage, 0),
+        totalTrades: this.trades.reduce((total, current) => total + Math.abs(+current.totalTrades || 0), 0),
+        brokerage: this.trades.reduce((total, current) => total + Math.abs(+current.brokerage || 0), 0),
         profitLose: totalProfit - totalLose,
       }
 
@@ -144,5 +145,10 @@ export class TradesComponent implements OnInit {
     }
 
     return { profitableStreak, losingStreak };
+  }
+
+  // Helper method to get absolute value (handles negative values entered by mistake)
+  abs(value: number): number {
+    return Math.abs(value || 0);
   }
 }

@@ -13,7 +13,7 @@
 
             <div *ngIf="!stockForm.value.isSold">
                 <label for="buyPrice" class="block mb-2 text-sm font-medium text-gray-300">Buy Price</label>
-                <input formControlName="buyPrice" type="number" id="buyPrice" class="form-input" placeholder="Price per share" required (input)="setAmount()"/>
+                <input formControlName="buyPrice" type="number" id="buyPrice" class="form-input" placeholder="Price per share" required (input)="setAmount()" min="0"/>
             </div>
 
             <div>
@@ -28,7 +28,7 @@
 
             <div>
                 <label for="totalQuantity" class="block mb-2 text-sm font-medium text-gray-300">Total Quantity</label>
-                <input formControlName="totalQuantity" type="number" id="totalQuantity" class="form-input" placeholder="Number of shares" required (input)="setAmount()"/>
+                <input formControlName="totalQuantity" type="number" id="totalQuantity" class="form-input" placeholder="Number of shares" required (input)="setAmount()" min="0"/>
             </div>
 
             <div class="flex items-center">
@@ -38,17 +38,17 @@
 
             <div *ngIf="stockForm.value.isSold">
                 <label for="sellPrice" class="block mb-2 text-sm font-medium text-gray-300">Sell Price</label>
-                <input formControlName="sellPrice" type="number" id="sellPrice" class="form-input" placeholder="Sell price per share" required (input)="setAmount()"/>
+                <input formControlName="sellPrice" type="number" id="sellPrice" class="form-input" placeholder="Sell price per share" required (input)="setAmount()" min="0"/>
             </div>
 
             <div *ngIf="stockForm.value.isSold">
                 <label for="totalSellAmount" class="block mb-2 text-sm font-medium text-gray-300">Total Sell Amount</label>
-                <input formControlName="totalSellAmount" type="number" id="totalSellAmount" class="form-input bg-slate-700 cursor-not-allowed" placeholder="Total Sell Amount" required readonly/>
+                <input formControlName="totalSellAmount" type="number" id="totalSellAmount" class="form-input bg-slate-700 cursor-not-allowed" placeholder="Total Sell Amount" required readonly min="0"/>
             </div>
 
             <div>
                 <label for="totalBuyAmount" class="block mb-2 text-sm font-medium text-gray-300">Total Buy Amount</label>
-                <input formControlName="totalBuyAmount" type="number" id="totalBuyAmount" class="form-input bg-slate-700 cursor-not-allowed" placeholder="Total Buy Amount" required readonly/>
+                <input formControlName="totalBuyAmount" type="number" id="totalBuyAmount" class="form-input bg-slate-700 cursor-not-allowed" placeholder="Total Buy Amount" required readonly min="0"/>
             </div>
         </div>
         <button type="submit" 

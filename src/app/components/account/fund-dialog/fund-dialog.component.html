@@ -8,7 +8,7 @@
 
             <div>
                 <label for="fund" class="block mb-2 text-sm font-medium text-gray-300">Amount</label>
-                <input formControlName="fund" type="number" id="fund" class="form-input" placeholder="Enter amount" />
+                <input formControlName="fund" type="number" id="fund" class="form-input" placeholder="Enter amount" min="0"/>
             </div>
         </div>
         <button type="submit" [disabled]="fundForm.invalid" 

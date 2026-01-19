@@ -83,20 +83,42 @@ export class TradeSheetComponent implements OnInit{
     for (let i = 1; i <= sheet.days; i++) {
       const profit = (capital * sheet.roi) / 100;
       const index = i - 1;
-        const startingCapital = i == 1 ? +capital : +data[index - 1]?.finalCapital;
-        const object = {
-          capital: capital,
-          expectedProfit: profit,
-          profit: sheet.data[index]?.profit ? sheet.data[index].profit : sheet.data[index]?.lose ? -sheet.data[index]?.lose : 0,
-          date: sheet.data[index]?.date ? sheet.data[index].date : '-',
-          startingCapital: startingCapital,
-          finalCapital: sheet.data[index]?.profit ? startingCapital + +sheet.data[index]?.profit : sheet.data.length ? data[index - 1].finalCapital : 0
-        }
-        capital += profit;
-        if(sheet.data[index]?.tradeId) {
-          object['tradeId'] = sheet.data[index].tradeId
-        }
-        data.push(object)
+      const startingCapital = i == 1 ? +capital : +data[index - 1]?.finalCapital;
+      
+      // Calculate actual profit/loss for this entry
+      let actualProfitLoss = 0;
+      if (sheet.data[index]?.profit) {
+        actualProfitLoss = +sheet.data[index].profit;
+      } else if (sheet.data[index]?.lose) {
+        actualProfitLoss = -sheet.data[index].lose;
+      }
+      
+      // Calculate final capital based on profit or loss
+      let finalCapital = startingCapital;
+      if (sheet.data[index]) {
+        // Entry exists - add profit or subtract loss
+        finalCapital = startingCapital + actualProfitLoss;
+      } else if (index > 0 && data[index - 1]) {
+        // No entry yet, carry forward previous final capital
+        finalCapital = data[index - 1].finalCapital;
+      } else if (index === 0) {
+        // First day with no entry
+        finalCapital = startingCapital;
+      }
+      
+      const object = {
+        capital: capital,
+        expectedProfit: profit,
+        profit: actualProfitLoss,
+        date: sheet.data[index]?.date ? sheet.data[index].date : '-',
+        startingCapital: startingCapital,
+        finalCapital: finalCapital
+      }
+      capital += profit;
+      if(sheet.data[index]?.tradeId) {
+        object['tradeId'] = sheet.data[index].tradeId
+      }
+      data.push(object)
     }
     return data;
   }

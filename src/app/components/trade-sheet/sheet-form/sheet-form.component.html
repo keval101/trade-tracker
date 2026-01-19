@@ -8,17 +8,17 @@
 
             <div>
                 <label for="starting_capital" class="block mb-2 text-sm font-medium text-gray-300">Starting Capital</label>
-                <input type="number" id="starting_capital" class="form-input" placeholder="Starting Capital" required formControlName="capital" />
+                <input type="number" id="starting_capital" class="form-input" placeholder="Starting Capital" required formControlName="capital" min="0"/>
             </div>
 
             <div>
                 <label for="expected_roi" class="block mb-2 text-sm font-medium text-gray-300">Expected ROI (%)</label>
-                <input type="number" id="expected_roi" class="form-input" placeholder="Expected ROI" required formControlName="roi" />
+                <input type="number" id="expected_roi" class="form-input" placeholder="Expected ROI" required formControlName="roi" min="0"/>
             </div>
 
             <div>
                 <label for="number_of_days" class="block mb-2 text-sm font-medium text-gray-300">Number Of Days</label>
-                <input type="number" id="number_of_days" class="form-input" placeholder="Number Of Days" required formControlName="days" />
+                <input type="number" id="number_of_days" class="form-input" placeholder="Number Of Days" required formControlName="days" min="1"/>
             </div>
         </div>
         <button type="submit"

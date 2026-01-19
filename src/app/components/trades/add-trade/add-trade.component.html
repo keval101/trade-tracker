@@ -8,7 +8,7 @@
 
             <div>
                 <label for="total_trades" class="block mb-2 text-sm font-medium text-gray-300">Total Trades</label>
-                <input type="number" id="total_trades" class="form-input" placeholder="Total Trades" required formControlName="totalTrades"/>
+                <input type="number" id="total_trades" class="form-input" placeholder="Total Trades" required formControlName="totalTrades" min="0"/>
             </div>
 
             <div>
@@ -25,7 +25,7 @@
 
             <div>
                 <label for="investment" class="block mb-2 text-sm font-medium text-gray-300">Investment</label>
-                <input formControlName="investment" type="number" id="investment" class="form-input" placeholder="Investment" required />
+                <input formControlName="investment" type="number" id="investment" class="form-input" placeholder="Investment" required min="0"/>
             </div>
 
             <div class="flex items-center">
@@ -35,17 +35,17 @@
 
             <div *ngIf="tradeForm.value.isProfitable">
                 <label for="profit" class="block mb-2 text-sm font-medium text-gray-300">Profit</label>
-                <input formControlName="profit" type="number" id="profit" class="form-input" placeholder="Profit" required />
+                <input formControlName="profit" type="number" id="profit" class="form-input" placeholder="Profit" required min="0"/>
             </div>
 
             <div *ngIf="!tradeForm.value.isProfitable">
                 <label for="lose" class="block mb-2 text-sm font-medium text-gray-300">Loss</label>
-                <input formControlName="lose" type="number" id="lose" class="form-input" placeholder="Loss" required />
+                <input formControlName="lose" type="number" id="lose" class="form-input" placeholder="Loss" required min="0"/>
             </div>
 
             <div>
                 <label for="brokerage" class="block mb-2 text-sm font-medium text-gray-300">Brokerage</label>
-                <input formControlName="brokerage" type="number" id="brokerage" class="form-input" placeholder="Brokerage" required />
+                <input formControlName="brokerage" type="number" id="brokerage" class="form-input" placeholder="Brokerage" required min="0"/>
             </div>
         </div>
         <button type="submit" 

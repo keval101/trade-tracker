@@ -83,25 +83,25 @@
                                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 10l7-7m0 0l7 7m-7-7v18"></path>
                                         </svg>
-                                        +₹{{trade.profit | number}}
+                                        +₹{{abs(trade.profit) | number}}
                                     </span>
                                     <span class="lose flex items-center gap-1" *ngIf="!trade.isProfitable">
                                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path>
                                         </svg>
-                                        -₹{{trade.lose | number}}
+                                        -₹{{abs(trade.lose) | number}}
                                     </span>
                                 </td>
                                 <td class="text-gray-400">
-                                    ₹{{trade.brokerage | number}}
+                                    ₹{{abs(trade.brokerage) | number}}
                                 </td>
                                 <td>
-                                    <span class="profit" *ngIf="trade.isProfitable">+{{((trade.profit / trade.investment) * 100).toFixed(2)}}%</span>
-                                    <span class="lose" *ngIf="!trade.isProfitable">-{{((trade.lose / trade.investment) * 100).toFixed(2)}}%</span>
+                                    <span class="profit" *ngIf="trade.isProfitable">+{{((abs(trade.profit) / abs(trade.investment)) * 100).toFixed(2)}}%</span>
+                                    <span class="lose" *ngIf="!trade.isProfitable">-{{((abs(trade.lose) / abs(trade.investment)) * 100).toFixed(2)}}%</span>
                                 </td>
                                 <td>
-                                    <span class="profit font-semibold" *ngIf="trade.isProfitable">₹{{(+trade.investment + +trade.profit - +trade.brokerage) | number }}</span>
-                                    <span class="lose font-semibold" *ngIf="!trade.isProfitable">₹{{(+trade.investment - +trade.lose - +trade.brokerage) | number }}</span>
+                                    <span class="profit font-semibold" *ngIf="trade.isProfitable">₹{{(abs(trade.investment) + abs(trade.profit) - abs(trade.brokerage)) | number }}</span>
+                                    <span class="lose font-semibold" *ngIf="!trade.isProfitable">₹{{(abs(trade.investment) - abs(trade.lose) - abs(trade.brokerage)) | number }}</span>
                                 </td>
                                 <td class="text-right">
                                     <div class="flex items-center justify-end gap-2">

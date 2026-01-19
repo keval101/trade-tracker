@@ -43,24 +43,30 @@ export class AddTradeComponent implements OnInit{
       this.tradeForm.get('market').setValue(preferredMarket);
     }
     if(this.config.data.trade) {
+      // Editing existing trade - use the trade's isProfitable value
       let date = this.config.data.trade.date.split('/');
       date = `${date[1]}/${date[0]}/${date[2]}`;
       this.config.data.trade.date = this.datePipe.transform(new Date(date), 'dd/MM/yyyy');
       this.tradeForm.patchValue(this.config.data.trade)
       this.tradeForm.get('isProfitable').setValue(this.config.data.trade.isProfitable ? true : false)
     } else {
-      this.tradeForm.get('isProfitable').setValue(this.config.data.isProfitableTrader)
+      // New trade - default to loss (isProfitable = false)
+      this.tradeForm.get('isProfitable').setValue(false)
     }
 
     if(this.config.data.sheet) {
-      const data = this.config.data.selectedRow ? this.config.data.sheet.data.find(x => x.date === this.config.data.selectedRow.date) : {};
+      const data = this.config.data.selectedRow ? this.config.data.sheet.data.find(x => x.date === this.config.data.selectedRow.date) : null;
       if(this.config.data.selectedRow && data) {
+        // Editing existing sheet entry - use the entry's isProfitable value
         let date = data.date.split('/');
         date = `${date[1]}/${date[0]}/${date[2]}`;
         data.date = this.datePipe.transform(new Date(date), 'dd/MM/yyyy');
         this.tradeForm.patchValue(data)
+        this.tradeForm.get('isProfitable').setValue(data.isProfitable ? true : false)
+      } else {
+        // New sheet entry - default to loss (isProfitable = false)
+        this.tradeForm.get('isProfitable').setValue(false)
       }
-      this.tradeForm.get('isProfitable').setValue(data.isProfitable ? true : false)
     }
 
   }

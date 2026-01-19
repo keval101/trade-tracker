@@ -15,11 +15,11 @@
                 <form class="space-y-4" [formGroup]="stoplossForm">
                     <div>
                         <label for="sl_quantity" class="block mb-2 text-sm font-medium text-gray-300">Total Quantity</label>
-                        <input type="number" name="sl_quantity" id="sl_quantity" class="form-input" placeholder="Enter total quantity" formControlName="quantity">
+                        <input type="number" name="sl_quantity" id="sl_quantity" class="form-input" placeholder="Enter total quantity" formControlName="quantity" min="0">
                     </div>
                     <div>
                         <label for="sl_amount" class="block mb-2 text-sm font-medium text-gray-300">Price per share</label>
-                        <input type="number" name="sl_amount" id="sl_amount" class="form-input" placeholder="Enter price" formControlName="amount">
+                        <input type="number" name="sl_amount" id="sl_amount" class="form-input" placeholder="Enter price" formControlName="amount" min="0">
                     </div>
                     <div>
                         <label for="stoploss" class="block mb-2 text-sm font-medium text-gray-300">Stop Loss %</label>
@@ -27,7 +27,7 @@
                             <div class="absolute m-0.5 bg-slate-700 inset-y-0 start-0 top-0 flex items-center px-3.5 rounded-s-md pointer-events-none text-gray-400">
                                 %
                             </div>
-                            <input type="number" name="stoploss" id="stoploss" class="form-input ps-14 mb-2" placeholder="Enter percentage" formControlName="stoploss">
+                            <input type="number" name="stoploss" id="stoploss" class="form-input ps-14 mb-2" placeholder="Enter percentage" formControlName="stoploss" min="0">
                         </div>
                         <div class="grid grid-cols-3 gap-3">
                             <div class="sl-option cursor-pointer px-4 text-red-400 font-semibold py-2 rounded-lg flex justify-center items-center transition-colors"
@@ -66,11 +66,11 @@
                 <form class="space-y-4" [formGroup]="targetForm">
                     <div>
                         <label for="tgt_quantity" class="block mb-2 text-sm font-medium text-gray-300">Total Quantity</label>
-                        <input type="number" name="tgt_quantity" id="tgt_quantity" class="form-input" placeholder="Enter total quantity" formControlName="quantity">
+                        <input type="number" name="tgt_quantity" id="tgt_quantity" class="form-input" placeholder="Enter total quantity" formControlName="quantity" min="0">
                     </div>
                     <div>
                         <label for="tgt_amount" class="block mb-2 text-sm font-medium text-gray-300">Price per share</label>
-                        <input type="number" name="tgt_amount" id="tgt_amount" class="form-input" placeholder="Enter price" formControlName="amount">
+                        <input type="number" name="tgt_amount" id="tgt_amount" class="form-input" placeholder="Enter price" formControlName="amount" min="0">
                     </div>
                     <div>
                         <label for="target" class="block mb-2 text-sm font-medium text-gray-300">Target %</label>
@@ -78,7 +78,7 @@
                             <div class="absolute m-0.5 bg-slate-700 inset-y-0 start-0 top-0 flex items-center px-3.5 rounded-s-md pointer-events-none text-gray-400">
                                 %
                             </div>
-                            <input type="number" name="target" id="target" class="form-input ps-14 mb-2" placeholder="Enter percentage" formControlName="target">
+                            <input type="number" name="target" id="target" class="form-input ps-14 mb-2" placeholder="Enter percentage" formControlName="target" min="0">
                         </div>
                         <div class="grid grid-cols-3 gap-3">
                             <div class="tgt-option cursor-pointer px-4 text-emerald-400 font-semibold py-2 rounded-lg flex justify-center items-center transition-colors"
