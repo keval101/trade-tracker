@@ -1,25 +1,35 @@
+/* Analytics/Overview Page - Trading Platform Theme */
+
 .pnl-grid {
     display: grid;
-    grid-template-columns: 20px 20px 20px 20px 20px 20px 20px;
-    grid-template-rows: 20px 20px 20px 20px 20px 20px 20px;
-    column-gap: 10px;
-    row-gap: 10px;
+    grid-template-columns: repeat(7, 24px);
+    grid-template-rows: repeat(7, 24px);
+    column-gap: 8px;
+    row-gap: 8px;
+    
     &-box {
-        width: 20px;
-        height: 20px;
-        border-radius: 3px;
+        width: 24px;
+        height: 24px;
+        border-radius: 4px;
+        transition: all 0.2s ease;
+        cursor: pointer;
+        
+        &:hover {
+            transform: scale(1.15);
+        }
     }
 }
 
 .custom-tooltip.p-tooltip .p-tooltip-text {
-    background-color: #e8e8e8 !important;
+    @apply bg-slate-800 text-gray-100 border border-slate-700;
 }
 
 .month-name {
+    @apply text-gray-300;
     transition: all 0.2s ease-in;
 
     &:hover {
-        @apply text-blue-500 cursor-pointer;
+        @apply text-blue-400 cursor-pointer;
         transition: all 0.2s ease-in;
     }
 }
@@ -34,42 +44,50 @@
 
 
 .streaks {
-    @apply mt-12;
+    @apply mt-8;
 
     &__item  {
-        @apply px-8;
+        @apply px-6 py-4 bg-slate-800/50 rounded-xl border border-slate-700/50;
 
         @media screen and (max-width: 768px) {
-            @apply px-0 py-2;
+            @apply px-4 py-3;
         }
 
         &:not(:last-child) {
-            @apply border-r border-gray-200;
+            @apply border-r-0;
 
             @media screen and (max-width: 768px) {
-                @apply border-r-0 border-b;
+                @apply border-b-0;
             }
-        }
-
-        &:first-child {
-            @apply pl-0
         }
     }
 
     @media screen and (max-width: 768px) {
-        @apply flex-col gap-2;
+        @apply flex-col gap-3;
     }
 }
+
 .p-knob {
     opacity: 1;
 }
 
 .p-knob-range {
-    @apply stroke-red-500;
+    @apply stroke-red-500/50;
     transition: all 0.2s ease-in
 }
 
 .p-knob-value {
-    @apply stroke-green-500;
+    @apply stroke-emerald-500;
     transition: all 0.2s ease-in
+}
+
+/* Override PrimeNG toast for dark theme */
+::ng-deep .p-toast {
+    .p-toast-message {
+        @apply bg-slate-800 border-slate-700;
+        
+        .p-toast-message-content {
+            @apply text-gray-100;
+        }
+    }
 }

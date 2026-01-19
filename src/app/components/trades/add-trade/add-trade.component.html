@@ -1,60 +1,57 @@
-            <!-- Modal body -->
-            <div class="trade">
-                <form class="space-y-4" action="#">
-
-                    <form [formGroup]="tradeForm" (submit)="addTrade()">
-                        <div class="grid gap-6 mb-6">
-
-                            <div>
-                                <label for="last_name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Date</label>
-                                <p-calendar formControlName="date" appendTo="body" dateFormat="dd/mm/yy" placeholder="Select Date"></p-calendar>
-                            </div>
-
-                            <div>
-                                <label for="total_trades" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Total Trades</label>
-                                <input type="number" id="total_trades" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Total Trades" required formControlName="totalTrades"/>
-                            </div>
-
-                            <div>
-                                <label for="market" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Market</label>
-                                <select formControlName="market" id="market" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                                    <option selected>Choose a Market</option>
-                                    <option value="Bank Nifty">Bank Nifty</option>
-                                    <option value="Nifty">Nifty</option>
-                                    <option value="Fin Nifty">Fin Nifty</option>
-                                    <option value="MidCap Nifty">MidCap Nifty</option>
-                                    <option value="Sensex">Sensex</option>
-                                </select>
-                            </div>
-
-                            <div>
-                                <label for="investment" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Investment</label>
-                                <input formControlName="investment" type="number" id="investment" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Investment" required />
-                            </div>
-
-                            <div>
-                                <input id="default-checkbox" type="checkbox" value="" formControlName="isProfitable" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
-                                <label for="default-checkbox" class="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">Profitable Trade</label>
-                            </div>
-
-                            <div *ngIf="tradeForm.value.isProfitable">
-                                <label for="profit" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Profit</label>
-                                <input formControlName="profit" type="number" id="profit" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Profit" required />
-                            </div>
-
-                            <div *ngIf="!tradeForm.value.isProfitable">
-                                <label for="lose" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Lose</label>
-                                <input formControlName="lose" type="number" id="lose" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Lose" required />
-                            </div>
-
-                            <div>
-                                <label for="brokerage" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Brokerage</label>
-                                <input formControlName="brokerage" type="number" id="brokerage" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Brokerage" required />
-                            </div>
-
-                        </div>
-                        <button type="submit" [ngClass]="{'bg-blue-400 cursor-not-allowed': tradeForm.invalid, 'bg-blue-700 hover:bg-blue-800' : !tradeForm.invalid }" class="text-white focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Submit</button>
-                    </form>
-                    
-                </form>
+<div class="trade">
+    <form [formGroup]="tradeForm" (submit)="addTrade()">
+        <div class="grid gap-5 mb-6">
+            <div>
+                <label for="date" class="block mb-2 text-sm font-medium text-gray-300">Date</label>
+                <p-calendar formControlName="date" appendTo="body" dateFormat="dd/mm/yy" placeholder="Select Date" styleClass="w-full"></p-calendar>
             </div>
+
+            <div>
+                <label for="total_trades" class="block mb-2 text-sm font-medium text-gray-300">Total Trades</label>
+                <input type="number" id="total_trades" class="form-input" placeholder="Total Trades" required formControlName="totalTrades"/>
+            </div>
+
+            <div>
+                <label for="market" class="block mb-2 text-sm font-medium text-gray-300">Market</label>
+                <select formControlName="market" id="market" class="form-input">
+                    <option selected>Choose a Market</option>
+                    <option value="Bank Nifty">Bank Nifty</option>
+                    <option value="Nifty">Nifty</option>
+                    <option value="Fin Nifty">Fin Nifty</option>
+                    <option value="MidCap Nifty">MidCap Nifty</option>
+                    <option value="Sensex">Sensex</option>
+                </select>
+            </div>
+
+            <div>
+                <label for="investment" class="block mb-2 text-sm font-medium text-gray-300">Investment</label>
+                <input formControlName="investment" type="number" id="investment" class="form-input" placeholder="Investment" required />
+            </div>
+
+            <div class="flex items-center">
+                <input id="default-checkbox" type="checkbox" value="" formControlName="isProfitable" class="w-4 h-4 text-blue-600 bg-slate-700 border-slate-600 rounded focus:ring-blue-500 focus:ring-2">
+                <label for="default-checkbox" class="ms-2 text-sm font-medium text-gray-300">Profitable Trade</label>
+            </div>
+
+            <div *ngIf="tradeForm.value.isProfitable">
+                <label for="profit" class="block mb-2 text-sm font-medium text-gray-300">Profit</label>
+                <input formControlName="profit" type="number" id="profit" class="form-input" placeholder="Profit" required />
+            </div>
+
+            <div *ngIf="!tradeForm.value.isProfitable">
+                <label for="lose" class="block mb-2 text-sm font-medium text-gray-300">Loss</label>
+                <input formControlName="lose" type="number" id="lose" class="form-input" placeholder="Loss" required />
+            </div>
+
+            <div>
+                <label for="brokerage" class="block mb-2 text-sm font-medium text-gray-300">Brokerage</label>
+                <input formControlName="brokerage" type="number" id="brokerage" class="form-input" placeholder="Brokerage" required />
+            </div>
+        </div>
+        <button type="submit" 
+            [ngClass]="{'bg-blue-400/50 cursor-not-allowed': tradeForm.invalid, 'bg-blue-600 hover:bg-blue-700' : !tradeForm.invalid }" 
+            class="text-white focus:ring-4 focus:outline-none focus:ring-blue-500/30 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center transition-colors">
+            Submit
+        </button>
+    </form>
+</div>

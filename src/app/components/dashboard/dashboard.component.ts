@@ -38,42 +38,44 @@ export class DashboardComponent implements OnInit, OnDestroy{
   }
 
   setChart() {
-    const documentStyle = getComputedStyle(document.documentElement);
-    const textColor = documentStyle.getPropertyValue('--text-color');
+    const textColor = '#e5e7eb'; // gray-200 for dark theme
+    
+    // Distinct vibrant colors for each market
+    const chartColors = [
+      '#3b82f6', // blue-500 - Bank Nifty
+      '#10b981', // emerald-500 - Nifty  
+      '#f59e0b', // amber-500 - Fin Nifty
+      '#8b5cf6', // violet-500 - MidCap Nifty
+      '#ec4899', // pink-500 - Sensex
+    ];
 
     this.data = {
         labels: ['Bank Nifty', 'Nifty', 'Fin Nifty', 'MidCap Nifty', 'Sensex'],
         datasets: [
             {
-                data: [this.chartData.bank_nifty, this.chartData.nifty, this.chartData.fin_nifty, this.chartData.midcap_nifty, this.chartData.sensex] ,
-                backgroundColor: [
-                  this.setColor(this.chartData.bank_nifty, documentStyle),
-                  this.setColor(this.chartData.nifty, documentStyle),
-                  this.setColor(this.chartData.fin_nifty, documentStyle),
-                  this.setColor(this.chartData.midcap_nifty, documentStyle),
-                  this.setColor(this.chartData.sensex, documentStyle)
-                ],
-                hoverBackgroundColor: [
-                  this.setColor(this.chartData.bank_nifty, documentStyle),
-                  this.setColor(this.chartData.nifty, documentStyle),
-                  this.setColor(this.chartData.fin_nifty, documentStyle),
-                  this.setColor(this.chartData.midcap_nifty, documentStyle),
-                  this.setColor(this.chartData.sensex, documentStyle)
-                ]
+                data: [this.chartData.bank_nifty, this.chartData.nifty, this.chartData.fin_nifty, this.chartData.midcap_nifty, this.chartData.sensex],
+                backgroundColor: chartColors,
+                hoverBackgroundColor: chartColors,
+                borderColor: '#1e293b', // slate-800
+                borderWidth: 2
             }
         ]
     };
 
     this.options = {
-            plugins: {
-                legend: {
-                    labels: {
-                        usePointStyle: true,
-                        color: textColor
+        plugins: {
+            legend: {
+                labels: {
+                    usePointStyle: true,
+                    color: textColor,
+                    padding: 16,
+                    font: {
+                        size: 12
                     }
                 }
             }
-        };
+        }
+    };
   }
 
   calculateCapital(initialCapital, roi, days) {
@@ -150,23 +152,24 @@ export class DashboardComponent implements OnInit, OnDestroy{
     return marketProfits;
   }
 
-  setColor(marketValue: any, documentStyle:any) {
+  setColor(marketValue: any, documentStyle:any): string {
+    // Dark theme colors - more vibrant for better visibility
     if(marketValue < 0 && marketValue < -1000) {
-      return documentStyle.getPropertyValue('--red-500');
+      return '#dc2626'; // red-600
     } else if(marketValue < 0 && marketValue < -500) {
-      return documentStyle.getPropertyValue('--red-300');
+      return '#ef4444'; // red-500
     } else if (marketValue < 0 && marketValue < -1) {
-      return documentStyle.getPropertyValue('--red-200');
+      return '#f87171'; // red-400
     } else if(marketValue > 0 && marketValue > 3000) {
-      return documentStyle.getPropertyValue('--green-600');
+      return '#059669'; // emerald-600
     } else if(marketValue > 0 && marketValue > 2000) {
-      return documentStyle.getPropertyValue('--green-500');
+      return '#10b981'; // emerald-500
     } else if(marketValue > 0 && marketValue > 1000) {
-      return documentStyle.getPropertyValue('--green-300');
+      return '#34d399'; // emerald-400
     } else if(marketValue > 0) {
-      return documentStyle.getPropertyValue('--green-200');
-    } else if(marketValue == 0) {
-      return documentStyle.getPropertyValue('--gray-500');
+      return '#6ee7b7'; // emerald-300
+    } else {
+      return '#64748b'; // slate-500 (for zero or undefined)
     }
   }
 
@@ -226,25 +229,26 @@ export class DashboardComponent implements OnInit, OnDestroy{
 
   setBarCharts() {
     const documentStyle = getComputedStyle(document.documentElement);
-    const textColor = documentStyle.getPropertyValue('--text-color');
-    const textColorSecondary = documentStyle.getPropertyValue('--text-color-secondary');
-    const surfaceBorder = documentStyle.getPropertyValue('--surface-border');
+    // Dark theme colors
+    const textColor = '#e5e7eb'; // gray-200
+    const textColorSecondary = '#9ca3af'; // gray-400
+    const gridColor = 'rgba(71, 85, 105, 0.5)'; // slate-600 with opacity
+    
     const labels = this.weeklyROIData.map(x => `Week ${x.week}`);
     const weekInvestment = this.weeklyROIData.map(x => +x.currentWeekInvestment);
     const weekEndResult = this.weeklyROIData.map(x => +x.currentWeekOverallResult);
-    const weekEndResultBarColors = this.weeklyROIData.map(x => +x.currentWeekOverallResult > +x.currentWeekInvestment ? documentStyle.getPropertyValue('--green-500') : documentStyle.getPropertyValue('--red-500'))
+    const weekEndResultBarColors = this.weeklyROIData.map(x => +x.currentWeekOverallResult > +x.currentWeekInvestment ? '#10b981' : '#ef4444'); // emerald-500 / red-500
+    
     this.barData = {
         labels: labels,
         datasets: [
             {
-                // barThickness: 50,
                 label: 'Week Investment',
-                backgroundColor: documentStyle.getPropertyValue('--blue-500'),
-                borderColor: documentStyle.getPropertyValue('--blue-500'),
+                backgroundColor: '#3b82f6', // blue-500
+                borderColor: '#3b82f6',
                 data: weekInvestment
             },
             {
-                // barThickness: 50,
                 label: 'Week End Result',
                 backgroundColor: weekEndResultBarColors,
                 borderColor: weekEndResultBarColors,
@@ -272,7 +276,7 @@ export class DashboardComponent implements OnInit, OnDestroy{
                     }
                 },
                 grid: {
-                    color: surfaceBorder,
+                    color: gridColor,
                     drawBorder: false
                 }
             },
@@ -281,11 +285,10 @@ export class DashboardComponent implements OnInit, OnDestroy{
                     color: textColorSecondary
                 },
                 grid: {
-                    color: surfaceBorder,
+                    color: gridColor,
                     drawBorder: false
                 }
             }
-
         }
     };
   }

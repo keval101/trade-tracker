@@ -1,5 +1,39 @@
-.nav-item.active {
-    @apply text-blue-500 font-bold;
+.nav-item {
+    position: relative;
+    
+    &::before {
+        content: '';
+        position: absolute;
+        left: 0;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 3px;
+        height: 0;
+        background: linear-gradient(180deg, #3b82f6 0%, #8b5cf6 100%);
+        border-radius: 0 2px 2px 0;
+        transition: height 0.2s ease;
+    }
+    
+    &.active {
+        @apply text-gray-100 bg-slate-800/70;
+        
+        &::before {
+            height: 60%;
+        }
+        
+        .nav-icon {
+            @apply bg-blue-500/20;
+            
+            img {
+                filter: brightness(0) saturate(100%) invert(56%) sepia(79%) saturate(2476%) hue-rotate(196deg) brightness(101%) contrast(98%);
+                opacity: 1;
+            }
+        }
+    }
+    
+    &:hover::before {
+        height: 40%;
+    }
 }
 
 .menu-button {
@@ -7,4 +41,31 @@
     top: 0;
     right: 0;
     z-index: 9999;
+}
+
+/* Sidebar scrollbar */
+#default-sidebar::-webkit-scrollbar {
+    width: 4px;
+}
+
+#default-sidebar::-webkit-scrollbar-track {
+    @apply bg-transparent;
+}
+
+#default-sidebar::-webkit-scrollbar-thumb {
+    @apply bg-slate-700 rounded-full;
+}
+
+/* Market status pulse animation */
+@keyframes pulse {
+    0%, 100% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0.5;
+    }
+}
+
+.animate-pulse {
+    animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
 }

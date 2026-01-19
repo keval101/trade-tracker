@@ -3,37 +3,214 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Trading Platform CSS Variables */
+:root {
+    --primary-bg: #0d1117;
+    --secondary-bg: #161b22;
+    --card-bg: #21262d;
+    --border-color: #30363d;
+    --text-primary: #f0f6fc;
+    --text-secondary: #8b949e;
+    --accent-green: #3fb950;
+    --accent-green-light: #238636;
+    --accent-red: #f85149;
+    --accent-red-light: #da3633;
+    --accent-blue: #58a6ff;
+    --accent-purple: #a371f7;
+    --accent-yellow: #d29922;
+    --gradient-start: #1a1f2c;
+    --gradient-end: #0d1117;
+}
+
+/* Base styles */
+body {
+    @apply bg-slate-900 text-gray-100;
+    background: linear-gradient(135deg, var(--gradient-start) 0%, var(--gradient-end) 100%);
+    min-height: 100vh;
+}
 
 .p-progress-spinner {
     width: 40px;
     height: 40px;
 }
 
+/* Profit/Loss styling */
 .profit {
-    @apply text-green-600 font-semibold;
+    @apply text-emerald-400 font-semibold;
 }
 
 .lose {
-    @apply text-red-600 font-semibold;
+    @apply text-red-400 font-semibold;
 }
 
-/* width */
+/* Trading card styles */
+.trading-card {
+    @apply bg-slate-800/50 backdrop-blur-sm border border-slate-700/50 rounded-xl p-6 transition-all duration-300;
+    &:hover {
+        @apply border-slate-600/50;
+    }
+}
+
+/* Stat card styles */
+.stat-card {
+    @apply bg-gradient-to-br from-slate-800 to-slate-900 border border-slate-700/50 rounded-xl p-5;
+    &.positive {
+        @apply border-l-4 border-l-emerald-500;
+    }
+    &.negative {
+        @apply border-l-4 border-l-red-500;
+    }
+    &.neutral {
+        @apply border-l-4 border-l-blue-500;
+    }
+}
+
+/* Data table styles */
+.trading-table {
+    @apply w-full text-sm text-left text-gray-300;
+    
+    thead {
+        @apply text-xs uppercase bg-slate-800/80 text-gray-400;
+        
+        th {
+            @apply px-6 py-4 font-semibold tracking-wider;
+        }
+    }
+    
+    tbody {
+        tr {
+            @apply bg-slate-800/30 border-b border-slate-700/50 transition-colors duration-200;
+            
+            &:hover {
+                @apply bg-slate-700/30;
+            }
+            
+            td, th {
+                @apply px-6 py-4;
+            }
+        }
+    }
+}
+
+/* Button styles */
+.btn-primary {
+    @apply bg-blue-600 hover:bg-blue-700 text-white font-medium py-2.5 px-5 rounded-lg transition-all duration-200;
+}
+
+.btn-success {
+    @apply bg-emerald-600 hover:bg-emerald-700 text-white font-medium py-2.5 px-5 rounded-lg transition-all duration-200;
+}
+
+.btn-danger {
+    @apply bg-red-600 hover:bg-red-700 text-white font-medium py-2.5 px-5 rounded-lg transition-all duration-200;
+}
+
+/* Form input styles */
+.form-input {
+    @apply bg-slate-800 border border-slate-600 text-gray-100 rounded-lg block w-full p-3 transition-all duration-200;
+    &:focus {
+        @apply border-blue-500 ring-2 ring-blue-500/20 outline-none;
+    }
+    &::placeholder {
+        @apply text-gray-500;
+    }
+}
+
+/* Badge styles */
+.badge {
+    @apply px-3 py-1 text-xs font-semibold rounded-full;
+    &.badge-success {
+        @apply bg-emerald-500/20 text-emerald-400;
+    }
+    &.badge-danger {
+        @apply bg-red-500/20 text-red-400;
+    }
+    &.badge-info {
+        @apply bg-blue-500/20 text-blue-400;
+    }
+    &.badge-warning {
+        @apply bg-yellow-500/20 text-yellow-400;
+    }
+}
+
+/* Page title styles */
+.page-title {
+    @apply text-3xl font-bold text-white mb-8;
+    background: linear-gradient(135deg, #f0f6fc 0%, #8b949e 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+/* Scrollbar styles */
 ::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
+    width: 8px;
+    height: 8px;
 }
 
-/* Track */
 ::-webkit-scrollbar-track {
-    @apply rounded-xl; 
-}
- 
-/* Handle */
-::-webkit-scrollbar-thumb {
-  @apply bg-gray-300 rounded-xl; 
+    @apply bg-slate-900 rounded-xl;
 }
 
-/* Handle on hover */
+::-webkit-scrollbar-thumb {
+    @apply bg-slate-700 rounded-xl;
+}
+
 ::-webkit-scrollbar-thumb:hover {
-    @apply bg-gray-400;
+    @apply bg-slate-600;
+}
+
+/* Animation utilities */
+@keyframes pulse-glow {
+    0%, 100% {
+        opacity: 0.7;
+    }
+    50% {
+        opacity: 1;
+    }
+}
+
+.pulse-glow {
+    animation: pulse-glow 2s ease-in-out infinite;
+}
+
+/* Chart container styles */
+.chart-container {
+    @apply bg-slate-800/50 backdrop-blur-sm border border-slate-700/50 rounded-xl p-6;
+}
+
+/* Alert/Info box styles */
+.info-box {
+    @apply p-4 rounded-lg border;
+    &.info-box-blue {
+        @apply bg-blue-900/30 border-blue-700/50 text-blue-300;
+    }
+    &.info-box-green {
+        @apply bg-emerald-900/30 border-emerald-700/50 text-emerald-300;
+    }
+    &.info-box-red {
+        @apply bg-red-900/30 border-red-700/50 text-red-300;
+    }
+    &.info-box-yellow {
+        @apply bg-yellow-900/30 border-yellow-700/50 text-yellow-300;
+    }
+}
+
+/* Glassmorphism effect */
+.glass {
+    @apply bg-white/5 backdrop-blur-md border border-white/10 rounded-xl;
+}
+
+/* Market indicator styles */
+.market-up {
+    @apply text-emerald-400;
+}
+
+.market-down {
+    @apply text-red-400;
+}
+
+/* Tooltip custom styles */
+.custom-tooltip {
+    @apply bg-slate-800 text-gray-100 border border-slate-700 rounded-lg shadow-xl;
 }

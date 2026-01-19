@@ -1,123 +1,180 @@
-<div class="gap-20 block sm:flex">
-    <div class="w-full sm:w-1/3"> 
-        <h1 class="text-4xl font-semibold mb-10">Overview</h1>
-
-        <div class="overview">            
-            <ng-container *ngIf="selectedWeekData">
-                <div class="overview__week flex gap-4 py-5 justify-end">
-                    <button (click)="prevWeek()"><img width="12" height="12" src="./../../../assets/icons/left-arrow.svg" alt=""></button>
-                    <span>Week {{selectedWeek}}</span>
-                    <button (click)="nextWeek()"><img width="12" height="12" src="./../../../assets/icons/right-arrow.svg" alt=""></button>
-                </div>
-                <div class="overview__card">
-                    <p class="text-sm text-gray-400 mb-2">Current Week Investment</p>
-                    <div class="flex items-center justify-between">
-                        <p class="text-3xl">₹{{selectedWeekData?.currentWeekInvestment | number}}</p>
-                    </div>
-                </div>
-    
-                <div class="overview__card mt-4 pt-4 border-t border-gray-100">
-                    <p class="text-sm text-gray-400 mb-2">Goal Of Current Week Capital</p>
-                    <div class="flex items-center justify-between">
-                        <p class="text-3xl">₹{{selectedWeekData?.currentWeekExpectedResult | number}}</p>
-                    </div>
-                </div>
-    
-                <div class="overview__card mt-4 pt-4 border-t border-gray-100">
-                    <p class="text-sm text-gray-400 mb-2">Expected Daily ROI</p>
-                    <div class="flex items-center justify-between">
-                        <p class="text-3xl">{{selectedWeekData?.currentWeekExpectedROI}}%</p>
-                    </div>
-                </div>
-    
-                <div class="overview__card mt-4 pt-4 border-t border-gray-100">
-                    <p class="text-sm text-gray-400 mb-2">Week End Result</p>
-                    <div class="flex items-center justify-between">
-                        <p class="text-3xl">₹{{selectedWeekData?.currentWeekOverallResult | number}}</p>
-                        <div class="overview__card-growth flex gap-1 justify-between items-center"
-                        [class.profit]="calculatePercentage(selectedWeekData) > 0" 
-                        [class.lose]="calculatePercentage(selectedWeekData) < 0">
-                            <img src="./assets/icons/up-arrow.png" alt="Up Arrow" width="20" height="20" 
-                            *ngIf="calculatePercentage(selectedWeekData) > 0">
-                            <img src="./assets/icons/down-arrow.png" alt="Up Arrow" width="20" height="20" 
-                            *ngIf="calculatePercentage(selectedWeekData) < 0">
-                            {{calculatePercentage(selectedWeekData).toFixed(2)}}%
-                        </div>
-                    </div>
-                    <div class="flex w-fit items-center relative" *ngIf="calculatePercentage(selectedWeekData) >= 100"><span class="text-xl relative z-10 text-green-500">More than Doubled</span> <img src="./../../../assets/images/Party Popper.gif" class="celebration" alt="celebration" width="100" height="100"></div>
-                </div>
-            </ng-container>
-
-            <ng-container *ngIf="!selectedWeekData">
-                <p class="text-center">No Data Found</p>
-            </ng-container>
-
-            <div class="card mt-12 w-full flex justify-content-center chart" *ngIf="(trades$ | async).length">
-                <p-chart type="pie" [data]="data" [options]="options"></p-chart>
+<div class="dashboard">
+    <!-- Header Section -->
+    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8">
+        <div>
+            <h1 class="page-title mb-0">Dashboard</h1>
+            <p class="text-gray-500 text-sm mt-1">Track your trading performance</p>
+        </div>
+        <div class="flex items-center gap-3">
+            <div class="flex items-center gap-2 px-4 py-2 bg-slate-800/50 rounded-lg border border-slate-700/50">
+                <span class="w-2 h-2 bg-emerald-400 rounded-full animate-pulse"></span>
+                <span class="text-sm text-gray-400">Market Open</span>
             </div>
-
         </div>
     </div>
-    <div class="flex-grow">
-        <ng-container *ngIf="(trades$ | async).length">
-            <h1 class="text-4xl font-semibold mb-10">Recent Trades</h1>
-    
-            <div class="relative mt-4 overflow-x-auto shadow-sm">
-                <table
-                    class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
-                    <thead
-                        class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-                        <tr>
-                            <th scope="col" class="px-6 py-3">
-                                Date
-                            </th>
-                            <th scope="col" class="px-6 py-3">
-                                Capital
-                            </th>
-                            <th scope="col" class="px-6 py-3">
-                                Profit/Lose
-                            </th>
-                            <th scope="col" class="px-6 py-3">
-                                Brokerage
-                            </th>
-                            <th scope="col" class="px-6 py-3">
-                                Net
-                            </th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <ng-container *ngFor="let trade of this.groupedData[selectedWeek - 1]">
-                            <tr
-                                class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-                                <th scope="row"
-                                    class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                    {{trade.date}}
-                                </th>
-                                <td class="px-6 py-4">
-                                    {{trade.investment}}
-                                </td>
-                                <td class="px-6 py-4">
-                                    <span class="profit" *ngIf="trade.isProfitable">+{{trade.profit}}</span>
-                                    <span class="lose" *ngIf="!trade.isProfitable">-{{trade.lose}}</span>
-                                </td>
-                                <td class="px-6 py-4">
-                                    {{trade.brokerage}}
-                                </td>
-                                <td class="px-6 py-4">
-                                    <span class="profit" *ngIf="trade.isProfitable">{{+trade.investment + +trade.profit - +trade.brokerage}}</span>
-        
-                                    <span class="lose" *ngIf="!trade.isProfitable">{{+trade.investment - +trade.lose - +trade.brokerage}}</span>
-                                </td>
-                            </tr>
-                        </ng-container>
-                    </tbody>
-                </table>
-            </div>
 
-            <div class="card mt-12">
-                <p-chart type="bar" [data]="barData" [options]="barOptions"></p-chart>
-            </div>
-        </ng-container>
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        <!-- Left Column - Overview -->
+        <div class="lg:col-span-1">
+            <div class="trading-card">
+                <div class="flex items-center justify-between mb-6">
+                    <h2 class="text-lg font-semibold text-white">Overview</h2>
+                    <div class="flex items-center gap-2">
+                        <button (click)="prevWeek()" class="p-2 rounded-lg bg-slate-700/50 hover:bg-slate-600/50 transition-colors">
+                            <img width="12" height="12" src="./../../../assets/icons/left-arrow.svg" alt="Previous" class="invert opacity-60">
+                        </button>
+                        <span class="text-sm text-gray-400 min-w-[80px] text-center">Week {{selectedWeek}}</span>
+                        <button (click)="nextWeek()" class="p-2 rounded-lg bg-slate-700/50 hover:bg-slate-600/50 transition-colors">
+                            <img width="12" height="12" src="./../../../assets/icons/right-arrow.svg" alt="Next" class="invert opacity-60">
+                        </button>
+                    </div>
+                </div>
 
+                <ng-container *ngIf="selectedWeekData">
+                    <!-- Stats Cards -->
+                    <div class="space-y-4">
+                        <!-- Current Week Investment -->
+                        <div class="stat-card neutral">
+                            <p class="text-xs text-gray-500 uppercase tracking-wider mb-1">Current Week Investment</p>
+                            <p class="text-2xl font-bold text-white">₹{{selectedWeekData?.currentWeekInvestment | number}}</p>
+                        </div>
+
+                        <!-- Goal Capital -->
+                        <div class="stat-card neutral">
+                            <p class="text-xs text-gray-500 uppercase tracking-wider mb-1">Goal Capital</p>
+                            <p class="text-2xl font-bold text-white">₹{{selectedWeekData?.currentWeekExpectedResult | number}}</p>
+                        </div>
+
+                        <!-- Expected Daily ROI -->
+                        <div class="stat-card neutral">
+                            <p class="text-xs text-gray-500 uppercase tracking-wider mb-1">Expected Daily ROI</p>
+                            <p class="text-2xl font-bold text-blue-400">{{selectedWeekData?.currentWeekExpectedROI}}%</p>
+                        </div>
+
+                        <!-- Week End Result -->
+                        <div class="stat-card" [class.positive]="calculatePercentage(selectedWeekData) > 0" [class.negative]="calculatePercentage(selectedWeekData) < 0">
+                            <p class="text-xs text-gray-500 uppercase tracking-wider mb-1">Week End Result</p>
+                            <div class="flex items-center justify-between">
+                                <p class="text-2xl font-bold text-white">₹{{selectedWeekData?.currentWeekOverallResult | number}}</p>
+                                <div [class]="'flex items-center gap-1.5 px-3 py-1.5 rounded-full ' + (calculatePercentage(selectedWeekData) > 0 ? 'bg-emerald-500/20' : calculatePercentage(selectedWeekData) < 0 ? 'bg-red-500/20' : '')">
+                                    <svg *ngIf="calculatePercentage(selectedWeekData) > 0" class="w-4 h-4 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 10l7-7m0 0l7 7m-7-7v18"></path>
+                                    </svg>
+                                    <svg *ngIf="calculatePercentage(selectedWeekData) < 0" class="w-4 h-4 text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path>
+                                    </svg>
+                                    <span [class.text-emerald-400]="calculatePercentage(selectedWeekData) > 0" 
+                                          [class.text-red-400]="calculatePercentage(selectedWeekData) < 0"
+                                          class="text-sm font-semibold">
+                                        {{calculatePercentage(selectedWeekData).toFixed(2)}}%
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="flex w-fit items-center relative mt-2" *ngIf="calculatePercentage(selectedWeekData) >= 100">
+                                <span class="text-sm font-medium text-emerald-400">More than Doubled!</span>
+                                <img src="./../../../assets/images/Party Popper.gif" class="celebration" alt="celebration" width="60" height="60">
+                            </div>
+                        </div>
+                    </div>
+                </ng-container>
+
+                <ng-container *ngIf="!selectedWeekData">
+                    <div class="flex flex-col items-center justify-center py-12 text-center">
+                        <svg class="w-16 h-16 text-gray-600 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
+                        </svg>
+                        <p class="text-gray-500">No trading data available</p>
+                    </div>
+                </ng-container>
+
+                <!-- Pie Chart -->
+                <div class="chart-container mt-6" *ngIf="(trades$ | async).length">
+                    <p class="text-xs text-gray-500 uppercase tracking-wider mb-4">Performance Distribution</p>
+                    <p-chart type="pie" [data]="data" [options]="options"></p-chart>
+                </div>
+            </div>
+        </div>
+
+        <!-- Right Column - Recent Trades -->
+        <div class="lg:col-span-2">
+            <ng-container *ngIf="(trades$ | async).length">
+                <div class="trading-card">
+                    <div class="flex items-center justify-between mb-6">
+                        <h2 class="text-lg font-semibold text-white">Recent Trades</h2>
+                        <span class="badge badge-info">Week {{selectedWeek}}</span>
+                    </div>
+
+                    <div class="overflow-x-auto rounded-lg">
+                        <table class="trading-table">
+                            <thead>
+                                <tr>
+                                    <th scope="col">Date</th>
+                                    <th scope="col">Capital</th>
+                                    <th scope="col">P&L</th>
+                                    <th scope="col">Brokerage</th>
+                                    <th scope="col">Net</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <ng-container *ngFor="let trade of this.groupedData[selectedWeek - 1]">
+                                    <tr>
+                                        <th scope="row" class="font-medium text-gray-100 whitespace-nowrap">
+                                            {{trade.date}}
+                                        </th>
+                                        <td class="text-gray-300">
+                                            ₹{{trade.investment | number}}
+                                        </td>
+                                        <td>
+                                            <span class="profit flex items-center gap-1" *ngIf="trade.isProfitable">
+                                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 10l7-7m0 0l7 7m-7-7v18"></path>
+                                                </svg>
+                                                +₹{{trade.profit | number}}
+                                            </span>
+                                            <span class="lose flex items-center gap-1" *ngIf="!trade.isProfitable">
+                                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path>
+                                                </svg>
+                                                -₹{{trade.lose | number}}
+                                            </span>
+                                        </td>
+                                        <td class="text-gray-400">
+                                            ₹{{trade.brokerage | number}}
+                                        </td>
+                                        <td>
+                                            <span class="profit font-semibold" *ngIf="trade.isProfitable">
+                                                ₹{{(+trade.investment + +trade.profit - +trade.brokerage) | number}}
+                                            </span>
+                                            <span class="lose font-semibold" *ngIf="!trade.isProfitable">
+                                                ₹{{(+trade.investment - +trade.lose - +trade.brokerage) | number}}
+                                            </span>
+                                        </td>
+                                    </tr>
+                                </ng-container>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Bar Chart -->
+                <div class="chart-container mt-6">
+                    <p class="text-xs text-gray-500 uppercase tracking-wider mb-4">Weekly Performance Chart</p>
+                    <p-chart type="bar" [data]="barData" [options]="barOptions"></p-chart>
+                </div>
+            </ng-container>
+
+            <!-- Empty State -->
+            <ng-container *ngIf="!(trades$ | async).length">
+                <div class="trading-card flex flex-col items-center justify-center py-16 text-center">
+                    <div class="w-20 h-20 rounded-full bg-slate-700/50 flex items-center justify-center mb-6">
+                        <svg class="w-10 h-10 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-lg font-semibold text-white mb-2">No Trades Yet</h3>
+                    <p class="text-gray-500 max-w-sm">Start tracking your trades to see your performance analytics and insights here.</p>
+                </div>
+            </ng-container>
+        </div>
     </div>
 </div>

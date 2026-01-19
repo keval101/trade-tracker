@@ -1,90 +1,113 @@
-
-<div class="flex gap-8 flex-wrap">
-    <div class="flex gap-4 flex-wrap flex-col">
-        <div class="bg-red-50 p-4 border border-red-300 rounded-md w-fit">
-            <form class="space-y-4 md:space-y-6" [formGroup]="stoplossForm">
-                <div>
-                    <label for="total_quantity" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Total Quantity</label>
-                    <input type="number" name="total_quantity" id="total_quantity" class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-red-600 focus:border-red-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-red-500 dark:focus:border-red-500" placeholder="Please enter total quantity" formControlName="quantity">
-                </div>
-                <div>
-                    <label for="amount" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Price per share</label>
-                    <input type="number" name="amount" id="amount" class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-red-600 focus:border-red-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-red-500 dark:focus:border-red-500" placeholder="Please enter amount" formControlName="amount">
-                </div>
-                <div>
-                    <label for="stoploss" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Stoploss</label>
-                    <div class="relative" *ngIf="customStoplossLimit">
-                        <div class="absolute m-0.5 bg-gray-200 inset-y-0 start-0 top-0 flex items-center px-3.5 rounded-s-md pointer-events-none">
-                            %
-                        </div>
-                        <input type="number" name="stoploss" id="stoploss" class="bg-gray-50 ps-14 mb-2 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-red-600 focus:border-red-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-red-500 dark:focus:border-red-500" placeholder="Please enter limit in percentage" formControlName="stoploss" >
-                    </div>
-                    <div class="grid grid-cols-3 gap-4">
-                        <div class="stoploss cursor-pointer bg-red-50 border border-red-300 px-4 text-red-800 font-semibold py-2 rounded-md flex justify-center items-center"
-                        (click)="setStoplossLimit(5)" [class.active]="stoplossForm.value.stoploss === 5">5%</div>
-                        <div class="stoploss cursor-pointer bg-red-50 border border-red-300 px-4 text-red-800 font-semibold py-2 rounded-md flex justify-center items-center"
-                        (click)="setStoplossLimit(10)" [class.active]="stoplossForm.value.stoploss === 10">10%</div>
-                        <div class="stoploss cursor-pointer bg-red-50 border border-red-300 px-4 text-red-800 font-semibold py-2 rounded-md flex justify-center items-center"
-                        (click)="setStoplossLimit(15)" [class.active]="stoplossForm.value.stoploss === 15">15%</div>
-                        <div class="stoploss cursor-pointer bg-red-50 border border-red-300 px-4 text-red-800 font-semibold py-2 rounded-md flex justify-center items-center"
-                        (click)="setStoplossLimit(20)" [class.active]="stoplossForm.value.stoploss === 20">20%</div>
-                        <div class="stoploss cursor-pointer bg-red-50 border border-red-300 px-4 text-red-800 font-semibold py-2 rounded-md flex justify-center items-center"
-                        (click)="setStoplossLimit(25)" [class.active]="stoplossForm.value.stoploss === 25">25%</div>
-                        <div class="stoploss cursor-pointer bg-red-50 border border-red-300 px-4 text-red-800 font-semibold py-2 rounded-md flex justify-center items-center"
-                        (click)="customStoplossLimit = true">Custom</div>
-                    </div>
-                </div>
-                <button type="submit" class="w-full text-white bg-red-600 hover:bg-red-700 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800" (click)="calculateStopLoss()">Calculate Stoploss</button>
-            </form>
-        </div>
-    
-        <div class="p-4 bg-red-50 border text-red-600 h-fit border-red-300 rounded-md w-fit" *ngIf="stopLossPrice">
-            You should sell the stock at or below <span class="text-red-800 text-xl font-semibold">₹{{stopLossPrice.toFixed(2)}}</span><br>
-            And Your Lose will be <span class="text-green-800 text-xl font-semibold">₹{{(stoplossForm.value.quantity * (stoplossForm.value.amount - stopLossPrice)).toFixed(2)}}</span>
+<div class="calculator">
+    <!-- Header -->
+    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8">
+        <div>
+            <h1 class="page-title mb-0">Stop Loss Calculator</h1>
+            <p class="text-gray-500 text-sm mt-1">Calculate your stop loss and target prices</p>
         </div>
     </div>
-    
-    <div class="flex gap-4 target-form flex-wrap flex-col">
-        <div class="bg-green-50 p-4 border border-green-300 rounded-md w-fit">
-            <form class="space-y-4 md:space-y-6" [formGroup]="targetForm">
-                <div>
-                    <label for="total_quantity" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Total Quantity</label>
-                    <input type="number" name="total_quantity" id="total_quantity" class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-green-600 focus:border-green-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-green-500 dark:focus:border-green-500" placeholder="Please enter total quantity" formControlName="quantity">
-                </div>
-                <div>
-                    <label for="amount" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Price per share</label>
-                    <input type="number" name="amount" id="amount" class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-green-600 focus:border-green-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-green-500 dark:focus:border-green-500" placeholder="Please enter amount" formControlName="amount">
-                </div>
-                <div>
-                    <label for="stoploss" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Target</label>
-                    <div class="relative" *ngIf="customTargetLimit">
-                        <div class="absolute m-0.5 bg-gray-200 inset-y-0 start-0 top-0 flex items-center px-3.5 rounded-s-md pointer-events-none">
-                            %
+
+    <div class="flex gap-8 flex-wrap">
+        <!-- Stop Loss Calculator -->
+        <div class="flex gap-4 flex-wrap flex-col flex-1 min-w-[300px]">
+            <div class="trading-card border-l-4 border-l-red-500">
+                <h3 class="text-lg font-semibold text-white mb-4">Stop Loss</h3>
+                <form class="space-y-4" [formGroup]="stoplossForm">
+                    <div>
+                        <label for="sl_quantity" class="block mb-2 text-sm font-medium text-gray-300">Total Quantity</label>
+                        <input type="number" name="sl_quantity" id="sl_quantity" class="form-input" placeholder="Enter total quantity" formControlName="quantity">
+                    </div>
+                    <div>
+                        <label for="sl_amount" class="block mb-2 text-sm font-medium text-gray-300">Price per share</label>
+                        <input type="number" name="sl_amount" id="sl_amount" class="form-input" placeholder="Enter price" formControlName="amount">
+                    </div>
+                    <div>
+                        <label for="stoploss" class="block mb-2 text-sm font-medium text-gray-300">Stop Loss %</label>
+                        <div class="relative" *ngIf="customStoplossLimit">
+                            <div class="absolute m-0.5 bg-slate-700 inset-y-0 start-0 top-0 flex items-center px-3.5 rounded-s-md pointer-events-none text-gray-400">
+                                %
+                            </div>
+                            <input type="number" name="stoploss" id="stoploss" class="form-input ps-14 mb-2" placeholder="Enter percentage" formControlName="stoploss">
                         </div>
-                        <input type="number" name="stoploss" id="stoploss" class="bg-gray-50 ps-14 mb-2 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-green-600 focus:border-green-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-green-500 dark:focus:border-green-500" placeholder="Please enter limit in percentage" formControlName="target" >
+                        <div class="grid grid-cols-3 gap-3">
+                            <div class="sl-option cursor-pointer px-4 text-red-400 font-semibold py-2 rounded-lg flex justify-center items-center transition-colors"
+                                [class.active]="stoplossForm.value.stoploss === 5"
+                                (click)="setStoplossLimit(5)">5%</div>
+                            <div class="sl-option cursor-pointer px-4 text-red-400 font-semibold py-2 rounded-lg flex justify-center items-center transition-colors"
+                                [class.active]="stoplossForm.value.stoploss === 10"
+                                (click)="setStoplossLimit(10)">10%</div>
+                            <div class="sl-option cursor-pointer px-4 text-red-400 font-semibold py-2 rounded-lg flex justify-center items-center transition-colors"
+                                [class.active]="stoplossForm.value.stoploss === 15"
+                                (click)="setStoplossLimit(15)">15%</div>
+                            <div class="sl-option cursor-pointer px-4 text-red-400 font-semibold py-2 rounded-lg flex justify-center items-center transition-colors"
+                                [class.active]="stoplossForm.value.stoploss === 20"
+                                (click)="setStoplossLimit(20)">20%</div>
+                            <div class="sl-option cursor-pointer px-4 text-red-400 font-semibold py-2 rounded-lg flex justify-center items-center transition-colors"
+                                [class.active]="stoplossForm.value.stoploss === 25"
+                                (click)="setStoplossLimit(25)">25%</div>
+                            <div class="cursor-pointer bg-slate-700 border border-slate-600 px-4 text-gray-300 font-semibold py-2 rounded-lg flex justify-center items-center hover:bg-slate-600 transition-colors"
+                                (click)="customStoplossLimit = true">Custom</div>
+                        </div>
                     </div>
-                    <div class="grid grid-cols-3 gap-4">
-                        <div class="target cursor-pointer bg-green-50 border border-green-300 px-4 text-green-800 font-semibold py-2 rounded-md flex justify-center items-center"
-                        (click)="setTargetLimit(5)" [class.active]="targetForm.value.target === 5">5%</div>
-                        <div class="target cursor-pointer bg-green-50 border border-green-300 px-4 text-green-800 font-semibold py-2 rounded-md flex justify-center items-center"
-                        (click)="setTargetLimit(10)" [class.active]="targetForm.value.target === 10">10%</div>
-                        <div class="target cursor-pointer bg-green-50 border border-green-300 px-4 text-green-800 font-semibold py-2 rounded-md flex justify-center items-center"
-                        (click)="setTargetLimit(15)" [class.active]="targetForm.value.target === 15">15%</div>
-                        <div class="target cursor-pointer bg-green-50 border border-green-300 px-4 text-green-800 font-semibold py-2 rounded-md flex justify-center items-center"
-                        (click)="setTargetLimit(20)" [class.active]="targetForm.value.target === 20">20%</div>
-                        <div class="target cursor-pointer bg-green-50 border border-green-300 px-4 text-green-800 font-semibold py-2 rounded-md flex justify-center items-center"
-                        (click)="setTargetLimit(25)" [class.active]="targetForm.value.target === 25">25%</div>
-                        <div class="target cursor-pointer bg-green-50 border border-green-300 px-4 text-green-800 font-semibold py-2 rounded-md flex justify-center items-center"
-                        (click)="customTargetLimit = true">Custom</div>
-                    </div>
-                </div>
-                <button type="submit" class="w-full text-white bg-green-600 hover:bg-green-700 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800" (click)="calculateTargetPrice()">Calculate Target</button>
-            </form>
+                    <button type="submit" class="w-full btn-danger" (click)="calculateStopLoss()">Calculate Stop Loss</button>
+                </form>
+            </div>
+        
+            <div class="trading-card border-l-4 border-l-red-500" *ngIf="stopLossPrice">
+                <p class="text-gray-300">Sell at or below: <span class="text-red-400 text-2xl font-bold">₹{{stopLossPrice.toFixed(2)}}</span></p>
+                <p class="text-gray-300 mt-2">Potential Loss: <span class="text-red-400 text-xl font-semibold">₹{{(stoplossForm.value.quantity * (stoplossForm.value.amount - stopLossPrice)).toFixed(2)}}</span></p>
+            </div>
         </div>
-    
-        <div class="p-4 bg-green-50 border text-green-600 h-fit border-green-300 rounded-md w-fit" *ngIf="targetPrice">
-            You should sell the stock at or above <span class="text-green-800 text-xl font-semibold">₹{{targetPrice.toFixed(2)}}</span><br>
-            And Your Profit will be <span class="text-green-800 text-xl font-semibold">₹{{(targetForm.value.quantity * (targetPrice - targetForm.value.amount)).toFixed(2)}}</span>
+        
+        <!-- Target Calculator -->
+        <div class="flex gap-4 flex-wrap flex-col flex-1 min-w-[300px]">
+            <div class="trading-card border-l-4 border-l-emerald-500">
+                <h3 class="text-lg font-semibold text-white mb-4">Target Price</h3>
+                <form class="space-y-4" [formGroup]="targetForm">
+                    <div>
+                        <label for="tgt_quantity" class="block mb-2 text-sm font-medium text-gray-300">Total Quantity</label>
+                        <input type="number" name="tgt_quantity" id="tgt_quantity" class="form-input" placeholder="Enter total quantity" formControlName="quantity">
+                    </div>
+                    <div>
+                        <label for="tgt_amount" class="block mb-2 text-sm font-medium text-gray-300">Price per share</label>
+                        <input type="number" name="tgt_amount" id="tgt_amount" class="form-input" placeholder="Enter price" formControlName="amount">
+                    </div>
+                    <div>
+                        <label for="target" class="block mb-2 text-sm font-medium text-gray-300">Target %</label>
+                        <div class="relative" *ngIf="customTargetLimit">
+                            <div class="absolute m-0.5 bg-slate-700 inset-y-0 start-0 top-0 flex items-center px-3.5 rounded-s-md pointer-events-none text-gray-400">
+                                %
+                            </div>
+                            <input type="number" name="target" id="target" class="form-input ps-14 mb-2" placeholder="Enter percentage" formControlName="target">
+                        </div>
+                        <div class="grid grid-cols-3 gap-3">
+                            <div class="tgt-option cursor-pointer px-4 text-emerald-400 font-semibold py-2 rounded-lg flex justify-center items-center transition-colors"
+                                [class.active]="targetForm.value.target === 5"
+                                (click)="setTargetLimit(5)">5%</div>
+                            <div class="tgt-option cursor-pointer px-4 text-emerald-400 font-semibold py-2 rounded-lg flex justify-center items-center transition-colors"
+                                [class.active]="targetForm.value.target === 10"
+                                (click)="setTargetLimit(10)">10%</div>
+                            <div class="tgt-option cursor-pointer px-4 text-emerald-400 font-semibold py-2 rounded-lg flex justify-center items-center transition-colors"
+                                [class.active]="targetForm.value.target === 15"
+                                (click)="setTargetLimit(15)">15%</div>
+                            <div class="tgt-option cursor-pointer px-4 text-emerald-400 font-semibold py-2 rounded-lg flex justify-center items-center transition-colors"
+                                [class.active]="targetForm.value.target === 20"
+                                (click)="setTargetLimit(20)">20%</div>
+                            <div class="tgt-option cursor-pointer px-4 text-emerald-400 font-semibold py-2 rounded-lg flex justify-center items-center transition-colors"
+                                [class.active]="targetForm.value.target === 25"
+                                (click)="setTargetLimit(25)">25%</div>
+                            <div class="cursor-pointer bg-slate-700 border border-slate-600 px-4 text-gray-300 font-semibold py-2 rounded-lg flex justify-center items-center hover:bg-slate-600 transition-colors"
+                                (click)="customTargetLimit = true">Custom</div>
+                        </div>
+                    </div>
+                    <button type="submit" class="w-full btn-success" (click)="calculateTargetPrice()">Calculate Target</button>
+                </form>
+            </div>
+        
+            <div class="trading-card border-l-4 border-l-emerald-500" *ngIf="targetPrice">
+                <p class="text-gray-300">Sell at or above: <span class="text-emerald-400 text-2xl font-bold">₹{{targetPrice.toFixed(2)}}</span></p>
+                <p class="text-gray-300 mt-2">Potential Profit: <span class="text-emerald-400 text-xl font-semibold">₹{{(targetForm.value.quantity * (targetPrice - targetForm.value.amount)).toFixed(2)}}</span></p>
+            </div>
         </div>
     </div>
 </div>

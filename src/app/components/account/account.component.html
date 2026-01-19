@@ -1,132 +1,187 @@
 <div class="account">
-    <h1 class="text-4xl font-semibold mb-10">My Profile</h1>
+    <!-- Header -->
+    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8">
+        <div>
+            <h1 class="page-title mb-0">My Profile</h1>
+            <p class="text-gray-500 text-sm mt-1">Manage your account and funds</p>
+        </div>
+    </div>
 
-    <div class="account__card">
-        <div class="flex flex-wrap items-center gap-6 border rounded-2xl border-gray-200 p-6">
-            <img class="rounded-full w-20 h-20" src="./assets/images/user.png" alt="image description">
-            <div class="account__card-content">
-                <p class="font-semibold text-2xl">
-                    {{ user?.firstName }} {{ user?.lastName }}
-                    <button type="button" class="text-white ml-4 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800" (click)="logout()">Logout</button></p>
-                <p class="text-gray-300" *ngIf="user?.preferredMarket">Preferred Market: {{user?.preferredMarket}}</p>
-                <p class="text-gray-300">{{user?.email}}</p>
+    <!-- Profile Card -->
+    <div class="trading-card">
+        <div class="flex flex-wrap items-center gap-6">
+            <div class="relative">
+                <img class="rounded-full w-20 h-20 border-2 border-slate-600" src="./assets/images/user.png" alt="Profile">
+                <span class="absolute bottom-0 right-0 w-4 h-4 bg-emerald-500 border-2 border-slate-800 rounded-full"></span>
             </div>
-            <div class="ml-auto flex flex-col gap-2">
-                <p class="bg-red-500 text-white px-4 py-2 ml-auto rounded-lg">
-                    Total Added Funds ₹{{totalAddedFunds | number}}</p>
-                <p class="bg-green-500 text-white px-4 py-2 ml-auto rounded-lg">
-                    Total Withdrawal Funds ₹{{totalWithdrawalFunds | number}}</p>
-                <p *ngIf="totalWithdrawalFunds > totalAddedFunds" class="bg-green-500 text-white px-4 py-2 ml-auto rounded-lg">
-                    Overall Profitable With ₹{{totalWithdrawalFunds - totalAddedFunds | number}}</p>
-                <p *ngIf="totalWithdrawalFunds < totalAddedFunds" class="bg-gray-500 text-white px-4 py-2 ml-auto rounded-lg">
-                    Overall In Lose Of ₹{{totalAddedFunds - totalWithdrawalFunds | number}}</p>
+            <div class="flex-grow">
+                <div class="flex flex-wrap items-center gap-3 mb-2">
+                    <h2 class="text-2xl font-bold text-white">{{ user?.firstName }} {{ user?.lastName }}</h2>
+                    <button type="button" 
+                        class="text-sm text-red-400 hover:text-red-300 hover:bg-red-500/10 px-3 py-1.5 rounded-lg transition-colors" 
+                        (click)="logout()">
+                        Logout
+                    </button>
+                </div>
+                <p class="text-gray-400" *ngIf="user?.preferredMarket">
+                    <span class="badge badge-info">{{user?.preferredMarket}}</span>
+                </p>
+                <p class="text-gray-500 mt-1">{{user?.email}}</p>
+            </div>
+            
+            <!-- Funds Summary -->
+            <div class="flex flex-col gap-2 ml-auto">
+                <div class="flex items-center gap-3 px-4 py-2 bg-red-500/10 border border-red-500/30 rounded-lg">
+                    <svg class="w-5 h-5 text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path>
+                    </svg>
+                    <span class="text-red-400 font-semibold">Added: ₹{{totalAddedFunds | number}}</span>
+                </div>
+                <div class="flex items-center gap-3 px-4 py-2 bg-emerald-500/10 border border-emerald-500/30 rounded-lg">
+                    <svg class="w-5 h-5 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 10l7-7m0 0l7 7m-7-7v18"></path>
+                    </svg>
+                    <span class="text-emerald-400 font-semibold">Withdrawn: ₹{{totalWithdrawalFunds | number}}</span>
+                </div>
+                <div *ngIf="totalWithdrawalFunds > totalAddedFunds" 
+                     class="flex items-center gap-3 px-4 py-2 bg-emerald-500/20 border border-emerald-500/40 rounded-lg">
+                    <svg class="w-5 h-5 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                    </svg>
+                    <span class="text-emerald-400 font-bold">Profit: ₹{{totalWithdrawalFunds - totalAddedFunds | number}}</span>
+                </div>
+                <div *ngIf="totalWithdrawalFunds < totalAddedFunds" 
+                     class="flex items-center gap-3 px-4 py-2 bg-red-500/20 border border-red-500/40 rounded-lg">
+                    <svg class="w-5 h-5 text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path>
+                    </svg>
+                    <span class="text-red-400 font-bold">Loss: ₹{{totalAddedFunds - totalWithdrawalFunds | number}}</span>
+                </div>
             </div>
         </div>
     </div>
 
-    <div class="fund mt-12">
-        <div class="flex flex-wrap justify-between items-center">
-            <h1 class="mb-4 sm:mb-8 text-2xl">Added Fund Records</h1>
-            <button type="button" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800" (click)="openAddFundDialog('add')">Add Fund</button>
+    <!-- Added Funds Section -->
+    <div class="fund mt-8">
+        <div class="flex flex-wrap justify-between items-center mb-4">
+            <h2 class="text-xl font-semibold text-white">Added Fund Records</h2>
+            <button type="button" class="btn-primary flex items-center gap-2" (click)="openAddFundDialog('add')">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+                </svg>
+                Add Fund
+            </button>
         </div>
         
-        <div class="relative overflow-x-auto sm:rounded-lg table-container">
-            <table class="relative w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
-                <thead class="text-xs text-gray-700 uppercase bg-gray-50 sticky top-0 dark:bg-gray-700 dark:text-gray-400">
-                    <tr>
-                        <th scope="col" class="px-6 py-3">
-                            Date
-                        </th>
-                        <th scope="col" class="px-6 py-3">
-                            Funds
-                        </th>
-                        <th scope="col" class="px-6 py-3">
-                            <span class="sr-only">Edit</span>
-                        </th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <ng-container *ngFor="let item of addFunds">
-                        <tr class="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700">
-                            <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                <!-- {{ newDate | date: 'dd-MM-yyyy'}} -->
-                                {{ item.date }}
-                            </th>
-                            <td class="px-6 py-4 text-red-600 font-semibold">
-                                {{ item.fund | number }}
-                            </td>
-                            <td class="px-6 py-4 text-right">
-                                <button  (click)="openAddFundDialog('add', item)"
-                                    class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit</button>
-                                <button  (click)="deleteFund(item, 'add-funds')"
-                                    class="font-medium mx-2 text-blue-600 dark:text-blue-500 hover:underline">Delete</button>
-                            </td>
-                        </tr>
-                    </ng-container>
-                    <ng-container *ngIf="!addFunds.length">
+        <div class="trading-card overflow-hidden p-0">
+            <div class="overflow-x-auto max-h-80">
+                <table class="trading-table">
+                    <thead class="sticky top-0 bg-slate-800">
                         <tr>
-                            <td colspan="8" scope="col" class="px-6 py-8">
-                                <p class="text-center">No Data Found</p>
-                            </td>
+                            <th scope="col">Date</th>
+                            <th scope="col">Amount</th>
+                            <th scope="col" class="text-right">Actions</th>
                         </tr>
-                    </ng-container>
-                </tbody>
-            </table>
+                    </thead>
+                    <tbody>
+                        <ng-container *ngFor="let item of addFunds">
+                            <tr>
+                                <th scope="row" class="font-medium text-gray-100 whitespace-nowrap">
+                                    {{ item.date }}
+                                </th>
+                                <td class="text-red-400 font-semibold">
+                                    ₹{{ item.fund | number }}
+                                </td>
+                                <td class="text-right">
+                                    <div class="flex items-center justify-end gap-2">
+                                        <button (click)="openAddFundDialog('add', item)"
+                                            class="p-2 text-blue-400 hover:bg-blue-500/10 rounded-lg transition-colors">
+                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
+                                            </svg>
+                                        </button>
+                                        <button (click)="deleteFund(item, 'add-funds')"
+                                            class="p-2 text-red-400 hover:bg-red-500/10 rounded-lg transition-colors">
+                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+                                            </svg>
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                        </ng-container>
+                        <ng-container *ngIf="!addFunds.length">
+                            <tr>
+                                <td colspan="3" class="py-12 text-center">
+                                    <p class="text-gray-500">No funds added yet</p>
+                                </td>
+                            </tr>
+                        </ng-container>
+                    </tbody>
+                </table>
+            </div>
         </div>
-
     </div>
 
-    <div class="fund mt-12">
-        <div class="flex gap-4 flex-wrap justify-between items-center">
-            <h1 class="mb-4 sm:mb-8 text-2xl">Withdrawal Records </h1>
-            <button type="button" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
-            (click)="openAddFundDialog('withdrawal')">Withdrawal Fund</button>
+    <!-- Withdrawal Funds Section -->
+    <div class="fund mt-8">
+        <div class="flex gap-4 flex-wrap justify-between items-center mb-4">
+            <h2 class="text-xl font-semibold text-white">Withdrawal Records</h2>
+            <button type="button" class="btn-success flex items-center gap-2" (click)="openAddFundDialog('withdrawal')">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 10l7-7m0 0l7 7m-7-7v18"></path>
+                </svg>
+                Withdraw Fund
+            </button>
         </div>
         
-        <div class="relative overflow-x-auto sm:rounded-lg table-container">
-            <table class="relative w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
-                <thead class="text-xs text-gray-700 uppercase bg-gray-50 sticky top-0 dark:bg-gray-700 dark:text-gray-400">
-                    <tr>
-                        <th scope="col" class="px-6 py-3">
-                            Date
-                        </th>
-                        <th scope="col" class="px-6 py-3">
-                            Funds
-                        </th>
-                        <th scope="col" class="px-6 py-3">
-                            <span class="sr-only">Edit</span>
-                        </th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <ng-container *ngFor="let item of withdrawalFunds">
-                        <tr class="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700">
-                            <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                <!-- {{ newDate | date: 'dd-MM-yyyy'}} -->
-                                {{ item.date }}
-                            </th>
-                            <td class="px-6 py-4 text-green-600 font-semibold">
-                                {{ item.fund | number }}
-                            </td>
-                            <td class="px-6 py-4 text-right">
-                                <button  (click)="openAddFundDialog('withdrawal' , item)"
-                                    class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit</button>
-                                <button  (click)="deleteFund(item, 'withdrawal-funds')"
-                                    class="font-medium mx-2 text-blue-600 dark:text-blue-500 hover:underline">Delete</button>
-                            </td>
-                        </tr>
-                    </ng-container>
-
-                    <ng-container *ngIf="!withdrawalFunds.length">
+        <div class="trading-card overflow-hidden p-0">
+            <div class="overflow-x-auto max-h-80">
+                <table class="trading-table">
+                    <thead class="sticky top-0 bg-slate-800">
                         <tr>
-                            <td colspan="8" scope="col" class="px-6 py-8">
-                                <p class="text-center">No Data Found</p>
-                            </td>
+                            <th scope="col">Date</th>
+                            <th scope="col">Amount</th>
+                            <th scope="col" class="text-right">Actions</th>
                         </tr>
-                    </ng-container>
-                </tbody>
-            </table>
+                    </thead>
+                    <tbody>
+                        <ng-container *ngFor="let item of withdrawalFunds">
+                            <tr>
+                                <th scope="row" class="font-medium text-gray-100 whitespace-nowrap">
+                                    {{ item.date }}
+                                </th>
+                                <td class="text-emerald-400 font-semibold">
+                                    ₹{{ item.fund | number }}
+                                </td>
+                                <td class="text-right">
+                                    <div class="flex items-center justify-end gap-2">
+                                        <button (click)="openAddFundDialog('withdrawal', item)"
+                                            class="p-2 text-blue-400 hover:bg-blue-500/10 rounded-lg transition-colors">
+                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
+                                            </svg>
+                                        </button>
+                                        <button (click)="deleteFund(item, 'withdrawal-funds')"
+                                            class="p-2 text-red-400 hover:bg-red-500/10 rounded-lg transition-colors">
+                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+                                            </svg>
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                        </ng-container>
+                        <ng-container *ngIf="!withdrawalFunds.length">
+                            <tr>
+                                <td colspan="3" class="py-12 text-center">
+                                    <p class="text-gray-500">No withdrawals recorded yet</p>
+                                </td>
+                            </tr>
+                        </ng-container>
+                    </tbody>
+                </table>
+            </div>
         </div>
-
     </div>
 </div>

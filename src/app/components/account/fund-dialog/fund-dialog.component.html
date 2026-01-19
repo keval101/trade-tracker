@@ -1,19 +1,20 @@
-<div class="fund">
-    <form class="space-y-4" [formGroup]="fundForm" (submit)="submit()">
-
-        <div class="grid gap-6 mb-6">
+<div class="fund-form">
+    <form [formGroup]="fundForm" (submit)="submit()">
+        <div class="grid gap-5 mb-6">
             <div>
-                <label for="last_name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Date</label>
-                <p-calendar formControlName="date" appendTo="body" dateFormat="dd/mm/yy" placeholder="Select Date"></p-calendar>
+                <label for="date" class="block mb-2 text-sm font-medium text-gray-300">Date</label>
+                <p-calendar formControlName="date" appendTo="body" dateFormat="dd/mm/yy" placeholder="Select Date" styleClass="w-full"></p-calendar>
             </div>
 
             <div>
-                <label for="fund" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Fund</label>
-                <input formControlName="fund" type="number" id="fund" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Fund" />
+                <label for="fund" class="block mb-2 text-sm font-medium text-gray-300">Amount</label>
+                <input formControlName="fund" type="number" id="fund" class="form-input" placeholder="Enter amount" />
             </div>
-
         </div>
-        <button type="submit" [disabled]="fundForm.invalid" [ngClass]="{'bg-blue-400 cursor-not-allowed': fundForm.invalid, 'bg-blue-700 hover:bg-blue-800' : !fundForm.invalid }" class="text-white focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" >Submit</button>
-        
+        <button type="submit" [disabled]="fundForm.invalid" 
+            [ngClass]="{'bg-blue-400/50 cursor-not-allowed': fundForm.invalid, 'bg-blue-600 hover:bg-blue-700' : !fundForm.invalid }" 
+            class="text-white focus:ring-4 focus:outline-none focus:ring-blue-500/30 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center transition-colors">
+            Submit
+        </button>
     </form>
 </div>

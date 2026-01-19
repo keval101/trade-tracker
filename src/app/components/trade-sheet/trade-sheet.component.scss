@@ -5,3 +5,12 @@
 .hide-in-desktop {
     @apply flex md:hidden;
 }
+
+/* Table row styling for profit/loss */
+.profit-row {
+    @apply bg-emerald-900/20;
+}
+
+.loss-row {
+    @apply bg-red-900/20;
+}

@@ -1,63 +1,60 @@
-            <!-- Modal body -->
-            <div class="stock">
-                <form class="space-y-4" action="#">
-
-                    <form [formGroup]="stockForm" (submit)="addTrade()">
-                        <div class="grid gap-6 mb-6">
-
-                            <div>
-                                <label for="last_name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Date</label>
-                                <p-calendar formControlName="date" appendTo="body" dateFormat="dd/mm/yy" placeholder="Select Date"></p-calendar>
-                            </div>
-
-                            <div>
-                                <label for="name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Name</label>
-                                <input type="text" id="name" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Name" required formControlName="name"/>
-                            </div>
-
-                            <div  *ngIf="!stockForm.value.isSold">
-                                <label for="buyPrice" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Buy Price</label>
-                                <input formControlName="buyPrice" type="number" id="buyPrice" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Share Per Price" required (input)="setAmount()"/>
-                            </div>
-
-                            <div>
-                                <label for="logo" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Logo URL</label>
-                                <input type="text" id="logo" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Stock Logo URL" required formControlName="logo"/>
-                            </div>
-
-                            <div>
-                                <label for="code" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Symbol</label>
-                                <input type="text" id="code" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Stock Symbol" required formControlName="code"/>
-                            </div>
-
-                            <div>
-                                <label for="totalQuantity" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Total Quantity</label>
-                                <input formControlName="totalQuantity" type="number" id="totalQuantity" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Total Shares" required (input)="setAmount()"/>
-                            </div>
-
-                            <div>
-                                <input id="default-checkbox" type="checkbox" value="" formControlName="isSold" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
-                                <label for="default-checkbox" class="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">Sold</label>
-                            </div>
-
-                            <div *ngIf="stockForm.value.isSold">
-                                <label for="sellPrice" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Sell Price</label>
-                                <input formControlName="sellPrice" type="number" id="sellPrice" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Share Per Price" required (input)="setAmount()"/>
-                            </div>
-
-                            <div *ngIf="stockForm.value.isSold">
-                                <label for="totalSellAmount" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Total Sell Amount</label>
-                                <input id="disabled-input" aria-label="disabled input" formControlName="totalSellAmount" type="number" id="totalSellAmount" class="bg-gray-50 border border-gray-300 text-gray-600 text-sm rounded-lg block cursor-not-allowed w-full p-2.5" placeholder="Total Sell Amount" required readonly/>
-                            </div>
-
-                            <div>
-                                <label for="totalBuyAmount" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Total Buy Amount</label>
-                                <input id="disabled-input-2" aria-label="disabled input 2" formControlName="totalBuyAmount" type="number" id="totalBuyAmount" class="bg-gray-50 border border-gray-300 text-gray-600 text-sm rounded-lg block w-full p-2.5 cursor-not-allowed" placeholder="Total Buy Amount" required readonly/>
-                            </div>
-                            
-                        </div>
-                        <button type="submit" [ngClass]="{'bg-blue-400 cursor-not-allowed': stockForm.invalid, 'bg-blue-700 hover:bg-blue-800' : !stockForm.invalid }" class="text-white focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Submit</button>
-                    </form>
-                    
-                </form>
+<div class="stock-form">
+    <form [formGroup]="stockForm" (submit)="addTrade()">
+        <div class="grid gap-5 mb-6">
+            <div>
+                <label for="date" class="block mb-2 text-sm font-medium text-gray-300">Date</label>
+                <p-calendar formControlName="date" appendTo="body" dateFormat="dd/mm/yy" placeholder="Select Date" styleClass="w-full"></p-calendar>
             </div>
+
+            <div>
+                <label for="name" class="block mb-2 text-sm font-medium text-gray-300">Stock Name</label>
+                <input type="text" id="name" class="form-input" placeholder="Stock Name" required formControlName="name"/>
+            </div>
+
+            <div *ngIf="!stockForm.value.isSold">
+                <label for="buyPrice" class="block mb-2 text-sm font-medium text-gray-300">Buy Price</label>
+                <input formControlName="buyPrice" type="number" id="buyPrice" class="form-input" placeholder="Price per share" required (input)="setAmount()"/>
+            </div>
+
+            <div>
+                <label for="logo" class="block mb-2 text-sm font-medium text-gray-300">Logo URL</label>
+                <input type="text" id="logo" class="form-input" placeholder="Stock Logo URL" required formControlName="logo"/>
+            </div>
+
+            <div>
+                <label for="code" class="block mb-2 text-sm font-medium text-gray-300">Symbol</label>
+                <input type="text" id="code" class="form-input" placeholder="Stock Symbol" required formControlName="code"/>
+            </div>
+
+            <div>
+                <label for="totalQuantity" class="block mb-2 text-sm font-medium text-gray-300">Total Quantity</label>
+                <input formControlName="totalQuantity" type="number" id="totalQuantity" class="form-input" placeholder="Number of shares" required (input)="setAmount()"/>
+            </div>
+
+            <div class="flex items-center">
+                <input id="sold-checkbox" type="checkbox" value="" formControlName="isSold" class="w-4 h-4 text-blue-600 bg-slate-700 border-slate-600 rounded focus:ring-blue-500 focus:ring-2">
+                <label for="sold-checkbox" class="ms-2 text-sm font-medium text-gray-300">Sold</label>
+            </div>
+
+            <div *ngIf="stockForm.value.isSold">
+                <label for="sellPrice" class="block mb-2 text-sm font-medium text-gray-300">Sell Price</label>
+                <input formControlName="sellPrice" type="number" id="sellPrice" class="form-input" placeholder="Sell price per share" required (input)="setAmount()"/>
+            </div>
+
+            <div *ngIf="stockForm.value.isSold">
+                <label for="totalSellAmount" class="block mb-2 text-sm font-medium text-gray-300">Total Sell Amount</label>
+                <input formControlName="totalSellAmount" type="number" id="totalSellAmount" class="form-input bg-slate-700 cursor-not-allowed" placeholder="Total Sell Amount" required readonly/>
+            </div>
+
+            <div>
+                <label for="totalBuyAmount" class="block mb-2 text-sm font-medium text-gray-300">Total Buy Amount</label>
+                <input formControlName="totalBuyAmount" type="number" id="totalBuyAmount" class="form-input bg-slate-700 cursor-not-allowed" placeholder="Total Buy Amount" required readonly/>
+            </div>
+        </div>
+        <button type="submit" 
+            [ngClass]="{'bg-blue-400/50 cursor-not-allowed': stockForm.invalid, 'bg-blue-600 hover:bg-blue-700' : !stockForm.invalid }" 
+            class="text-white focus:ring-4 focus:outline-none focus:ring-blue-500/30 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center transition-colors">
+            Submit
+        </button>
+    </form>
+</div>

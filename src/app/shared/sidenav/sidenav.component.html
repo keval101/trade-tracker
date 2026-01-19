@@ -1,32 +1,74 @@
-<button data-drawer-target="default-sidebar" data-drawer-toggle="default-sidebar" aria-controls="default-sidebar" type="button" class="inline-flex items-center menu-button p-2 mt-2 ml-3 text-sm text-gray-500 rounded-lg sm:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600">
+<!-- Mobile menu button -->
+<button data-drawer-target="default-sidebar" data-drawer-toggle="default-sidebar" aria-controls="default-sidebar" type="button" 
+    class="inline-flex items-center menu-button p-2 mt-2 ml-3 text-gray-400 rounded-lg sm:hidden hover:bg-slate-700 focus:outline-none focus:ring-2 focus:ring-slate-600">
     <span class="sr-only">Open sidebar</span>
     <svg class="w-6 h-6" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
        <path clip-rule="evenodd" fill-rule="evenodd" d="M2 4.75A.75.75 0 012.75 4h14.5a.75.75 0 010 1.5H2.75A.75.75 0 012 4.75zm0 10.5a.75.75 0 01.75-.75h7.5a.75.75 0 010 1.5h-7.5a.75.75 0 01-.75-.75zM2 10a.75.75 0 01.75-.75h14.5a.75.75 0 010 1.5H2.75A.75.75 0 012 10z"></path>
     </svg>
- </button>
+</button>
  
- <aside id="default-sidebar" class="fixed top-0 left-0 z-40 w-64 h-screen transition-transform -translate-x-full sm:translate-x-0" aria-label="Sidenav">
-     <div class="overflow-y-auto py-5 px-3 h-full bg-white border-r border-gray-200 dark:bg-gray-800 dark:border-gray-700">
-       <div class="logo">
-           <app-logo></app-logo>
-       </div>
-       <ul class="space-y-2">
-           <li *ngFor="let item of navigations">
-               <a [routerLink]="item.route" class="flex nav-item items-center p-2 text-base font-normal text-gray-900 rounded-lg transition duration-75 hover:bg-gray-100 dark:hover:bg-gray-700 dark:text-white group" routerLinkActive="active">
-                <img [src]="item.icon" alt="item.name" width="28" height="28">
-                   <!-- <svg aria-hidden="true" class="flex-shrink-0 w-6 h-6 text-gray-400 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M9 2a1 1 0 000 2h2a1 1 0 100-2H9z"></path><path fill-rule="evenodd" d="M4 5a2 2 0 012-2 3 3 0 003 3h2a3 3 0 003-3 2 2 0 012 2v11a2 2 0 01-2 2H6a2 2 0 01-2-2V5zm3 4a1 1 0 000 2h.01a1 1 0 100-2H7zm3 0a1 1 0 000 2h3a1 1 0 100-2h-3zm-3 4a1 1 0 100 2h.01a1 1 0 100-2H7zm3 0a1 1 0 100 2h3a1 1 0 100-2h-3z" clip-rule="evenodd"></path></svg> -->
-                   <span class="ml-3">{{ item.name }}</span>
-               </a>
-           </li>
-           <li class="mt-4 pt-4 border-t border-gray-200 dark:border-gray-700">
-               <button (click)="logout()" class="flex nav-item items-center w-full p-2 text-base font-normal text-gray-900 rounded-lg transition duration-75 hover:bg-gray-100 dark:hover:bg-gray-700 dark:text-white group">
-                    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path opacity="0.5" d="M12 20C7.58172 20 4 16.4183 4 12C4 7.58172 7.58172 4 12 4" stroke="#1C274C" stroke-width="1.5" stroke-linecap="round"/>
-                        <path d="M10 12H20M20 12L17 9M20 12L17 15" stroke="#1C274C" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<!-- Sidebar -->
+<aside id="default-sidebar" class="fixed top-0 left-0 z-40 w-64 h-screen transition-transform -translate-x-full sm:translate-x-0" aria-label="Sidenav">
+    <div class="overflow-y-auto py-5 px-3 h-full bg-slate-900/95 backdrop-blur-xl border-r border-slate-700/50">
+        <!-- Logo Section -->
+        <div class="logo mb-8 px-2">
+            <app-logo></app-logo>
+        </div>
+        
+        <!-- Market Status Indicator -->
+        <div class="market-status mb-6 mx-2 p-3 bg-slate-800/50 rounded-lg border border-slate-700/50">
+            <div class="flex items-center justify-between">
+                <span class="text-xs text-gray-400 uppercase tracking-wider">Market</span>
+                <span class="flex items-center gap-1.5">
+                    <span class="w-2 h-2 rounded-full"
+                        [class.bg-emerald-400]="marketStatus === 'open'"
+                        [class.animate-pulse]="marketStatus === 'open'"
+                        [class.bg-red-400]="marketStatus === 'closed'"
+                        [class.bg-amber-400]="marketStatus === 'holiday'"></span>
+                    <span class="text-xs font-medium"
+                        [class.text-emerald-400]="marketStatus === 'open'"
+                        [class.text-red-400]="marketStatus === 'closed'"
+                        [class.text-amber-400]="marketStatus === 'holiday'">{{marketStatusText}}</span>
+                </span>
+            </div>
+            <p class="text-[10px] text-gray-500 mt-1">9:15 AM - 3:30 PM IST</p>
+        </div>
+        
+        <!-- Navigation -->
+        <nav class="space-y-1">
+            <ng-container *ngFor="let item of navigations">
+                <a [routerLink]="item.route" 
+                   class="nav-item flex items-center gap-3 px-3 py-2.5 text-sm font-medium text-gray-400 rounded-lg transition-all duration-200 hover:bg-slate-800/70 hover:text-gray-100 group" 
+                   routerLinkActive="active">
+                    <div class="nav-icon w-9 h-9 flex items-center justify-center rounded-lg bg-slate-800/50 group-hover:bg-slate-700/50 transition-colors">
+                        <img [src]="item.icon" [alt]="item.name" width="20" height="20" class="opacity-60 group-hover:opacity-100 transition-opacity">
+                    </div>
+                    <span>{{ item.name }}</span>
+                </a>
+            </ng-container>
+        </nav>
+        
+        <!-- Divider -->
+        <div class="my-6 mx-2 border-t border-slate-700/50"></div>
+        
+        <!-- Quick Stats -->
+        <div class="quick-stats mx-2 mb-6 p-3 bg-gradient-to-br from-slate-800/50 to-slate-900/50 rounded-lg border border-slate-700/50">
+            <p class="text-xs text-gray-500 uppercase tracking-wider mb-3">Today's P&L</p>
+            <p class="text-xl font-bold text-emerald-400">+2.34%</p>
+        </div>
+        
+        <!-- Logout Button -->
+        <div class="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-slate-900 to-transparent">
+            <button (click)="logout()" 
+                class="flex items-center gap-3 w-full px-3 py-2.5 text-sm font-medium text-gray-400 rounded-lg transition-all duration-200 hover:bg-red-500/10 hover:text-red-400 group">
+                <div class="w-9 h-9 flex items-center justify-center rounded-lg bg-slate-800/50 group-hover:bg-red-500/20 transition-colors">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path opacity="0.5" d="M12 20C7.58172 20 4 16.4183 4 12C4 7.58172 7.58172 4 12 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                        <path d="M10 12H20M20 12L17 9M20 12L17 15" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
                     </svg>
-                   <span class="ml-3">Logout</span>
-               </button>
-           </li>
-       </ul>
-   </div>
- </aside>
+                </div>
+                <span>Logout</span>
+            </button>
+        </div>
+    </div>
+</aside>

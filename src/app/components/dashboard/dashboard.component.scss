@@ -1,41 +1,62 @@
-.overview {
-    &__week {
-        button {
-            @apply bg-gray-100 px-3 py-1 rounded-sm;
-        }
-    }
-    
-    &__card {
-        &-growth {
+/* Dashboard Trading Platform Styles */
 
-            &.profit,&.lose {
-                @apply text-white px-2 py-1 rounded-sm;
-            }
-
-            &.profit {
-                @apply bg-green-400
-            }
-
-            &.lose {
-                @apply bg-red-400
-            }
-        }
-    }
+.dashboard {
+    @apply min-h-screen;
 }
 
 .celebration {
     position: absolute;
-    top: -45px;
-    right: -80px;
-    transform: rotate(85deg);
+    top: -20px;
+    right: -30px;
+    transform: rotate(45deg);
 }
 
-::ng-deep .chart canvas {
-    height: 400px !important;
+/* Chart styling */
+::ng-deep .chart-container {
+    canvas {
+        max-height: 300px !important;
 
-    @media screen and (max-width: 600px) {
-        @apply mb-20;
-        height: 300px !important;
-        width: 300px !important;
+        @media screen and (max-width: 640px) {
+            max-height: 250px !important;
+        }
     }
+}
+
+/* Trading table hover effect */
+.trading-table tbody tr {
+    @apply transition-all duration-200;
+    
+    &:hover {
+        @apply bg-slate-700/40;
+        transform: translateX(2px);
+    }
+}
+
+/* Stat card animations */
+.stat-card {
+    @apply transition-all duration-300;
+    
+    &:hover {
+        @apply transform scale-[1.01];
+    }
+}
+
+/* Page title gradient animation */
+@keyframes gradient-shift {
+    0%, 100% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+}
+
+.page-title {
+    background-size: 200% 200%;
+    animation: gradient-shift 5s ease infinite;
+}
+
+/* Arrow icon invert for dark theme */
+.invert {
+    filter: invert(1);
 }

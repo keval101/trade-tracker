@@ -1,67 +1,102 @@
-<h1 class="text-4xl font-semibold mb-10">Stocks</h1>
-<button (click)="openStockForm()"
-class="block text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 ml-auto py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-type="button">
-    Add Stock
-</button>
-<div class="grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-5 mt-4">
-    <div class="stocks border border-blue-300 rounded-lg p-3 !pt-4 sm:p-8" *ngFor="let stock of stocks"
-    [class.bg-green-50]="stock.status !='Hold' && (((stock.totalQuantity * stock.sellPrice - stock.totalQuantity * stock.buyPrice)/(stock.totalQuantity * stock.buyPrice))* 100) > 0"
-    [class.bg-red-50]="stock.status !='Hold' && (((stock.totalQuantity * stock.sellPrice - stock.totalQuantity * stock.buyPrice)/(stock.totalQuantity * stock.buyPrice))* 100) < 0"
-    [class.bg-gray-50]="stock.status ==='Hold'"
-    [class.border-gray-500]="stock.status ==='Hold'"
-    [class.border-green-500]="stock.status !='Hold' && (((stock.totalQuantity * stock.sellPrice - stock.totalQuantity * stock.buyPrice)/(stock.totalQuantity * stock.buyPrice))* 100) > 0"
-    [class.border-red-500]="stock.status !='Hold' && (((stock.totalQuantity * stock.sellPrice - stock.totalQuantity * stock.buyPrice)/(stock.totalQuantity * stock.buyPrice))* 100) < 0">
-        <div class="stocks__action flex gap-2 justify-end items-center">
-            <button class="flex justify-center items-center" (click)="openStockForm(stock)"><img src="./assets/icons/edit.svg" alt="edit" width="28px" height="28px"></button>
-            <button class="flex justify-center items-center" (click)="deleteTrade(stock)"><img src="./assets/icons/delete.svg" alt="edit" width="20px" height="20px"></button>
+<div class="stocks-page">
+    <!-- Header -->
+    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8">
+        <div>
+            <h1 class="page-title mb-0">Stocks</h1>
+            <p class="text-gray-500 text-sm mt-1">Track your stock investments</p>
         </div>
-        <div class="stocks__header flex items-center gap-4 flex-wrap">
-            <img [src]="stock.logo" [alt]="stock.name" width="50" height="50">
-            <h1 class="flex w-full gap-2">{{stock.name}}
-                <span>(<a href="{{'https://www.screener.in/company/'+stock.code+'/consolidated/'}}" class="text-blue-600 hover:underline" target="_blank">{{stock.code}}</a>)</span>
-                <span class="inline-block text-gray-400 ml-auto">{{stock.date}}</span>
-            </h1>
-        </div>
-    
-        <div class="stock__detail grid grid-cols-2 gap-4 flex-wrap mt-8 lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-1">
-            <div class="stock__detail-group">
-                <p class="text-gray-400">Quantity</p>
-                <p class="text-blue-600 text-2xl font-semibold">{{stock.totalQuantity}}</p>
+        <button (click)="openStockForm()" class="btn-primary" type="button">
+            Add Stock
+        </button>
+    </div>
+
+    <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+        <div class="trading-card relative" *ngFor="let stock of stocks"
+            [class.border-l-4]="true"
+            [class.border-l-emerald-500]="stock.status !='Hold' && (((stock.totalQuantity * stock.sellPrice - stock.totalQuantity * stock.buyPrice)/(stock.totalQuantity * stock.buyPrice))* 100) > 0"
+            [class.border-l-red-500]="stock.status !='Hold' && (((stock.totalQuantity * stock.sellPrice - stock.totalQuantity * stock.buyPrice)/(stock.totalQuantity * stock.buyPrice))* 100) < 0"
+            [class.border-l-slate-500]="stock.status ==='Hold'">
+            
+            <div class="stocks__action absolute top-4 right-4 flex gap-2 items-center">
+                <button class="p-2 text-blue-400 hover:bg-blue-500/10 rounded-lg transition-colors" (click)="openStockForm(stock)">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
+                    </svg>
+                </button>
+                <button class="p-2 text-red-400 hover:bg-red-500/10 rounded-lg transition-colors" (click)="deleteTrade(stock)">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+                    </svg>
+                </button>
             </div>
-            <div class="stock__detail-group">
-                <p class="text-gray-400">Buy Price</p>
-                <p class="text-green-600 text-2xl font-semibold">{{stock.buyPrice}}</p>
+
+            <div class="stocks__header flex items-center gap-4">
+                <img [src]="stock.logo" [alt]="stock.name" width="50" height="50" class="rounded-lg">
+                <div class="flex-grow">
+                    <h2 class="text-lg font-semibold text-white flex items-center gap-2">
+                        {{stock.name}}
+                        <a href="{{'https://www.screener.in/company/'+stock.code+'/consolidated/'}}" class="text-blue-400 hover:underline text-sm" target="_blank">({{stock.code}})</a>
+                    </h2>
+                    <p class="text-gray-500 text-sm">{{stock.date}}</p>
+                </div>
             </div>
-            <div class="stock__detail-group" *ngIf="stock.status !='Hold'">
-                <p class="text-gray-400">Sell Price</p>
-                <p class="text-red-600 text-2xl font-semibold">{{stock.sellPrice}}</p>
-            </div>
-            <div class="stock__detail-group">
-                <p class="text-gray-400">Status</p>
-                <p class="text-2xl font-semibold" [class.text-gray-600]="stock.status ==='Hold'" [class.text-red-600]="stock.status ==='Sell'">{{stock.status}}</p>
-            </div>
-            <div class="stock__detail-group">
-                <p class="text-gray-400">Buy Amount</p>
-                <p class="text-blue-600 text-2xl font-semibold">{{(stock.totalBuyAmount).toFixed(2)}}</p>
-            </div>
-            <div class="stock__detail-group" *ngIf="stock.status !='Hold'">
-                <p class="text-gray-400">Sell Amount</p>
-                <p class="text-blue-600 text-2xl font-semibold">{{(stock.totalSellAmount).toFixed(2)}}</p>
-            </div>
-            <div class="stock__detail-group" *ngIf="(stock.sellPrice > stock.buyPrice) && stock.sellPrice != 0">
-                <p class="text-gray-400">Profit</p>
-                <p class="text-green-600 text-2xl font-semibold">{{((stock.totalQuantity * stock.sellPrice) - (stock.totalQuantity * stock.buyPrice)).toFixed(2)}}</p>
-            </div>
-            <div class="stock__detail-group" *ngIf="(stock.sellPrice < stock.buyPrice) && stock.sellPrice != 0">
-                <p class="text-gray-400">Loss</p>
-                <p class="text-red-600 text-2xl font-semibold">{{((stock.totalQuantity * stock.sellPrice) - (stock.totalQuantity * stock.buyPrice)).toFixed(2)}}</p>
-            </div>
-            <div class="stock__detail-group" *ngIf="stock.status === 'Sell'">
-                <p class="text-gray-400">ROI</p>
-                <p class="text-green-600 text-2xl font-semibold"
-                [class.text-red-600]="(((stock.totalQuantity * stock.sellPrice - stock.totalQuantity * stock.buyPrice)/(stock.totalQuantity * stock.buyPrice))* 100) < 0">{{(((stock.totalQuantity * stock.sellPrice - stock.totalQuantity * stock.buyPrice)/(stock.totalQuantity * stock.buyPrice))* 100).toFixed(2)}}%</p>
+        
+            <div class="stock__detail grid grid-cols-2 lg:grid-cols-3 gap-4 mt-6">
+                <div>
+                    <p class="text-xs text-gray-500 uppercase tracking-wider mb-1">Quantity</p>
+                    <p class="text-blue-400 text-xl font-semibold">{{stock.totalQuantity}}</p>
+                </div>
+                <div>
+                    <p class="text-xs text-gray-500 uppercase tracking-wider mb-1">Buy Price</p>
+                    <p class="text-emerald-400 text-xl font-semibold">₹{{stock.buyPrice}}</p>
+                </div>
+                <div *ngIf="stock.status !='Hold'">
+                    <p class="text-xs text-gray-500 uppercase tracking-wider mb-1">Sell Price</p>
+                    <p class="text-red-400 text-xl font-semibold">₹{{stock.sellPrice}}</p>
+                </div>
+                <div>
+                    <p class="text-xs text-gray-500 uppercase tracking-wider mb-1">Status</p>
+                    <p class="text-xl font-semibold" 
+                       [class.text-gray-400]="stock.status ==='Hold'" 
+                       [class.text-red-400]="stock.status ==='Sell'">{{stock.status}}</p>
+                </div>
+                <div>
+                    <p class="text-xs text-gray-500 uppercase tracking-wider mb-1">Buy Amount</p>
+                    <p class="text-gray-300 text-xl font-semibold">₹{{(stock.totalBuyAmount).toFixed(2)}}</p>
+                </div>
+                <div *ngIf="stock.status !='Hold'">
+                    <p class="text-xs text-gray-500 uppercase tracking-wider mb-1">Sell Amount</p>
+                    <p class="text-gray-300 text-xl font-semibold">₹{{(stock.totalSellAmount).toFixed(2)}}</p>
+                </div>
+                <div *ngIf="(stock.sellPrice > stock.buyPrice) && stock.sellPrice != 0">
+                    <p class="text-xs text-gray-500 uppercase tracking-wider mb-1">Profit</p>
+                    <p class="text-emerald-400 text-xl font-semibold">+₹{{((stock.totalQuantity * stock.sellPrice) - (stock.totalQuantity * stock.buyPrice)).toFixed(2)}}</p>
+                </div>
+                <div *ngIf="(stock.sellPrice < stock.buyPrice) && stock.sellPrice != 0">
+                    <p class="text-xs text-gray-500 uppercase tracking-wider mb-1">Loss</p>
+                    <p class="text-red-400 text-xl font-semibold">₹{{((stock.totalQuantity * stock.buyPrice) - (stock.totalQuantity * stock.sellPrice)).toFixed(2)}}</p>
+                </div>
+                <div *ngIf="stock.status === 'Sell'">
+                    <p class="text-xs text-gray-500 uppercase tracking-wider mb-1">ROI</p>
+                    <p class="text-xl font-semibold"
+                       [class.text-emerald-400]="(((stock.totalQuantity * stock.sellPrice - stock.totalQuantity * stock.buyPrice)/(stock.totalQuantity * stock.buyPrice))* 100) > 0"
+                       [class.text-red-400]="(((stock.totalQuantity * stock.sellPrice - stock.totalQuantity * stock.buyPrice)/(stock.totalQuantity * stock.buyPrice))* 100) < 0">
+                        {{(((stock.totalQuantity * stock.sellPrice - stock.totalQuantity * stock.buyPrice)/(stock.totalQuantity * stock.buyPrice))* 100).toFixed(2)}}%
+                    </p>
+                </div>
             </div>
         </div>
     </div>
+
+    <ng-container *ngIf="!stocks?.length">
+        <div class="trading-card flex flex-col items-center justify-center py-16 text-center">
+            <div class="w-16 h-16 rounded-full bg-slate-700/50 flex items-center justify-center mb-4">
+                <svg class="w-8 h-8 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path>
+                </svg>
+            </div>
+            <p class="text-gray-400 font-medium">No stocks added yet</p>
+            <p class="text-gray-500 text-sm mt-1">Click "Add Stock" to track your investments</p>
+        </div>
+    </ng-container>
 </div>
