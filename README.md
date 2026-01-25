@@ -227,22 +227,19 @@ The app connects to NSE India for live market data. Everything is already set up
 ## 📸 Screenshots
 
 <!-- Add your screenshots here -->
-![Dashboard](screenshots/dashboard.png)
+<img width="1710" height="934" alt="trade-01" src="https://github.com/user-attachments/assets/bbf54460-e7e0-4f16-84d9-f48d7af3df2d" />
 *Dashboard with market data and performance charts*
 
-![Trades](screenshots/trades.png)
+<img width="2559" height="1275" alt="trade-02" src="https://github.com/user-attachments/assets/bd069160-70d3-451c-b80c-7a4fc89398d3" />
 *Trade management interface*
 
-![Trade Sheet](screenshots/trade-sheet.png)
+<img width="2559" height="1278" alt="trade-03" src="https://github.com/user-attachments/assets/7576234b-c900-4001-a7cb-2aac79c676d7" />
 *Trade sheet with daily entries*
 
-![Analytics](screenshots/analytics.png)
+<img width="2559" height="1274" alt="trade-06" src="https://github.com/user-attachments/assets/4dd7c3e2-da7b-4ce1-a9e7-a7817e85617f" />
 *Performance analytics and charts*
 
-![Account](screenshots/account.png)
-*Account management with profile and funds*
-
-![Stocks](screenshots/stocks.png)
+<img width="2559" height="1273" alt="trade-04" src="https://github.com/user-attachments/assets/90537a47-82e1-4fa8-9e5b-75796bed7fd6" />
 *Stock portfolio management*
 
 ## 🌐 Live Demo
@@ -308,3 +305,4 @@ For support, email support@tradetracker.io or open an issue in the GitHub reposi
 ---
 
 **Made with ❤️ for traders**
+
