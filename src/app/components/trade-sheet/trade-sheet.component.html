@@ -114,7 +114,7 @@
                 <div class="markets flex gap-4 flex-wrap" *ngIf="sheet.targetAchieved == null">
                     <ng-container *ngFor="let market of markets; let i = index">
                         <div class="flex items-center">
-                            <input id="sheet_{{sheetIndex}}_{{i}}" type="radio" class="w-4 h-4 text-blue-600 bg-slate-700 border-slate-600 focus:ring-blue-500 focus:ring-2" name="sheet_market_{{sheetIndex}}" value="{{market.lot}}" (change)="onMarketSelect(sheet, market)">
+                            <input id="sheet_{{sheetIndex}}_{{i}}" type="radio" class="w-4 h-4 text-blue-600 bg-slate-700 border-slate-600" name="sheet_market_{{sheetIndex}}" value="{{market.lot}}" (change)="onMarketSelect(sheet, market)">
                             <label for="sheet_{{sheetIndex}}_{{i}}" class="ms-2 text-sm font-medium text-gray-300">{{market.name}}</label>
                         </div>
                     </ng-container>

@@ -16,10 +16,12 @@
                 <input type="number" id="fund" class="form-input" placeholder="Fund Amount" required formControlName="fund" min="0"/>
             </div>
         </div>
-        <button type="submit"
-            [ngClass]="{'bg-blue-400/50 cursor-not-allowed': sheetEntryForm.invalid, 'bg-blue-600 hover:bg-blue-700' : !sheetEntryForm.invalid }" 
-            class="text-white focus:ring-4 focus:outline-none focus:ring-blue-500/30 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center transition-colors">
-            Submit
-        </button>
+        <div class="footer-btn">
+            <button type="submit"
+                [ngClass]="{'bg-blue-400/50 cursor-not-allowed': sheetEntryForm.invalid, 'bg-blue-600 hover:bg-blue-700' : !sheetEntryForm.invalid }" 
+                class="text-white focus:ring-4 focus:outline-none focus:ring-blue-500/30 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center transition-colors">
+                Submit
+            </button>
+        </div>
     </form>
 </div>

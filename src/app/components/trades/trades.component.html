@@ -79,13 +79,13 @@
                                     ₹{{trade.investment | number}}
                                 </td>
                                 <td>
-                                    <span class="profit flex items-center gap-1" *ngIf="trade.isProfitable">
+                                    <span class="profit whitespace-nowrap flex items-center gap-1" *ngIf="trade.isProfitable">
                                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 10l7-7m0 0l7 7m-7-7v18"></path>
                                         </svg>
                                         +₹{{abs(trade.profit) | number}}
                                     </span>
-                                    <span class="lose flex items-center gap-1" *ngIf="!trade.isProfitable">
+                                    <span class="lose whitespace-nowrap flex items-center gap-1" *ngIf="!trade.isProfitable">
                                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path>
                                         </svg>

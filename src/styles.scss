@@ -51,6 +51,26 @@ body {
     }
 }
 
+/* Footer button styles */
+.footer-btn {
+    position: sticky;
+    bottom: 0;
+    
+    button {
+        @apply w-full z-10 relative;
+    }
+
+    &::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: calc(100% + 1rem);
+        background-color: rgb(30 41 59 / var(--tw-bg-opacity));
+    }
+}
+
 /* Stat card styles */
 .stat-card {
     @apply bg-gradient-to-br from-slate-800 to-slate-900 border border-slate-700/50 rounded-xl p-5;

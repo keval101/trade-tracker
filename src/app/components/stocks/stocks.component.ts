@@ -22,7 +22,7 @@ export class StocksComponent {
 
   openStockForm(stock?: any) {
     const dialogRef = this.dialogService.open(AddStockComponent, {
-      width: window.innerWidth < 992 ? '80vw' : '40%',
+      width: window.innerWidth < 600 ? '90%' : '500px',
       header: 'Add Stock',
       data: {stock}
     });
@@ -50,7 +50,7 @@ export class StocksComponent {
 
   deleteTrade(stock: any) {
     const dialogRef = this.dialogService.open(DeleteStockComponent, {
-      width: window.innerWidth < 992 ? '80vw' : '40%',
+      width: window.innerWidth < 600 ? '90%' : '500px',
       header: 'Delete Stock',
       data: stock
     })

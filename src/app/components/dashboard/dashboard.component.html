@@ -7,8 +7,15 @@
         </div>
         <div class="flex items-center gap-3">
             <div class="flex items-center gap-2 px-4 py-2 bg-slate-800/50 rounded-lg border border-slate-700/50">
-                <span class="w-2 h-2 bg-emerald-400 rounded-full animate-pulse"></span>
-                <span class="text-sm text-gray-400">Market Open</span>
+                <span class="w-2 h-2 rounded-full"
+                    [class.bg-emerald-400]="marketStatus === 'open'"
+                    [class.animate-pulse]="marketStatus === 'open'"
+                    [class.bg-red-400]="marketStatus === 'closed'"
+                    [class.bg-amber-400]="marketStatus === 'holiday'"></span>
+                <span class="text-sm font-medium"
+                    [class.text-emerald-400]="marketStatus === 'open'"
+                    [class.text-red-400]="marketStatus === 'closed'"
+                    [class.text-amber-400]="marketStatus === 'holiday'">{{marketStatusText}}</span>
             </div>
         </div>
     </div>
@@ -125,13 +132,13 @@
                                             ₹{{trade.investment | number}}
                                         </td>
                                         <td>
-                                            <span class="profit flex items-center gap-1" *ngIf="trade.isProfitable">
+                                            <span class="profit whitespace-nowrap flex items-center gap-1" *ngIf="trade.isProfitable">
                                                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 10l7-7m0 0l7 7m-7-7v18"></path>
                                                 </svg>
                                                 +₹{{trade.profit | number}}
                                             </span>
-                                            <span class="lose flex items-center gap-1" *ngIf="!trade.isProfitable">
+                                            <span class="lose whitespace-nowrap flex items-center gap-1" *ngIf="!trade.isProfitable">
                                                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path>
                                                 </svg>
