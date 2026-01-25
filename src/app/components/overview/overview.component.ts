@@ -23,6 +23,7 @@ export class OverviewComponent implements OnInit, OnDestroy{
   selectedTrade: any;
   fundData: any;
   dayData: any;
+  showInstructions: boolean = false;
   
   constructor(
     private dataService: DataService,

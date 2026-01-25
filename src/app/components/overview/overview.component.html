@@ -5,6 +5,102 @@
             <h1 class="page-title mb-0">Analytics</h1>
             <p class="text-gray-500 text-sm mt-1">Track your trading performance over time</p>
         </div>
+        <button (click)="showInstructions = !showInstructions" 
+            class="flex items-center gap-2 px-4 py-2 bg-slate-700 hover:bg-slate-600 rounded-lg text-gray-300 text-sm transition-colors">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+            </svg>
+            {{showInstructions ? 'Hide' : 'Show'}} Instructions
+        </button>
+    </div>
+
+    <!-- Instructions Panel -->
+    <div class="trading-card mb-6" *ngIf="showInstructions">
+        <div class="flex items-start gap-4">
+            <div class="w-10 h-10 rounded-full bg-purple-500/20 flex items-center justify-center flex-shrink-0">
+                <svg class="w-5 h-5 text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
+                </svg>
+            </div>
+            <div class="flex-1">
+                <h3 class="text-lg font-semibold text-white mb-3">What is Analytics?</h3>
+                <p class="text-gray-300 mb-4 leading-relaxed">
+                    Analytics provides comprehensive insights into your trading performance across different time periods. 
+                    It visualizes your profit/loss patterns, identifies your best and worst trading days, 
+                    and helps you understand your trading behavior to make data-driven decisions.
+                </p>
+
+                <h4 class="text-md font-semibold text-white mb-2 mt-4">Key Features:</h4>
+                <ul class="space-y-2 text-gray-300 mb-4">
+                    <li><strong class="text-white">Monthly P&L Grid:</strong> Visual calendar view showing daily profit/loss with color coding - darker green for higher profits, darker red for higher losses.</li>
+                    <li><strong class="text-white">Streak Analysis:</strong> Track your longest winning and losing streaks to understand your trading patterns.</li>
+                    <li><strong class="text-white">Success Ratio:</strong> Percentage of profitable trading days, helping you gauge consistency.</li>
+                    <li><strong class="text-white">Best/Worst Days:</strong> Identify which days of the week you perform best or worst.</li>
+                    <li><strong class="text-white">Funds Overview:</strong> Track total funds added, withdrawn, and net funds over time.</li>
+                    <li><strong class="text-white">Average P&L:</strong> See your average profit per winning trade and average loss per losing trade.</li>
+                    <li><strong class="text-white">Month Comparison:</strong> Compare current month's performance with previous month.</li>
+                </ul>
+
+                <h4 class="text-md font-semibold text-white mb-2 mt-4">How to Use:</h4>
+                <ol class="list-decimal list-inside space-y-2 text-gray-300 mb-4">
+                    <li><strong class="text-white">View Monthly Grid:</strong> Each month shows a calendar grid with color-coded boxes representing daily P&L.</li>
+                    <li><strong class="text-white">Click Month Name:</strong> Click on any month name to see detailed analysis for that month.</li>
+                    <li><strong class="text-white">Hover/Click Boxes:</strong> Hover over or click colored boxes in the grid to see specific trade details.</li>
+                    <li><strong class="text-white">Analyze Patterns:</strong> Use the day analysis to identify which days of the week you trade best.</li>
+                    <li><strong class="text-white">Track Progress:</strong> Monitor your success ratio, streaks, and average P&L to improve your strategy.</li>
+                </ol>
+
+                <h4 class="text-md font-semibold text-white mb-2 mt-4">Understanding Color Coding:</h4>
+                <div class="grid grid-cols-2 gap-4 mb-4">
+                    <div>
+                        <p class="text-xs text-gray-400 mb-2">Profit Colors (Green):</p>
+                        <div class="space-y-1">
+                            <div class="flex items-center gap-2">
+                                <div class="w-4 h-4 bg-emerald-300 rounded"></div>
+                                <span class="text-xs text-gray-300">₹0 - ₹500</span>
+                            </div>
+                            <div class="flex items-center gap-2">
+                                <div class="w-4 h-4 bg-emerald-400 rounded"></div>
+                                <span class="text-xs text-gray-300">₹500 - ₹1,000</span>
+                            </div>
+                            <div class="flex items-center gap-2">
+                                <div class="w-4 h-4 bg-emerald-500 rounded"></div>
+                                <span class="text-xs text-gray-300">₹1,000 - ₹2,000</span>
+                            </div>
+                            <div class="flex items-center gap-2">
+                                <div class="w-4 h-4 bg-emerald-600 rounded"></div>
+                                <span class="text-xs text-gray-300">₹2,000+</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+                        <p class="text-xs text-gray-400 mb-2">Loss Colors (Red):</p>
+                        <div class="space-y-1">
+                            <div class="flex items-center gap-2">
+                                <div class="w-4 h-4 bg-red-300 rounded"></div>
+                                <span class="text-xs text-gray-300">₹0 - ₹500</span>
+                            </div>
+                            <div class="flex items-center gap-2">
+                                <div class="w-4 h-4 bg-red-400 rounded"></div>
+                                <span class="text-xs text-gray-300">₹500 - ₹1,000</span>
+                            </div>
+                            <div class="flex items-center gap-2">
+                                <div class="w-4 h-4 bg-red-500 rounded"></div>
+                                <span class="text-xs text-gray-300">₹1,000 - ₹2,000</span>
+                            </div>
+                            <div class="flex items-center gap-2">
+                                <div class="w-4 h-4 bg-red-600 rounded"></div>
+                                <span class="text-xs text-gray-300">₹2,000+</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="info-box info-box-blue mt-4">
+                    <p class="text-sm"><strong>Tip:</strong> Use the day analysis insights to optimize your trading schedule. If you perform better on certain days, consider adjusting your trading strategy accordingly.</p>
+                </div>
+            </div>
+        </div>
     </div>
 
     <!-- Info Banner -->

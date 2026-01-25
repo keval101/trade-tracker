@@ -6,6 +6,62 @@
                 <p-calendar formControlName="date" appendTo="body" dateFormat="dd/mm/yy" placeholder="Select Date" styleClass="w-full"></p-calendar>
             </div>
 
+            <!-- Company Search -->
+            <div class="relative">
+                <label for="search" class="block mb-2 text-sm font-medium text-gray-300">
+                    Search Company
+                    <span class="text-xs text-gray-500 font-normal ml-1">(Optional - Auto-fills details)</span>
+                </label>
+                <div class="relative">
+                    <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                        <svg class="w-5 h-5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                        </svg>
+                    </div>
+                    <input 
+                        type="text" 
+                        id="search" 
+                        class="form-input !pl-10" 
+                        placeholder="Type company name or symbol (e.g., Reliance, RELIANCE)"
+                        [(ngModel)]="searchQuery"
+                        [ngModelOptions]="{standalone: true}"
+                        (ngModelChange)="onSearchChange($event)"
+                        (focus)="showSearchResults = searchResults.length > 0"
+                        (blur)="closeSearchResults()"
+                        autocomplete="off"/>
+                    <div *ngIf="isSearching" class="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
+                        <svg class="animate-spin h-5 w-5 text-gray-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                        </svg>
+                    </div>
+                </div>
+                
+                <!-- Search Results Dropdown -->
+                <div *ngIf="showSearchResults && searchResults.length > 0" 
+                     class="absolute z-50 w-full mt-1 bg-slate-800 border border-slate-700 rounded-lg shadow-xl max-h-60 overflow-y-auto">
+                    <div *ngFor="let company of searchResults" 
+                         class="px-4 py-3 hover:bg-slate-700 cursor-pointer transition-colors border-b border-slate-700/50 last:border-b-0"
+                         (click)="selectCompany(company)">
+                        <div class="flex items-center gap-3">
+                            <div class="flex-1">
+                                <p class="text-sm font-medium text-white">{{company.symbol_info || company.name || company.companyName}}</p>
+                                <p class="text-xs text-gray-400 mt-0.5">{{company.symbol}}</p>
+                            </div>
+                            <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                            </svg>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- No Results -->
+                <div *ngIf="showSearchResults && searchResults.length === 0 && !isSearching && searchQuery.length >= 2" 
+                     class="absolute z-50 w-full mt-1 bg-slate-800 border border-slate-700 rounded-lg shadow-xl p-4">
+                    <p class="text-sm text-gray-400 text-center">No companies found. Please enter details manually.</p>
+                </div>
+            </div>
+
             <div>
                 <label for="name" class="block mb-2 text-sm font-medium text-gray-300">Stock Name</label>
                 <input type="text" id="name" class="form-input" placeholder="Stock Name" required formControlName="name"/>

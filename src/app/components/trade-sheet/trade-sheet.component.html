@@ -5,6 +5,56 @@
             <h1 class="page-title mb-0">Trade Sheet</h1>
             <p class="text-gray-500 text-sm mt-1">Generate and track your trading sheets</p>
         </div>
+        <button (click)="showInstructions = !showInstructions" 
+            class="flex items-center gap-2 px-4 py-2 bg-slate-700 hover:bg-slate-600 rounded-lg text-gray-300 text-sm transition-colors">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+            </svg>
+            {{showInstructions ? 'Hide' : 'Show'}} Instructions
+        </button>
+    </div>
+
+    <!-- Instructions Panel -->
+    <div class="trading-card mb-6" *ngIf="showInstructions">
+        <div class="flex items-start gap-4">
+            <div class="w-10 h-10 rounded-full bg-blue-500/20 flex items-center justify-center flex-shrink-0">
+                <svg class="w-5 h-5 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                </svg>
+            </div>
+            <div class="flex-1">
+                <h3 class="text-lg font-semibold text-white mb-3">What is Trade Sheet?</h3>
+                <p class="text-gray-300 mb-4 leading-relaxed">
+                    Trade Sheet is a powerful tool to plan and track your trading goals over a specific period. 
+                    It helps you set daily profit targets based on your starting capital and expected ROI, 
+                    then track your actual performance against those targets.
+                </p>
+
+                <h4 class="text-md font-semibold text-white mb-2 mt-4">How to Use:</h4>
+                <ol class="list-decimal list-inside space-y-2 text-gray-300 mb-4">
+                    <li><strong class="text-white">Generate a Sheet:</strong> Click "Generate Sheet" and enter your starting capital, expected ROI percentage, and number of days.</li>
+                    <li><strong class="text-white">Select Market:</strong> Choose your trading market (Nifty, Bank Nifty, Fin Nifty, etc.) to calculate point requirements.</li>
+                    <li><strong class="text-white">Add Daily Entries:</strong> Click "Add Entry" each day to record your actual profit or loss.</li>
+                    <li><strong class="text-white">Track Progress:</strong> The table shows your expected vs actual performance, helping you stay on track.</li>
+                    <li><strong class="text-white">Edit Entries:</strong> Click on any row in the table to edit that day's trade entry.</li>
+                </ol>
+
+                <h4 class="text-md font-semibold text-white mb-2 mt-4">Understanding the Table:</h4>
+                <ul class="space-y-2 text-gray-300 mb-4">
+                    <li><strong class="text-white">Starting Capital:</strong> Your capital at the beginning of each day.</li>
+                    <li><strong class="text-white">Current Capital:</strong> Your capital after previous day's trades.</li>
+                    <li><strong class="text-white">Expected Profit:</strong> The daily profit target based on your ROI.</li>
+                    <li><strong class="text-white">Point Needed:</strong> How many points you need to move in the selected market to achieve expected profit.</li>
+                    <li><strong class="text-white">Current Profit:</strong> Your actual profit/loss for that day.</li>
+                    <li><strong class="text-white">ROI:</strong> Return on investment percentage for that day.</li>
+                    <li><strong class="text-white">Net:</strong> Final capital after adding/subtracting profit/loss.</li>
+                </ul>
+
+                <div class="info-box info-box-blue mt-4">
+                    <p class="text-sm"><strong>Tip:</strong> A sheet is marked as "Target Achieved" when you complete all days and your final capital meets or exceeds the expected final capital.</p>
+                </div>
+            </div>
+        </div>
     </div>
 
     <div class="flex flex-wrap gap-4 w-full justify-between items-center">

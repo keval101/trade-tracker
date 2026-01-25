@@ -35,6 +35,7 @@ export class TradeSheetComponent implements OnInit{
   selectedMarket = { name: 'Fin Nifty', lot: 40}
   isShortSheets: boolean = true;
   totalTargetAchievedSheets = 0
+  showInstructions: boolean = false;
   
   constructor(
     private dialogService: DialogService,

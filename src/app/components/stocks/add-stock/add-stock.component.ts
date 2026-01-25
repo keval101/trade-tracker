@@ -1,9 +1,11 @@
 import { DatePipe } from '@angular/common';
-import { Component, EventEmitter, Output, ViewEncapsulation } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output, ViewEncapsulation } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { MessageService } from 'primeng/api';
 import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { DataService } from 'src/app/service/data.service';
+import { NseDataService } from 'src/app/service/nse-data.service';
+import { Subject, debounceTime, distinctUntilChanged, switchMap, catchError, of } from 'rxjs';
 
 @Component({
   selector: 'app-add-stock',
@@ -11,12 +13,19 @@ import { DataService } from 'src/app/service/data.service';
   styleUrls: ['./add-stock.component.scss'],
   encapsulation: ViewEncapsulation.None
 })
-export class AddStockComponent {
+export class AddStockComponent implements OnInit {
 
   stockForm: FormGroup;
   isEdit = false;
 
   @Output() emitModalClose = new EventEmitter()
+
+  // Search functionality
+  searchQuery: string = '';
+  searchResults: any[] = [];
+  showSearchResults: boolean = false;
+  isSearching: boolean = false;
+  private searchSubject = new Subject<string>();
 
   constructor(
     private fb: FormBuilder,
@@ -24,7 +33,8 @@ export class AddStockComponent {
     public dataService: DataService,
     public ref: DynamicDialogRef,
     private messageService: MessageService,
-    private datePipe: DatePipe) {}
+    private datePipe: DatePipe,
+    private nseDataService: NseDataService) {}
 
   ngOnInit(): void {
     this.stockForm = this.fb.group({
@@ -46,8 +56,53 @@ export class AddStockComponent {
       date = `${date[1]}/${date[0]}/${date[2]}`;
       this.config.data.stock.date = this.datePipe.transform(new Date(date), 'dd/MM/yyyy');
       this.stockForm.patchValue(this.config.data.stock)
+      this.searchQuery = this.config.data.stock.name || '';
     }
 
+    // Setup search with debouncing
+    this.searchSubject.pipe(
+      debounceTime(300),
+      distinctUntilChanged(),
+      switchMap(query => {
+        if (query && query.length >= 2) {
+          this.isSearching = true;
+          return this.nseDataService.searchCompany(query).pipe(
+            catchError(error => {
+              console.error('Search error:', error);
+              this.messageService.add({ 
+                severity: 'warn', 
+                summary: 'Search Failed', 
+                detail: 'Unable to search companies. Please enter details manually.' 
+              });
+              return of([]);
+            })
+          );
+        } else {
+          this.searchResults = [];
+          this.showSearchResults = false;
+          return of([]);
+        }
+      })
+    ).subscribe((results: any) => {
+      this.isSearching = false;
+      
+      // NSE API returns: { symbols: [], mfsymbols: [], search_content: [], sitemap: [] }
+      if (results && results.symbols && Array.isArray(results.symbols)) {
+        // Filter for equity stocks only (exclude bonds, derivatives, etc.)
+        const equityStocks = results.symbols.filter((item: any) => 
+          item.result_sub_type === 'equity' && item.activeSeries && item.activeSeries.length > 0
+        );
+        this.searchResults = equityStocks;
+        this.showSearchResults = equityStocks.length > 0;
+      } else if (results && Array.isArray(results)) {
+        // Fallback: if response is directly an array
+        this.searchResults = results;
+        this.showSearchResults = results.length > 0;
+      } else {
+        this.searchResults = [];
+        this.showSearchResults = false;
+      }
+    });
   }
 
   setAmount() {
@@ -113,5 +168,44 @@ export class AddStockComponent {
     .catch((error) => {
       console.error('Error adding document: ', error);
     });
+  }
+
+  // Search methods
+  onSearchChange(query: string) {
+    this.searchQuery = query;
+    this.searchSubject.next(query);
+  }
+
+  selectCompany(company: any) {
+    // NSE API structure: { symbol, symbol_info, result_sub_type, activeSeries, ... }
+    const symbol = company.symbol || '';
+    const companyName = company.symbol_info || company.name || company.companyName || symbol;
+    
+    // Generate logo URL - use common patterns
+    const logoUrl = `https://assets-netstorage.groww.in/stock-assets/logos2/${symbol.toUpperCase()}.webp`;
+    
+    // Auto-fill form fields
+    this.stockForm.patchValue({
+      name: companyName,
+      code: symbol.toUpperCase(),
+      logo: logoUrl
+    });
+
+    this.searchQuery = companyName;
+    this.showSearchResults = false;
+    this.searchResults = [];
+    
+    this.messageService.add({ 
+      severity: 'success', 
+      summary: 'Company Selected', 
+      detail: `${companyName} (${symbol.toUpperCase()}) details filled automatically.` 
+    });
+  }
+
+  closeSearchResults() {
+    // Close search results when clicking outside
+    setTimeout(() => {
+      this.showSearchResults = false;
+    }, 200);
   }
 }

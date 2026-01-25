@@ -36,7 +36,7 @@ import { SheetEntryDialogComponent } from './components/trade-sheet/sheet-entry-
 import { LogoComponent } from './shared/logo/logo.component';
 import { AngularFireAuthModule } from '@angular/fire/compat/auth';
 import { LoginComponent } from './components/login/login.component';
-import { HTTP_INTERCEPTORS } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { AuthInterceptor } from './interceptor/auth.interceptor';
 import { SignupComponent } from './components/signup/signup.component';
 import { DeleteFundComponent } from './components/account/delete-fund/delete-fund.component';
@@ -102,7 +102,8 @@ const firebaseConfig = {
     ChartModule,
     TooltipModule,
     AngularFireAuthModule,
-    KnobModule
+    KnobModule,
+    HttpClientModule
   ],
   providers: [
     DialogService, DatePipe, MessageService, 
