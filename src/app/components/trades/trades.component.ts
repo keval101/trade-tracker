@@ -13,11 +13,18 @@ import { DeleteTradeComponent } from './delete-trade/delete-trade.component';
 export class TradesComponent implements OnInit {
   newDate = new Date();
   trades: any[] = [];
+  filteredTrades: any[] = [];
   isLoading = true;
   tradeOverview: any;
   tradingAccuracy: any;
   isProfitableTrader = false;
   streakData: any;
+  
+  // Filter properties
+  searchQuery: string = '';
+  selectedTags: string[] = [];
+  availableTags: string[] = [];
+  showFilters: boolean = false;
 
   constructor(
     private dialogService: DialogService,
@@ -43,6 +50,7 @@ export class TradesComponent implements OnInit {
 
   getTrades() {
     this.trades = [];
+    this.filteredTrades = [];
     this.isLoading = true;
     this.dataService.getTrades().subscribe(trades => {
       trades.sort((a, b) => {
@@ -51,10 +59,17 @@ export class TradesComponent implements OnInit {
         return dateB - dateA;
       });
       this.trades = trades;
+      this.filteredTrades = [...trades];
       console.log(this.trades);
       this.tradingAccuracy = this.calculateTotalDaysAndProfitableDays(this.trades)
       this.isLoading = false;
       this.streakData = this.countStreaks(trades);
+      
+      // Extract unique tags from all trades
+      this.extractAvailableTags(trades);
+      
+      // Apply filters
+      this.applyFilters();
 
       // Use Math.abs to handle any accidentally entered negative values
       const totalProfit = this.trades.reduce((total, current) => total + Math.abs(+current.profit || 0), 0)
@@ -151,4 +166,80 @@ export class TradesComponent implements OnInit {
   abs(value: number): number {
     return Math.abs(value || 0);
   }
+
+  extractAvailableTags(trades: any[]) {
+    const tagSet = new Set<string>();
+    trades.forEach(trade => {
+      if (trade.tags && Array.isArray(trade.tags)) {
+        trade.tags.forEach((tag: string) => tagSet.add(tag));
+      }
+    });
+    this.availableTags = Array.from(tagSet).sort();
+  }
+
+  onTagFilterToggle(tag: string) {
+    const index = this.selectedTags.indexOf(tag);
+    if (index > -1) {
+      this.selectedTags.splice(index, 1);
+    } else {
+      this.selectedTags.push(tag);
+    }
+    this.applyFilters();
+  }
+
+  onSearchChange() {
+    this.applyFilters();
+  }
+
+  clearFilters() {
+    this.searchQuery = '';
+    this.selectedTags = [];
+    this.applyFilters();
+  }
+
+  applyFilters() {
+    let filtered = [...this.trades];
+
+    // Filter by search query (searches in notes)
+    if (this.searchQuery.trim()) {
+      const query = this.searchQuery.toLowerCase();
+      filtered = filtered.filter(trade => 
+        (trade.notes && trade.notes.toLowerCase().includes(query)) ||
+        (trade.market && trade.market.toLowerCase().includes(query))
+      );
+    }
+
+    // Filter by tags
+    if (this.selectedTags.length > 0) {
+      filtered = filtered.filter(trade => {
+        if (!trade.tags || !Array.isArray(trade.tags)) return false;
+        return this.selectedTags.some(tag => trade.tags.includes(tag));
+      });
+    }
+
+    this.filteredTrades = filtered;
+  }
+
+  hasActiveFilters(): boolean {
+    return this.searchQuery.trim().length > 0 || this.selectedTags.length > 0;
+  }
+
+  getFilteredSummary() {
+    const filteredProfit = this.filteredTrades.reduce((total, current) => total + Math.abs(+current.profit || 0), 0);
+    const filteredLoss = this.filteredTrades.reduce((total, current) => total + Math.abs(+current.lose || 0), 0);
+    const filteredPL = filteredProfit - filteredLoss;
+    const filteredBrokerage = this.filteredTrades.reduce((total, current) => total + Math.abs(+current.brokerage || 0), 0);
+    const filteredTotalTrades = this.filteredTrades.reduce((total, current) => total + Math.abs(+current.totalTrades || 0), 0);
+    
+    return {
+      totalTrades: filteredTotalTrades,
+      profitLose: filteredPL,
+      brokerage: filteredBrokerage
+    };
+  }
+
+  toggleTradeDetails(trade: any) {
+    trade.showDetails = !trade.showDetails;
+  }
+
 }

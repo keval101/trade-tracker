@@ -8,6 +8,19 @@
             @apply bg-slate-700/50;
         }
     }
+
+    // Smooth transition for expand/collapse
+    .trading-table {
+        tr {
+            transition: background-color 0.2s ease;
+        }
+    }
+
+    // Rotate animation for expand icon
+    svg.rotate-180 {
+        transform: rotate(180deg);
+        transition: transform 0.3s ease;
+    }
 }
 
 /* Override for trading table in trades */

@@ -15,6 +15,8 @@ export class AddTradeComponent implements OnInit{
 
   tradeForm: FormGroup;
   isEdit = false;
+  selectedTags: string[] = [];
+  availableTags = ['Breakout', 'Reversal', 'Mistake', 'Scalping', 'Swing', 'Trend Following', 'Support/Resistance', 'News Based', 'Gap Trade', 'Other'];
 
   @Output() emitModalClose = new EventEmitter()
 
@@ -35,7 +37,9 @@ export class AddTradeComponent implements OnInit{
       isProfitable: [false, Validators.required],
       profit: [0],
       lose: [0],
-      brokerage: [0, Validators.required]
+      brokerage: [0, Validators.required],
+      notes: [''],
+      tags: [[]]
     })
 
     const preferredMarket = localStorage.getItem('preferredMarket');
@@ -49,6 +53,15 @@ export class AddTradeComponent implements OnInit{
       this.config.data.trade.date = this.datePipe.transform(new Date(date), 'dd/MM/yyyy');
       this.tradeForm.patchValue(this.config.data.trade)
       this.tradeForm.get('isProfitable').setValue(this.config.data.trade.isProfitable ? true : false)
+      
+      // Load existing tags and notes
+      if (this.config.data.trade.tags) {
+        this.selectedTags = Array.isArray(this.config.data.trade.tags) ? this.config.data.trade.tags : [];
+        this.tradeForm.get('tags').setValue(this.selectedTags);
+      }
+      if (this.config.data.trade.notes) {
+        this.tradeForm.get('notes').setValue(this.config.data.trade.notes);
+      }
     } else {
       // New trade - default to loss (isProfitable = false)
       this.tradeForm.get('isProfitable').setValue(false)
@@ -63,6 +76,15 @@ export class AddTradeComponent implements OnInit{
         data.date = this.datePipe.transform(new Date(date), 'dd/MM/yyyy');
         this.tradeForm.patchValue(data)
         this.tradeForm.get('isProfitable').setValue(data.isProfitable ? true : false)
+        
+        // Load existing tags and notes for sheet entry
+        if (data.tags) {
+          this.selectedTags = Array.isArray(data.tags) ? data.tags : [];
+          this.tradeForm.get('tags').setValue(this.selectedTags);
+        }
+        if (data.notes) {
+          this.tradeForm.get('notes').setValue(data.notes);
+        }
       } else {
         // New sheet entry - default to loss (isProfitable = false)
         this.tradeForm.get('isProfitable').setValue(false)
@@ -102,6 +124,17 @@ export class AddTradeComponent implements OnInit{
       this.ref.close()
     }
   }
+
+  onTagToggle(tag: string) {
+    const index = this.selectedTags.indexOf(tag);
+    if (index > -1) {
+      this.selectedTags.splice(index, 1);
+    } else {
+      this.selectedTags.push(tag);
+    }
+    this.tradeForm.get('tags').setValue([...this.selectedTags]);
+  }
+
 
   addNewTrade(payload) {
     this.dataService.addTrade(payload).then((res) => {

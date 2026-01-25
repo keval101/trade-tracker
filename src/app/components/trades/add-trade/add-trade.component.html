@@ -47,6 +47,35 @@
                 <label for="brokerage" class="block mb-2 text-sm font-medium text-gray-300">Brokerage</label>
                 <input formControlName="brokerage" type="number" id="brokerage" class="form-input" placeholder="Brokerage" required min="0"/>
             </div>
+
+            <!-- Tags Section -->
+            <div>
+                <label class="block mb-2 text-sm font-medium text-gray-300">Tags</label>
+                <div class="flex flex-wrap gap-2">
+                    <button 
+                        type="button"
+                        *ngFor="let tag of availableTags"
+                        (click)="onTagToggle(tag)"
+                        [class]="selectedTags.includes(tag) 
+                            ? 'px-3 py-1.5 text-xs font-medium rounded-lg bg-blue-600 text-white border border-blue-600 transition-colors' 
+                            : 'px-3 py-1.5 text-xs font-medium rounded-lg bg-slate-700 text-gray-300 border border-slate-600 hover:bg-slate-600 transition-colors'">
+                        {{tag}}
+                    </button>
+                </div>
+                <p class="text-xs text-gray-500 mt-2">Select one or more tags to categorize this trade</p>
+            </div>
+
+            <!-- Notes Section -->
+            <div>
+                <label for="notes" class="block mb-2 text-sm font-medium text-gray-300">Notes</label>
+                <textarea 
+                    formControlName="notes" 
+                    id="notes" 
+                    rows="4"
+                    class="form-input resize-none" 
+                    placeholder="Add your notes here... Why did you enter this trade? What did you learn?"></textarea>
+                <p class="text-xs text-gray-500 mt-1">Document your trading thoughts, entry reasons, and lessons learned</p>
+            </div>
         </div>
         <div class="footer-btn">
             <button type="submit" 
