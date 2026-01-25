@@ -1,6 +1,30 @@
 <p-toast></p-toast>
+
+<!-- Market Marquee -->
+<div *ngIf="!isLoginPage && marketData.length > 0" class="market-marquee">
+    <div class="marquee-content">
+        <div class="marquee-track">
+            <div *ngFor="let index of marketData; let i = index" class="marquee-item">
+                <span class="index-name">{{getMarketDisplayName(index.indexName)}}</span>
+                <span class="index-value">{{index.last | number:'1.2-2'}}</span>
+                <span class="index-change" [class.positive]="index.percChange >= 0" [class.negative]="index.percChange < 0">
+                    <span *ngIf="index.percChange >= 0">+</span>{{index.percChange | number:'1.2-2'}}%
+                </span>
+            </div>
+            <!-- Duplicate for seamless loop -->
+            <div *ngFor="let index of marketData; let i = index" class="marquee-item">
+                <span class="index-name">{{getMarketDisplayName(index.indexName)}}</span>
+                <span class="index-value">{{index.last | number:'1.2-2'}}</span>
+                <span class="index-change" [class.positive]="index.percChange >= 0" [class.negative]="index.percChange < 0">
+                    <span *ngIf="index.percChange >= 0">+</span>{{index.percChange | number:'1.2-2'}}%
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+
 <app-sidenav *ngIf="!isLoginPage"></app-sidenav>
 
-<div class="content" [class.login-container]="isLoginPage">
+<div class="content" [class.login-container]="isLoginPage" [class.with-marquee]="!isLoginPage && marketData.length > 0">
     <router-outlet (activate)="checkForLoginPage()"></router-outlet>
 </div>

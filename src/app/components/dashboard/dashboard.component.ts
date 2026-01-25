@@ -1,6 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { DataService } from 'src/app/service/data.service';
+import { MarketDataService } from 'src/app/service/market-data.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -41,7 +42,9 @@ export class DashboardComponent implements OnInit, OnDestroy{
     '14-Sep-2026', '02-Oct-2026', '20-Oct-2026', '10-Nov-2026', '24-Nov-2026', '25-Dec-2026'
   ];
 
-  constructor(private dataService: DataService) {}
+  constructor(
+    private marketDataService: MarketDataService,
+    private dataService: DataService) {}
 
   ngOnInit(): void {
     this.getTrades();
@@ -365,4 +368,5 @@ export class DashboardComponent implements OnInit, OnDestroy{
     const dateStr = `${day}-${month}-${year}`;
     return this.holidays.includes(dateStr);
   }
+
 }

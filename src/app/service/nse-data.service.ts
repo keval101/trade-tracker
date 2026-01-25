@@ -13,4 +13,9 @@ export class NseDataService {
   searchCompany(query: string) {
     return this.http.get(`${this.baseURL}/search/autocomplete?q=${query}`);
   }
+
+  marketData() {
+    // https://www.nseindia.com/api/NextApi/apiClient?functionName=getIndexData&&type=All
+    return this.http.get(`${this.baseURL}/apiClient?functionName=getIndexData&&type=All`);
+  }
 }

@@ -5,9 +5,77 @@
     @media screen and (max-width: 640px) {
         @apply ml-0 p-4;
     }
+
+    &.with-marquee {
+        padding-top: calc(2rem + 48px); // Add space for marquee
+    }
 }
 
 .login-container {
     @apply ml-0 p-0;
     background: transparent;
+}
+
+/* Market Marquee Styles */
+.market-marquee {
+    @apply fixed top-0 left-0 right-0 z-50 bg-slate-900 border-b border-slate-700;
+    height: 48px;
+    overflow: hidden;
+    margin-left: 256px; // Account for sidebar width (ml-64 = 256px)
+    
+    @media screen and (max-width: 640px) {
+        margin-left: 0;
+    }
+}
+
+.marquee-content {
+    @apply h-full overflow-hidden;
+}
+
+.marquee-track {
+    @apply flex items-center h-full;
+    animation: marquee 20s linear infinite;
+    white-space: nowrap;
+}
+
+.marquee-item {
+    @apply flex items-center gap-3 px-6 py-2 border-r border-slate-700;
+    flex-shrink: 0;
+    
+    .index-name {
+        @apply text-xs font-semibold text-gray-400 uppercase tracking-wider;
+        min-width: 80px;
+    }
+    
+    .index-value {
+        @apply text-sm font-bold text-gray-100;
+        min-width: 80px;
+    }
+    
+    .index-change {
+        @apply text-xs font-semibold;
+        min-width: 60px;
+        
+        &.positive {
+            @apply text-emerald-400;
+        }
+        
+        &.negative {
+            @apply text-red-400;
+        }
+    }
+}
+
+@keyframes marquee {
+    0% {
+        transform: translateX(0);
+    }
+    100% {
+        transform: translateX(-50%);
+    }
+}
+
+/* Pause animation on hover */
+.market-marquee:hover .marquee-track {
+    animation-play-state: paused;
 }
