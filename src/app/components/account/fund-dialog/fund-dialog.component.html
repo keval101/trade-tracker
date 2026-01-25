@@ -11,10 +11,12 @@
                 <input formControlName="fund" type="number" id="fund" class="form-input" placeholder="Enter amount" min="0"/>
             </div>
         </div>
-        <button type="submit" [disabled]="fundForm.invalid" 
-            [ngClass]="{'bg-blue-400/50 cursor-not-allowed': fundForm.invalid, 'bg-blue-600 hover:bg-blue-700' : !fundForm.invalid }" 
-            class="text-white focus:ring-4 focus:outline-none focus:ring-blue-500/30 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center transition-colors">
-            Submit
-        </button>
+        <div class="footer-btn">
+            <button type="submit" [disabled]="fundForm.invalid" 
+                [ngClass]="{'bg-blue-400/50 cursor-not-allowed': fundForm.invalid, 'bg-blue-600 hover:bg-blue-700' : !fundForm.invalid }" 
+                class="text-white focus:ring-4 focus:outline-none focus:ring-blue-500/30 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center transition-colors">
+                Submit
+            </button>
+        </div>
     </form>
 </div>

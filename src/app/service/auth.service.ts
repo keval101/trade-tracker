@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
-import { map, switchMap } from 'rxjs';
-import { Observable } from 'rxjs/internal/Observable';
+import { AngularFireStorage } from '@angular/fire/compat/storage';
+import { map, switchMap, Observable } from 'rxjs';
+import { finalize } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -11,7 +12,8 @@ export class AuthService {
 
   constructor(
     private auth: AngularFireAuth,
-    private fireStore: AngularFirestore) { }
+    private fireStore: AngularFirestore,
+    private storage: AngularFireStorage) { }
   
   signIn(payload: any) {
     return this.auth.signInWithEmailAndPassword(payload.email, payload.password);
@@ -62,5 +64,49 @@ export class AuthService {
     return this.auth.authState.pipe(
       map(user => user !== null)
     );
+  }
+
+  // Update user profile data in Firestore
+  updateUserProfile(userId: string, payload: any): Promise<void> {
+    return this.fireStore.collection('users').doc(userId).update(payload);
+  }
+
+  // Update email in Firebase Auth
+  updateEmail(newEmail: string): Promise<void> {
+    return this.auth.currentUser.then(user => {
+      if (user) {
+        return user.updateEmail(newEmail);
+      } else {
+        throw new Error('No user logged in');
+      }
+    });
+  }
+
+  // Upload profile picture to Firebase Storage
+  uploadProfilePicture(file: File, userId: string): Observable<string> {
+    const filePath = `profile-pictures/${userId}/${Date.now()}_${file.name}`;
+    const fileRef = this.storage.ref(filePath);
+    const task = this.storage.upload(filePath, file);
+
+    return new Observable(observer => {
+      task.snapshotChanges().pipe(
+        finalize(() => {
+          fileRef.getDownloadURL().subscribe(url => {
+            observer.next(url);
+            observer.complete();
+          }, error => {
+            observer.error(error);
+          });
+        })
+      ).subscribe();
+    });
+  }
+
+  // Delete old profile picture from Storage
+  deleteProfilePicture(imageUrl: string): Promise<void> {
+    if (imageUrl && imageUrl.includes('firebasestorage.googleapis.com')) {
+      return this.storage.storage.refFromURL(imageUrl).delete();
+    }
+    return Promise.resolve();
   }
 }

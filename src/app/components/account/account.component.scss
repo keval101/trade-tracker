@@ -1,9 +1,40 @@
-.fund {
-    table {
-        font-size: 16px;
+.account {
+    .trading-card {
+        @apply shadow-lg;
     }
-    
-    .table-container {
-        max-height: 350px;
+
+    // Tab navigation styles
+    .tab-button {
+        position: relative;
+        
+        &::after {
+            content: '';
+            position: absolute;
+            bottom: -1px;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background-color: transparent;
+        }
+    }
+
+    // Profile header section
+    .profile-header {
+        @apply bg-slate-700/50;
+    }
+
+    // Card edit button hover effect
+    button[class*="hover:bg-blue-500/10"] {
+        transition: all 0.2s ease;
+    }
+
+    // Summary cards
+    .summary-card {
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+        
+        &:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+        }
     }
 }

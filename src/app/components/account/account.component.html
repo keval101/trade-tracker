@@ -1,82 +1,130 @@
 <div class="account">
-    <!-- Header -->
-    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8">
-        <div>
-            <h1 class="page-title mb-0">My Profile</h1>
-            <p class="text-gray-500 text-sm mt-1">Manage your account and funds</p>
+    <!-- Breadcrumbs -->
+    <div class="mb-6">
+        <nav class="flex items-center gap-2 text-sm">
+            <a routerLink="/dashboard" class="text-gray-400 hover:text-gray-300 transition-colors">Dashboard</a>
+            <svg class="w-4 h-4 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+            </svg>
+            <span class="text-blue-500 font-medium">Account</span>
+        </nav>
+    </div>
+
+    <!-- Tab Navigation -->
+    <div class="mb-6">
+        <div class="flex flex-wrap gap-2 border-b border-slate-700">
+            <button 
+                type="button"
+                (click)="activeTab = 'profile'"
+                [class]="activeTab === 'profile' 
+                    ? 'px-6 py-3 text-sm font-medium text-white bg-blue-600 rounded-t-lg transition-colors' 
+                    : 'px-6 py-3 text-sm font-medium text-gray-400 hover:text-gray-300 transition-colors'">
+                Profile Information
+            </button>
+            <button 
+                type="button"
+                (click)="activeTab = 'funds'"
+                [class]="activeTab === 'funds' 
+                    ? 'px-6 py-3 text-sm font-medium text-white bg-blue-600 rounded-t-lg transition-colors' 
+                    : 'px-6 py-3 text-sm font-medium text-gray-400 hover:text-gray-300 transition-colors'">
+                Fund Management
+            </button>
+            <button 
+                type="button"
+                (click)="activeTab = 'summary'"
+                [class]="activeTab === 'summary' 
+                    ? 'px-6 py-3 text-sm font-medium text-white bg-blue-600 rounded-t-lg transition-colors' 
+                    : 'px-6 py-3 text-sm font-medium text-gray-400 hover:text-gray-300 transition-colors'">
+                Account Summary
+            </button>
         </div>
     </div>
 
-    <!-- Profile Card -->
-    <div class="trading-card">
-        <div class="flex flex-wrap items-center gap-6">
-            <div class="relative">
-                <img class="rounded-full w-20 h-20 border-2 border-slate-600" src="./assets/images/user.png" alt="Profile">
-                <span class="absolute bottom-0 right-0 w-4 h-4 bg-emerald-500 border-2 border-slate-800 rounded-full"></span>
+    <!-- Profile Header Section -->
+    <div class="trading-card bg-slate-700/50 mb-6">
+        <div class="flex flex-col md:flex-row items-start md:items-center gap-6 pb-6 border-b border-slate-600">
+            <div class="relative flex-shrink-0">
+                <img class="rounded-full w-24 h-24 border-4 border-slate-600 object-cover" [src]="user?.profile_photo || user?.profilePicture || './assets/images/user.png'" alt="Profile">
+                <span class="absolute bottom-0 right-0 w-5 h-5 bg-emerald-500 border-4 border-slate-800 rounded-full"></span>
             </div>
             <div class="flex-grow">
                 <div class="flex flex-wrap items-center gap-3 mb-2">
                     <h2 class="text-2xl font-bold text-white">{{ user?.firstName }} {{ user?.lastName }}</h2>
-                    <button type="button" 
-                        class="text-sm text-red-400 hover:text-red-300 hover:bg-red-500/10 px-3 py-1.5 rounded-lg transition-colors" 
-                        (click)="logout()">
-                        Logout
-                    </button>
                 </div>
-                <p class="text-gray-400" *ngIf="user?.preferredMarket">
-                    <span class="badge badge-info">{{user?.preferredMarket}}</span>
+                <p class="text-blue-400 font-medium mb-1" *ngIf="user?.preferredMarket">
+                    {{user?.preferredMarket}} Trader
                 </p>
-                <p class="text-gray-500 mt-1">{{user?.email}}</p>
             </div>
-            
-            <!-- Funds Summary -->
-            <div class="flex flex-col gap-2 ml-auto">
-                <div class="flex items-center gap-3 px-4 py-2 bg-red-500/10 border border-red-500/30 rounded-lg">
-                    <svg class="w-5 h-5 text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path>
-                    </svg>
-                    <span class="text-red-400 font-semibold">Added: ₹{{totalAddedFunds | number}}</span>
+            <div class="flex flex-col gap-3 md:ml-auto md:items-end">
+                <div class="text-right">
+                    <p class="text-xs text-gray-500 mb-1">Account ID</p>
+                    <p class="text-sm font-medium text-gray-300">{{ user?.email?.split('@')[0] || 'N/A' }}</p>
                 </div>
-                <div class="flex items-center gap-3 px-4 py-2 bg-emerald-500/10 border border-emerald-500/30 rounded-lg">
-                    <svg class="w-5 h-5 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 10l7-7m0 0l7 7m-7-7v18"></path>
-                    </svg>
-                    <span class="text-emerald-400 font-semibold">Withdrawn: ₹{{totalWithdrawalFunds | number}}</span>
-                </div>
-                <div *ngIf="totalWithdrawalFunds > totalAddedFunds" 
-                     class="flex items-center gap-3 px-4 py-2 bg-emerald-500/20 border border-emerald-500/40 rounded-lg">
-                    <svg class="w-5 h-5 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                    </svg>
-                    <span class="text-emerald-400 font-bold">Profit: ₹{{totalWithdrawalFunds - totalAddedFunds | number}}</span>
-                </div>
-                <div *ngIf="totalWithdrawalFunds < totalAddedFunds" 
-                     class="flex items-center gap-3 px-4 py-2 bg-red-500/20 border border-red-500/40 rounded-lg">
-                    <svg class="w-5 h-5 text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path>
-                    </svg>
-                    <span class="text-red-400 font-bold">Loss: ₹{{totalAddedFunds - totalWithdrawalFunds | number}}</span>
+                <div class="text-right">
+                    <p class="text-xs text-gray-500 mb-1">Email</p>
+                    <p class="text-sm font-medium text-gray-300">{{user?.email}}</p>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Added Funds Section -->
-    <div class="fund mt-8">
-        <div class="flex flex-wrap justify-between items-center mb-4">
-            <h2 class="text-xl font-semibold text-white">Added Fund Records</h2>
-            <button type="button" class="btn-primary flex items-center gap-2" (click)="openAddFundDialog('add')">
-                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
-                </svg>
-                Add Fund
-            </button>
+    <!-- Profile Information Tab -->
+    <div *ngIf="activeTab === 'profile'" class="space-y-6">
+        <!-- Personal Information Card -->
+        <div class="trading-card">
+            <div class="flex items-center justify-between mb-6">
+                <h3 class="text-lg font-semibold text-white">Personal Information</h3>
+                <button type="button" class="p-2 text-blue-400 hover:bg-blue-500/10 rounded-lg transition-colors" (click)="openEditProfileDialog()">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
+                    </svg>
+                </button>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                    <p class="text-sm text-gray-400 mb-1">First Name</p>
+                    <p class="text-base font-semibold text-gray-100">{{ user?.firstName || 'Not set' }}</p>
+                </div>
+                <div>
+                    <p class="text-sm text-gray-400 mb-1">Last Name</p>
+                    <p class="text-base font-semibold text-gray-100">{{ user?.lastName || 'Not set' }}</p>
+                </div>
+                <div>
+                    <p class="text-sm text-gray-400 mb-1">Email Address</p>
+                    <p class="text-base font-semibold text-gray-100">{{ user?.email || 'Not set' }}</p>
+                </div>
+                <div>
+                    <p class="text-sm text-gray-400 mb-1">Preferred Market</p>
+                    <p class="text-base font-semibold text-gray-100">{{ user?.preferredMarket || 'Not set' }}</p>
+                </div>
+            </div>
+            <div class="mt-6 pt-6 border-t border-slate-700">
+                <button type="button" 
+                    class="text-sm text-red-400 hover:text-red-300 hover:bg-red-500/10 px-4 py-2 rounded-lg transition-colors" 
+                    (click)="logout()">
+                    Logout
+                </button>
+            </div>
         </div>
-        
-        <div class="trading-card overflow-hidden p-0">
-            <div class="overflow-x-auto max-h-80">
+    </div>
+
+    <!-- Fund Management Tab -->
+    <div *ngIf="activeTab === 'funds'" class="space-y-6">
+        <!-- Added Funds Card -->
+        <div class="trading-card">
+            <div class="flex items-center justify-between mb-6">
+                <h3 class="text-lg font-semibold text-white">Added Fund Records</h3>
+                <button type="button" class="btn-primary flex items-center gap-2" (click)="openAddFundDialog('add')">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+                    </svg>
+                    Add Fund
+                </button>
+            </div>
+            
+            <div class="overflow-x-auto">
                 <table class="trading-table">
-                    <thead class="sticky top-0 bg-slate-800">
+                    <thead>
                         <tr>
                             <th scope="col">Date</th>
                             <th scope="col">Amount</th>
@@ -121,24 +169,22 @@
                 </table>
             </div>
         </div>
-    </div>
 
-    <!-- Withdrawal Funds Section -->
-    <div class="fund mt-8">
-        <div class="flex gap-4 flex-wrap justify-between items-center mb-4">
-            <h2 class="text-xl font-semibold text-white">Withdrawal Records</h2>
-            <button type="button" class="btn-success flex items-center gap-2" (click)="openAddFundDialog('withdrawal')">
-                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 10l7-7m0 0l7 7m-7-7v18"></path>
-                </svg>
-                Withdraw Fund
-            </button>
-        </div>
-        
-        <div class="trading-card overflow-hidden p-0">
-            <div class="overflow-x-auto max-h-80">
+        <!-- Withdrawal Funds Card -->
+        <div class="trading-card">
+            <div class="flex items-center justify-between mb-6">
+                <h3 class="text-lg font-semibold text-white">Withdrawal Records</h3>
+                <button type="button" class="btn-success flex items-center gap-2" (click)="openAddFundDialog('withdrawal')">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 10l7-7m0 0l7 7m-7-7v18"></path>
+                    </svg>
+                    Withdraw Fund
+                </button>
+            </div>
+            
+            <div class="overflow-x-auto">
                 <table class="trading-table">
-                    <thead class="sticky top-0 bg-slate-800">
+                    <thead>
                         <tr>
                             <th scope="col">Date</th>
                             <th scope="col">Amount</th>
@@ -181,6 +227,91 @@
                         </ng-container>
                     </tbody>
                 </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Account Summary Tab -->
+    <div *ngIf="activeTab === 'summary'" class="space-y-6">
+        <!-- Financial Summary Card -->
+        <div class="trading-card">
+            <div class="flex items-center justify-between mb-6">
+                <h3 class="text-lg font-semibold text-white">Financial Summary</h3>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="p-4 bg-slate-700/50 rounded-lg border border-slate-600">
+                    <div class="flex items-center gap-3 mb-2">
+                        <svg class="w-5 h-5 text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path>
+                        </svg>
+                        <p class="text-sm text-gray-400">Total Added Funds</p>
+                    </div>
+                    <p class="text-2xl font-bold text-red-400">₹{{totalAddedFunds | number}}</p>
+                </div>
+                <div class="p-4 bg-slate-700/50 rounded-lg border border-slate-600">
+                    <div class="flex items-center gap-3 mb-2">
+                        <svg class="w-5 h-5 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 10l7-7m0 0l7 7m-7-7v18"></path>
+                        </svg>
+                        <p class="text-sm text-gray-400">Total Withdrawn</p>
+                    </div>
+                    <p class="text-2xl font-bold text-emerald-400">₹{{totalWithdrawalFunds | number}}</p>
+                </div>
+                <div *ngIf="totalWithdrawalFunds > totalAddedFunds" 
+                     class="p-4 bg-emerald-500/10 rounded-lg border border-emerald-500/30 md:col-span-2">
+                    <div class="flex items-center gap-3 mb-2">
+                        <svg class="w-5 h-5 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                        </svg>
+                        <p class="text-sm text-gray-400">Net Profit</p>
+                    </div>
+                    <p class="text-2xl font-bold text-emerald-400">₹{{totalWithdrawalFunds - totalAddedFunds | number}}</p>
+                </div>
+                <div *ngIf="totalWithdrawalFunds < totalAddedFunds" 
+                     class="p-4 bg-red-500/10 rounded-lg border border-red-500/30 md:col-span-2">
+                    <div class="flex items-center gap-3 mb-2">
+                        <svg class="w-5 h-5 text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path>
+                        </svg>
+                        <p class="text-sm text-gray-400">Net Loss</p>
+                    </div>
+                    <p class="text-2xl font-bold text-red-400">₹{{totalAddedFunds - totalWithdrawalFunds | number}}</p>
+                </div>
+                <div *ngIf="totalWithdrawalFunds === totalAddedFunds" 
+                     class="p-4 bg-slate-700/50 rounded-lg border border-slate-600 md:col-span-2">
+                    <div class="flex items-center gap-3 mb-2">
+                        <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                        </svg>
+                        <p class="text-sm text-gray-400">Net Balance</p>
+                    </div>
+                    <p class="text-2xl font-bold text-gray-400">₹0</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Account Information Card -->
+        <div class="trading-card">
+            <div class="flex items-center justify-between mb-6">
+                <h3 class="text-lg font-semibold text-white">Account Information</h3>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                    <p class="text-sm text-gray-400 mb-1">Account ID</p>
+                    <p class="text-base font-semibold text-gray-100">{{ user?.email?.split('@')[0] || 'N/A' }}</p>
+                </div>
+                <div>
+                    <p class="text-sm text-gray-400 mb-1">Email Address</p>
+                    <p class="text-base font-semibold text-gray-100">{{ user?.email || 'Not set' }}</p>
+                </div>
+                <div>
+                    <p class="text-sm text-gray-400 mb-1">Preferred Market</p>
+                    <p class="text-base font-semibold text-gray-100">{{ user?.preferredMarket || 'Not set' }}</p>
+                </div>
+                <div>
+                    <p class="text-sm text-gray-400 mb-1">Total Transactions</p>
+                    <p class="text-base font-semibold text-gray-100">{{ addFunds.length + withdrawalFunds.length }}</p>
+                </div>
             </div>
         </div>
     </div>

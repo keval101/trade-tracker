@@ -7,6 +7,7 @@ import { Router } from '@angular/router';
 import { MessageService } from 'primeng/api';
 import { BehaviorSubject } from 'rxjs';
 import { DeleteFundComponent } from './delete-fund/delete-fund.component';
+import { EditProfileComponent } from './edit-profile/edit-profile.component';
 
 @Component({
   selector: 'app-account',
@@ -24,6 +25,7 @@ export class AccountComponent implements OnInit{
   totalWithdrawalFunds = 0;
 
   user: any;
+  activeTab: 'profile' | 'funds' | 'summary' = 'profile';
 
   constructor(
     private dialogService: DialogService,
@@ -102,6 +104,24 @@ export class AccountComponent implements OnInit{
         this.getAddFunds();
       } else {
         this.getWithdrawalFunds()
+      }
+      dialogRef.destroy();
+    })
+  }
+
+  openEditProfileDialog() {
+    const dialogRef = this.dialogService.open(EditProfileComponent, {
+      width: window.innerWidth < 600 ? '90%' : '600px',
+      header: 'Edit Profile',
+      data: { user: this.user }
+    })
+
+    dialogRef.onClose.subscribe((updated) => {
+      if (updated) {
+        // Refresh user data
+        this.authService.getCurrentUserDetail().subscribe(res => {
+          this.user = res;
+        })
       }
       dialogRef.destroy();
     })

@@ -1,0 +1,142 @@
+<div class="edit-profile-form">
+    <form [formGroup]="profileForm" (submit)="submit()">
+        <div class="grid gap-5 mb-6">
+            <!-- Profile Picture Upload -->
+            <div class="col-span-full">
+                <label class="block mb-2 text-sm font-medium text-gray-300">Profile Picture</label>
+                <div class="flex items-center gap-6">
+                    <div class="relative flex-shrink-0">
+                        <img 
+                            [src]="previewUrl || './assets/images/user.png'" 
+                            alt="Profile Preview" 
+                            class="w-24 h-24 rounded-full border-4 border-slate-600 object-cover">
+                        <div *ngIf="isUploading" class="absolute inset-0 flex items-center justify-center bg-slate-800/80 rounded-full">
+                            <svg class="animate-spin h-6 w-6 text-blue-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="flex-1">
+                        <div class="flex flex-col gap-2">
+                            <label for="profilePicture" class="cursor-pointer">
+                                <input 
+                                    type="file" 
+                                    id="profilePicture" 
+                                    accept="image/*" 
+                                    class="hidden" 
+                                    (change)="onFileSelected($event)"
+                                    [disabled]="isUploading">
+                                <span class="inline-flex items-center gap-2 px-4 py-2 bg-slate-700 hover:bg-slate-600 rounded-lg text-sm font-medium text-gray-300 transition-colors">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                                    </svg>
+                                    Choose Image
+                                </span>
+                            </label>
+                            <p class="text-xs text-gray-500">Maximum file size: 1MB. Supported formats: JPG, PNG, GIF</p>
+                            <p *ngIf="fileSizeError" class="text-xs text-red-400">File size exceeds 1MB limit</p>
+                            <button 
+                                *ngIf="selectedFile" 
+                                type="button"
+                                (click)="removeImage()"
+                                class="text-xs text-red-400 hover:text-red-300 transition-colors">
+                                Remove selected image
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- First Name -->
+            <div>
+                <label for="firstName" class="block mb-2 text-sm font-medium text-gray-300">First Name</label>
+                <input 
+                    type="text" 
+                    id="firstName" 
+                    class="form-input" 
+                    placeholder="Enter first name" 
+                    formControlName="firstName"
+                    [class.border-red-500]="profileForm.get('firstName')?.invalid && profileForm.get('firstName')?.touched">
+                <p *ngIf="profileForm.get('firstName')?.invalid && profileForm.get('firstName')?.touched" 
+                   class="mt-1 text-xs text-red-400">First name is required</p>
+            </div>
+
+            <!-- Last Name -->
+            <div>
+                <label for="lastName" class="block mb-2 text-sm font-medium text-gray-300">Last Name</label>
+                <input 
+                    type="text" 
+                    id="lastName" 
+                    class="form-input" 
+                    placeholder="Enter last name" 
+                    formControlName="lastName"
+                    [class.border-red-500]="profileForm.get('lastName')?.invalid && profileForm.get('lastName')?.touched">
+                <p *ngIf="profileForm.get('lastName')?.invalid && profileForm.get('lastName')?.touched" 
+                   class="mt-1 text-xs text-red-400">Last name is required</p>
+            </div>
+
+            <!-- Email -->
+            <div>
+                <label for="email" class="block mb-2 text-sm font-medium text-gray-300">Email Address</label>
+                <input 
+                    type="email" 
+                    id="email" 
+                    class="form-input" 
+                    placeholder="Enter email address" 
+                    formControlName="email"
+                    [class.border-red-500]="profileForm.get('email')?.invalid && profileForm.get('email')?.touched">
+                <p *ngIf="profileForm.get('email')?.invalid && profileForm.get('email')?.touched" 
+                   class="mt-1 text-xs text-red-400">
+                   <span *ngIf="profileForm.get('email')?.errors?.['required']">Email is required</span>
+                   <span *ngIf="profileForm.get('email')?.errors?.['email']">Please enter a valid email</span>
+                </p>
+            </div>
+
+            <!-- Preferred Market -->
+            <div>
+                <label for="preferredMarket" class="block mb-2 text-sm font-medium text-gray-300">Preferred Market</label>
+                <select 
+                    id="preferredMarket" 
+                    class="form-input" 
+                    formControlName="preferredMarket"
+                    [class.border-red-500]="profileForm.get('preferredMarket')?.invalid && profileForm.get('preferredMarket')?.touched">
+                    <option value="">Select Market</option>
+                    <option value="Bank Nifty">Bank Nifty</option>
+                    <option value="Nifty">Nifty</option>
+                    <option value="Fin Nifty">Fin Nifty</option>
+                    <option value="MidCap Nifty">MidCap Nifty</option>
+                    <option value="Sensex">Sensex</option>
+                </select>
+                <p *ngIf="profileForm.get('preferredMarket')?.invalid && profileForm.get('preferredMarket')?.touched" 
+                   class="mt-1 text-xs text-red-400">Preferred market is required</p>
+            </div>
+        </div>
+
+        <div class="footer-btn">
+            <div class="flex gap-3 justify-end">
+                <button 
+                    type="button"
+                    (click)="cancel()"
+                    class="px-5 py-2.5 text-sm font-medium text-gray-300 bg-slate-700 hover:bg-slate-600 rounded-lg transition-colors"
+                    [disabled]="isUploading">
+                    Cancel
+                </button>
+                <button 
+                    type="submit" 
+                    [disabled]="profileForm.invalid || isUploading"
+                    [ngClass]="{'bg-blue-400/50 cursor-not-allowed': profileForm.invalid || isUploading, 'bg-blue-600 hover:bg-blue-700' : !profileForm.invalid && !isUploading }" 
+                    class="text-white focus:ring-4 focus:outline-none focus:ring-blue-500/30 font-medium rounded-lg px-5 py-2.5 text-center transition-colors">
+                    <span *ngIf="!isUploading">Update Profile</span>
+                    <span *ngIf="isUploading" class="flex items-center gap-2">
+                        <svg class="animate-spin h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                        </svg>
+                        Updating...
+                    </span>
+                </button>
+            </div>
+        </div>
+    </form>
+</div>

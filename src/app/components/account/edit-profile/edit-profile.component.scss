@@ -1,0 +1,9 @@
+.edit-profile-form {
+    .form-input {
+        @apply w-full px-4 py-2.5 bg-slate-700 border border-slate-600 rounded-lg text-gray-100 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500/50 focus:border-blue-500 transition-colors;
+    }
+
+    select.form-input {
+        @apply cursor-pointer;
+    }
+}

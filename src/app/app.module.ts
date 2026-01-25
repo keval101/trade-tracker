@@ -40,6 +40,7 @@ import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { AuthInterceptor } from './interceptor/auth.interceptor';
 import { SignupComponent } from './components/signup/signup.component';
 import { DeleteFundComponent } from './components/account/delete-fund/delete-fund.component';
+import { EditProfileComponent } from './components/account/edit-profile/edit-profile.component';
 import { OverviewComponent } from './components/overview/overview.component';
 import { SheetDeleteComponent } from './components/trade-sheet/sheet-delete/sheet-delete.component';
 import { HolidayListComponent } from './components/holiday-list/holiday-list.component';
@@ -76,6 +77,7 @@ const firebaseConfig = {
     LoginComponent,
     SignupComponent,
     DeleteFundComponent,
+    EditProfileComponent,
     OverviewComponent,
     SheetDeleteComponent,
     HolidayListComponent,
