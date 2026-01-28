@@ -3,6 +3,10 @@
     {
       "source": "/nse-api/market-data",
       "destination": "/api/nse-index"
+    },
+    {
+      "source": "/nse-api/search-company",
+      "destination": "/api/nse-search"
     }
   ]
 }

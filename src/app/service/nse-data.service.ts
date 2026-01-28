@@ -14,8 +14,16 @@ export class NseDataService {
   constructor(private http: HttpClient) { }
 
   searchCompany(query: string) {
-    // Only supported in development (direct NSE API via proxy)
-    return this.http.get(`${this.baseURL}/search/autocomplete?q=${encodeURIComponent(query)}`);
+    if (environment.production) {
+      // On Vercel: /nse-api/search-company -> vercel.json -> /api/nse-search
+      return this.http.get(
+        `${this.baseURL}/search-company?q=${encodeURIComponent(query)}`
+      );
+    }
+    // Development: Angular proxy direct to NSE search
+    return this.http.get(
+      `${this.baseURL}/search/autocomplete?q=${encodeURIComponent(query)}`
+    );
   }
 
   marketData() {
