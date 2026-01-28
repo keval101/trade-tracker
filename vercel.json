@@ -7,6 +7,10 @@
     {
       "source": "/nse-api/search-company",
       "destination": "/api/nse-search"
+    },
+    {
+      "source": "/nse-api/search/autocomplete",
+      "destination": "/api/nse-search"
     }
   ]
 }
