@@ -34,11 +34,9 @@ export class MarketDataService {
     '14-Sep-2026', '02-Oct-2026', '20-Oct-2026', '10-Nov-2026', '24-Nov-2026', '25-Dec-2026'
   ];
 
-  constructor(private nseDataService: NseDataService) {
-    // this.initializeMarketData();
-  }
+  constructor(private nseDataService: NseDataService) {}
 
-  private initializeMarketData() {
+  public initializeMarketData() {
     // Fetch once immediately
     this.fetchMarketData().subscribe();
     

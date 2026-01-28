@@ -1,0 +1,9 @@
+{
+  "rewrites": [
+    {
+      "source": "/nse-api/market-data",
+      "destination": "/api/nse-index"
+    }
+  ]
+}
+

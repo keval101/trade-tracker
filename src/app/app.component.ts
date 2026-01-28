@@ -37,6 +37,9 @@ export class AppComponent implements OnInit, OnDestroy {
       localStorage.setItem('preferredMarket', res.preferredMarket)
     });
 
+    // Initialize live market data (dev uses Angular proxy, prod uses Vercel serverless)
+    this.marketDataService.initializeMarketData();
+
     // Subscribe to market data for marquee
     this.marketDataSubscription = this.marketDataService.marketData$.subscribe(data => {
       this.marketData = data;

@@ -1,21 +1,32 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class NseDataService {
 
-  // Use proxy path for development, will be proxied to https://www.nseindia.com/api
-  baseURL = '/nse-api/NextApi'
+  // In development we hit Angular dev proxy (proxy.conf.json)
+  // In production on Vercel we hit our serverless function via vercel.json rewrite
+  private readonly baseURL = environment.nseBaseUrl;
+
   constructor(private http: HttpClient) { }
 
   searchCompany(query: string) {
-    return this.http.get(`${this.baseURL}/search/autocomplete?q=${query}`);
+    // Only supported in development (direct NSE API via proxy)
+    return this.http.get(`${this.baseURL}/search/autocomplete?q=${encodeURIComponent(query)}`);
   }
 
   marketData() {
-    // https://www.nseindia.com/api/NextApi/apiClient?functionName=getIndexData&&type=All
-    return this.http.get(`${this.baseURL}/apiClient?functionName=getIndexData&&type=All`);
+    if (environment.production) {
+      // On Vercel: /nse-api/market-data -> vercel.json -> /api/nse-index
+      return this.http.get(`${this.baseURL}/market-data`);
+    }
+    // Development: Angular proxy to NSE
+    return this.http.get(
+      `${this.baseURL}/apiClient?functionName=getIndexData&&type=All`
+    );
   }
 }
+
