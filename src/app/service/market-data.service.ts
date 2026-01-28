@@ -35,7 +35,7 @@ export class MarketDataService {
   ];
 
   constructor(private nseDataService: NseDataService) {
-    this.initializeMarketData();
+    // this.initializeMarketData();
   }
 
   private initializeMarketData() {
