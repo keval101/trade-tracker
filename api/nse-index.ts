@@ -1,7 +1,6 @@
-import type { VercelRequest, VercelResponse } from '@vercel/node';
-import fetch from 'node-fetch';
-
-export default async function handler(req: VercelRequest, res: VercelResponse) {
+// Vercel serverless function for NSE index data.
+// We avoid importing '@vercel/node' so this compiles cleanly in the Angular workspace.
+export default async function handler(req: any, res: any) {
   try {
     const url =
       'https://www.nseindia.com/api/NextApi/apiClient?functionName=getIndexData&&type=All';
