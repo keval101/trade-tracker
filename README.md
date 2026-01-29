@@ -64,34 +64,6 @@ A comprehensive Angular-based paper trading platform for tracking and analyzing 
 - **Holiday Calendar**: View all market holidays for the year
 - **Market Status**: Automatic detection of holidays affecting market status
 
-### 🔐 Authentication
-- **User Registration**: Create your account with email and password
-- **Secure Login**: Safe and secure login system
-- **Stay Logged In**: Your session persists so you don't need to login every time
-- **Protected Pages**: Your data is secure and only accessible to you
-
-## 🛠️ Tech Stack
-
-### Frontend
-- **Angular 16.2**: Core framework
-- **TypeScript 5.1**: Type-safe development
-- **Tailwind CSS 3.4**: Utility-first CSS framework
-- **PrimeNG 16.9**: UI component library (Charts, Dialogs, Calendar, etc.)
-- **Chart.js 4.4**: Data visualization
-- **RxJS 7.8**: Reactive programming
-
-### Backend & Services
-- **Firebase**: 
-  - User login and registration
-  - Data storage
-  - Profile picture storage
-- **NSE India API**: Live market data
-- **Proxy Setup**: Connects to NSE for market updates
-
-### Development Tools
-- **Angular CLI**: Build and run the project
-- **PostCSS & Autoprefixer**: Style processing
-
 ## 📦 Installation
 
 ### Prerequisites
@@ -176,54 +148,6 @@ A comprehensive Angular-based paper trading platform for tracking and analyzing 
 3. Mark as sold when you exit the position
 4. View all your holdings in the Stocks page
 
-## 📁 Project Structure
-
-```
-trade-tracker/
-├── src/
-│   ├── app/
-│   │   ├── components/
-│   │   │   ├── account/          # Account management
-│   │   │   ├── dashboard/        # Dashboard with charts
-│   │   │   ├── trades/           # Trade management
-│   │   │   ├── trade-sheet/      # Trade sheet feature
-│   │   │   ├── stocks/           # Stock portfolio
-│   │   │   ├── overview/         # Analytics
-│   │   │   ├── calculate-stoploss/ # Stop-loss calculator
-│   │   │   └── ...
-│   │   ├── service/
-│   │   │   ├── auth.service.ts      # Authentication
-│   │   │   ├── data.service.ts      # Firebase data operations
-│   │   │   ├── market-data.service.ts # Market data management
-│   │   │   └── nse-data.service.ts   # NSE API integration
-│   │   ├── shared/
-│   │   │   ├── sidenav/         # Sidebar navigation
-│   │   │   └── logo/            # Logo component
-│   │   └── app.module.ts        # Main module
-│   ├── assets/                  # Static assets
-│   ├── styles.scss              # Global styles
-│   └── index.html
-├── angular.json                 # Angular configuration
-├── proxy.conf.json             # Proxy configuration for NSE API
-├── tailwind.config.js          # Tailwind CSS configuration
-└── package.json                # Dependencies
-```
-
-## 🔧 Configuration
-
-### Firebase Setup
-1. Create a Firebase project at [Firebase Console](https://console.firebase.google.com/)
-2. Enable Email/Password authentication
-3. Create a Firestore database (the app will create the collections automatically when you use it)
-
-### NSE API Setup
-The app connects to NSE India for live market data. Everything is already set up - just run the app and it will work!
-
-### Market Hours
-- **Opening**: 9:15 AM IST
-- **Closing**: 3:30 PM IST
-- **Updates**: Every 30 seconds when market is open
-
 ## 📸 Screenshots
 
 <!-- Add your screenshots here -->
@@ -245,29 +169,6 @@ The app connects to NSE India for live market data. Everything is already set up
 ## 🌐 Live Demo
 
 Check out the live application: [https://tradetracker-io.vercel.app/](https://tradetracker-io.vercel.app/)
-
-## 🔒 Security Features
-
-- **Safe Data Entry**: Forms check your input to prevent errors
-- **Secure Storage**: Your data is stored securely in the cloud
-- **Protected Access**: Only you can access your trading data
-- **File Size Limits**: Profile pictures are limited to 1MB for faster loading
-
-
-## 🐛 Known Issues
-
-- Market data depends on NSE API availability
-- Some features may require internet connection for real-time updates
-
-## 🚧 Future Enhancements
-
-- [ ] Real-time notifications for price alerts
-- [ ] Export data to CSV/Excel
-- [ ] Advanced charting with technical indicators
-- [ ] Mobile app version
-- [ ] Social features (share trades, leaderboard)
-- [ ] Backtesting capabilities
-- [ ] Integration with more broker APIs
 
 ## 🤝 Contributing
 
@@ -298,11 +199,8 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 - Chart.js for data visualization
 - All contributors and users of this project
 
-## 📞 Support
-
-For support, email support@tradetracker.io or open an issue in the GitHub repository.
-
 ---
 
 **Made with ❤️ for traders**
+
 
