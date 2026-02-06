@@ -63,7 +63,7 @@
         </button>
 
         <button class="py-2.5 px-4 bg-emerald-600 rounded-lg hover:bg-emerald-700 text-white gap-2 items-center hide-in-mobile transition-colors" *ngIf="sheets.length">
-            Target Achieved {{((totalTargetAchievedSheets/sheets.length)*100).toFixed(2)+'%'}} ({{totalTargetAchievedSheets}}/{{sheets.length}})
+            Target Achieved {{(totalTargetAchievedSheets/sheets.length)*100 | number:'1.0-0'}}% ({{totalTargetAchievedSheets}}/{{sheets.length}})
         </button>
 
         <button (click)="addSheet()" class="btn-primary" type="button">
@@ -72,7 +72,7 @@
     </div>
 
     <button class="py-2.5 px-4 bg-emerald-600 rounded-lg hover:bg-emerald-700 mt-4 text-white gap-2 items-center hide-in-desktop transition-colors" *ngIf="sheets.length">
-        Target Achieved {{((totalTargetAchievedSheets/sheets.length)*100).toFixed(2)+'%'}} ({{totalTargetAchievedSheets}}/{{sheets.length}})
+        Target Achieved {{(totalTargetAchievedSheets/sheets.length)*100 | number:'1.0-0'}}% ({{totalTargetAchievedSheets}}/{{sheets.length}})
     </button>
 
     <ng-container *ngFor="let sheet of sheets; let sheetIndex = index">
@@ -94,7 +94,7 @@
                 </div>
                 <div>
                     <p class="text-xs text-gray-500 uppercase tracking-wider mb-1">Starting Capital</p>
-                    <p class="text-white font-medium">₹{{sheet.capital | number}}</p>
+                    <p class="text-white font-medium">₹{{sheet.capital | number:'1.0-0'}}</p>
                 </div>
                 <div>
                     <p class="text-xs text-gray-500 uppercase tracking-wider mb-1">Expected ROI</p>
@@ -106,7 +106,7 @@
                 </div>
                 <div>
                     <p class="text-xs text-gray-500 uppercase tracking-wider mb-1">Expected Final</p>
-                    <p class="text-emerald-400 font-medium">₹{{calculateCapital(sheet.capital, sheet.roi, sheet.days)}}</p>
+                    <p class="text-emerald-400 font-medium">₹{{calculateCapital(sheet.capital, sheet.roi, sheet.days) | number:'1.0-0'}}</p>
                 </div>
             </div>
 
@@ -150,25 +150,25 @@
                                     {{item.date}}
                                 </th>
                                 <td class="text-gray-300">
-                                    ₹{{+(item.capital.toFixed(2)) | number}}
+                                    ₹{{item.capital | number:'1.0-0'}}
                                 </td>
                                 <td class="text-gray-300">
-                                    ₹{{ +(item.startingCapital.toFixed(2)) | number }}
+                                    ₹{{item.startingCapital | number:'1.0-0'}}
                                 </td>
                                 <td class="text-gray-300">
-                                    ₹{{+(item.expectedProfit.toFixed(2)) | number}}
+                                    ₹{{item.expectedProfit | number:'1.0-0'}}
                                 </td>
                                 <td *ngIf="sheet.market" class="text-gray-300">
-                                    {{((item.expectedProfit / sheet.market.lot).toFixed(2)) | number}}
+                                    {{(item.expectedProfit / sheet.market.lot) | number:'1.0-0'}}
                                 </td>
                                 <td>
-                                    <span class="profit" *ngIf="item.profit > 0">+₹{{item.profit | number}}</span>
-                                    <span class="lose" *ngIf="item.profit < 0">₹{{item.profit | number}}</span>
+                                    <span class="profit" *ngIf="item.profit > 0">+₹{{item.profit | number:'1.0-0'}}</span>
+                                    <span class="lose" *ngIf="item.profit < 0">₹{{item.profit | number:'1.0-0'}}</span>
                                     <span class="text-gray-500" *ngIf="item.profit == 0">-</span>
                                 </td>
                                 <td>
-                                    <span class="profit" *ngIf="item.profit > 0">+{{((item.profit / item.startingCapital) * 100).toFixed(2)}}%</span>
-                                    <span class="lose" *ngIf="item.profit < 0">{{((item.profit / item.startingCapital) * 100).toFixed(2)}}%</span>
+                                    <span class="profit" *ngIf="item.profit > 0">+{{(item.profit / item.startingCapital) * 100 | number:'1.0-0'}}%</span>
+                                    <span class="lose" *ngIf="item.profit < 0">{{(item.profit / item.startingCapital) * 100 | number:'1.0-0'}}%</span>
                                     <span class="text-gray-500" *ngIf="item.profit == 0">-</span>
                                 </td>
                                 <td>

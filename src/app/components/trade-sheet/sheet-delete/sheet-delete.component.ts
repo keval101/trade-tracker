@@ -11,6 +11,8 @@ import { DataService } from 'src/app/service/data.service';
 export class SheetDeleteComponent {
 
   sheet: any;
+  deleting = false;
+
   constructor(
     private messageService: MessageService,
     private dataService: DataService,
@@ -27,13 +29,15 @@ export class SheetDeleteComponent {
   }
 
   deleteSheet() {
-    this.dataService.deleteSheet(this.sheet.id).then(() => {
-      this.messageService.add({ severity: 'success', summary: 'Sheet', detail: 'Sheet Deleted Successfully!' });
+    this.deleting = true;
+    this.dataService.deleteSheetAndTrades(this.sheet.id, this.sheet).then(() => {
+      this.messageService.add({ severity: 'success', summary: 'Sheet', detail: 'Sheet and its trades deleted successfully!' });
+      this.dialogRef.close();
     })
     .catch((error) => {
-      console.error('Error adding document: ', error);
+      console.error('Error deleting sheet: ', error);
+      this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Failed to delete sheet.' });
+      this.deleting = false;
     });
-    
-    this.dialogRef.close();
   }
 }

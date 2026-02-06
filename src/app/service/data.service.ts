@@ -143,6 +143,24 @@ export class DataService {
     return this.firestore.collection(`${this.api}/sheet`).doc(sheetId).delete();
   }
 
+  /**
+   * Deletes a sheet and all trades linked to it (entries in sheet.data with tradeId).
+   */
+  deleteSheetAndTrades(sheetId: string, sheet: any): Promise<void> {
+    this.setUserId();
+    const tradeIds = (sheet?.data || [])
+      .map((entry: any) => entry.tradeId)
+      .filter((id: string) => !!id);
+
+    const deletePromises: Promise<void>[] = tradeIds.map((tradeId: string) =>
+      this.firestore.collection(`${this.api}/trades`).doc(tradeId).delete()
+    );
+    deletePromises.push(
+      this.firestore.collection(`${this.api}/sheet`).doc(sheetId).delete()
+    );
+    return Promise.all(deletePromises) as Promise<any>;
+  }
+
   setUserId() {
     const userId = localStorage.getItem('userId');
     this.api = `users/${userId}`
