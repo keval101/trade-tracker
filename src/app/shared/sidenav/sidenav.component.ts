@@ -26,6 +26,8 @@ export class SidenavComponent implements OnInit, OnDestroy {
     private messageService: MessageService
   ) {}
 
+  trackByNavRoute(_index: number, item: { route: string }): string { return item?.route ?? String(_index); }
+
   ngOnInit() {
     this.updateMarketStatus();
     // Update every minute

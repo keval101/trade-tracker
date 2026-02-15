@@ -40,7 +40,7 @@
                 <!-- Search Results Dropdown -->
                 <div *ngIf="showSearchResults && searchResults.length > 0" 
                      class="absolute z-50 w-full mt-1 bg-slate-800 border border-slate-700 rounded-lg shadow-xl max-h-60 overflow-y-auto">
-                    <div *ngFor="let company of searchResults" 
+                    <div *ngFor="let company of searchResults; trackBy: trackBySearchResult" 
                          class="px-4 py-3 hover:bg-slate-700 cursor-pointer transition-colors border-b border-slate-700/50 last:border-b-0"
                          (click)="selectCompany(company)">
                         <div class="flex items-center gap-3">

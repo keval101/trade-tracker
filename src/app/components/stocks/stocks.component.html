@@ -11,7 +11,7 @@
     </div>
 
     <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
-        <div class="trading-card relative" *ngFor="let stock of stocks"
+        <div class="trading-card relative" *ngFor="let stock of stocks; trackBy: trackByStockId"
             [class.border-l-4]="true"
             [class.border-l-emerald-500]="stock.status !='Hold' && (((stock.totalQuantity * stock.sellPrice - stock.totalQuantity * stock.buyPrice)/(stock.totalQuantity * stock.buyPrice))* 100) > 0"
             [class.border-l-red-500]="stock.status !='Hold' && (((stock.totalQuantity * stock.sellPrice - stock.totalQuantity * stock.buyPrice)/(stock.totalQuantity * stock.buyPrice))* 100) < 0"

@@ -123,7 +123,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <ng-container *ngFor="let trade of this.groupedData[selectedWeek - 1]">
+                                <ng-container *ngFor="let trade of this.groupedData[selectedWeek - 1]; trackBy: trackByWeekTradeId">
                                     <tr>
                                         <th scope="row" class="font-medium text-gray-100 whitespace-nowrap">
                                             {{trade.date}}

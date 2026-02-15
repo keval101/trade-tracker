@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit, ViewEncapsulation } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
-import { BehaviorSubject, retry } from 'rxjs';
+import { BehaviorSubject, Subscription } from 'rxjs';
 import { DataService } from 'src/app/service/data.service';
 
 @Component({
@@ -9,9 +9,9 @@ import { DataService } from 'src/app/service/data.service';
   styleUrls: ['./overview.component.scss'],
   encapsulation: ViewEncapsulation.None
 })
-export class OverviewComponent implements OnInit, OnDestroy{
+export class OverviewComponent implements OnInit, OnDestroy {
 
-  trades$ = new BehaviorSubject([]);
+  trades$ = new BehaviorSubject<any[]>([]);
   monthData: any;
   monthSortedData: any[] = [];
   addFundsData: any;
@@ -24,23 +24,34 @@ export class OverviewComponent implements OnInit, OnDestroy{
   fundData: any;
   dayData: any;
   showInstructions: boolean = false;
-  
+
+  private tradesSubscription: Subscription | null = null;
+  private addFundsSubscription: Subscription | null = null;
+  private withdrawalFundsSubscription: Subscription | null = null;
+
   constructor(
     private dataService: DataService,
     private sanitizer: DomSanitizer) {}
 
   ngOnInit(): void {
-      this.getTrades();
-      this.getAddedFundAmount();
-      this.getWithdrawalFundAmount();
+    this.subscribeToTrades();
+    this.subscribeToAddFunds();
+    this.subscribeToWithdrawalFunds();
   }
 
-  getTrades() {
-    this.dataService.getTrades().subscribe(trades => {
+  ngOnDestroy(): void {
+    if (this.tradesSubscription) { this.tradesSubscription.unsubscribe(); this.tradesSubscription = null; }
+    if (this.addFundsSubscription) { this.addFundsSubscription.unsubscribe(); this.addFundsSubscription = null; }
+    if (this.withdrawalFundsSubscription) { this.withdrawalFundsSubscription.unsubscribe(); this.withdrawalFundsSubscription = null; }
+  }
+
+  private subscribeToTrades(): void {
+    if (this.tradesSubscription) this.tradesSubscription.unsubscribe();
+    this.tradesSubscription = this.dataService.getTrades().subscribe(trades => {
       trades.sort((a, b) => {
-        const dateA: any = new Date(a.date.split('/').reverse().join('/'));
-        const dateB: any = new Date(b.date.split('/').reverse().join('/'));
-        return dateA - dateB;
+        const dateA = new Date(a.date.split('/').reverse().join('/'));
+        const dateB = new Date(b.date.split('/').reverse().join('/'));
+        return dateA.getTime() - dateB.getTime();
       });
       this.trades$.next(trades);
       this.monthData = this.splitDataByMonth(trades);
@@ -97,29 +108,31 @@ export class OverviewComponent implements OnInit, OnDestroy{
         });
         this.monthSortedData = sortedData;
       }
-    })
+    });
   }
 
-  getAddedFundAmount() {
-    this.dataService.getAddFunds().subscribe(funds => {
+  private subscribeToAddFunds(): void {
+    if (this.addFundsSubscription) this.addFundsSubscription.unsubscribe();
+    this.addFundsSubscription = this.dataService.getAddFunds().subscribe(funds => {
       funds.sort((a, b) => {
-        const dateA: any = new Date(a.date.split('/').reverse().join('/'));
-        const dateB: any = new Date(b.date.split('/').reverse().join('/'));
-        return dateA - dateB;
+        const dateA = new Date(a.date.split('/').reverse().join('/'));
+        const dateB = new Date(b.date.split('/').reverse().join('/'));
+        return dateA.getTime() - dateB.getTime();
       });
       this.addFundsData = this.splitDataByMonth(funds);
-    })
+    });
   }
 
-  getWithdrawalFundAmount() {
-    this.dataService.getWithdrawalFunds().subscribe(funds => {
+  private subscribeToWithdrawalFunds(): void {
+    if (this.withdrawalFundsSubscription) this.withdrawalFundsSubscription.unsubscribe();
+    this.withdrawalFundsSubscription = this.dataService.getWithdrawalFunds().subscribe(funds => {
       funds.sort((a, b) => {
-        const dateA: any = new Date(a.date.split('/').reverse().join('/'));
-        const dateB: any = new Date(b.date.split('/').reverse().join('/'));
-        return dateA - dateB;
+        const dateA = new Date(a.date.split('/').reverse().join('/'));
+        const dateB = new Date(b.date.split('/').reverse().join('/'));
+        return dateA.getTime() - dateB.getTime();
       });
       this.withdrawalFundsData = this.splitDataByMonth(funds);
-    })
+    });
   }
 
   getMonthAnalysisData(data) {
@@ -322,14 +335,14 @@ export class OverviewComponent implements OnInit, OnDestroy{
     }
   }
 
+  trackByMonthKey(_index: number, month: { key: string }): string { return month?.key ?? String(_index); }
+  trackByTradeId(_index: number, trade: any): string { return trade?.id ?? `${trade?.date}-${_index}`; }
+
   tradeDetail(trade: any) {
     this.selectedTrade = trade;
     this.selectedMonthData = undefined;
   }
 
-  ngOnDestroy(): void {
-    this.trades$.unsubscribe();
-  }
 
   getPreviousMonth(dateString) {
     const [month, year] = dateString.split('/');

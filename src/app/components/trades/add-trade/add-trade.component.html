@@ -54,7 +54,7 @@
                 <div class="flex flex-wrap gap-2">
                     <button 
                         type="button"
-                        *ngFor="let tag of availableTags"
+                        *ngFor="let tag of availableTags; trackBy: trackByTag"
                         (click)="onTagToggle(tag)"
                         [class]="selectedTags.includes(tag) 
                             ? 'px-3 py-1.5 text-xs font-medium rounded-lg bg-blue-600 text-white border border-blue-600 transition-colors' 

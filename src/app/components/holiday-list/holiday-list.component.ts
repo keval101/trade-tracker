@@ -8,6 +8,8 @@ import { Component } from '@angular/core';
 })
 export class HolidayListComponent {
 
+  trackByHolidayDate(_index: number, holiday: { tradingDate: string }): string { return holiday?.tradingDate ?? String(_index); }
+
   holidays = [
     {
       tradingDate: '15-Jan-2026',

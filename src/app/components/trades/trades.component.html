@@ -55,7 +55,7 @@
                 <div class="flex flex-wrap gap-2">
                     <button 
                         type="button"
-                        *ngFor="let tag of availableTags"
+                        *ngFor="let tag of availableTags; trackBy: trackByTag"
                         (click)="onTagFilterToggle(tag)"
                         [class]="selectedTags.includes(tag) 
                             ? 'px-3 py-1.5 text-xs font-medium rounded-lg bg-blue-600 text-white border border-blue-600 transition-colors' 
@@ -126,7 +126,7 @@
                 </thead>
                 <tbody>
                         <ng-container *ngIf="!isLoading">
-                        <ng-container *ngFor="let trade of filteredTrades">
+                        <ng-container *ngFor="let trade of filteredTrades; trackBy: trackByTradeId">
                             <tr>
                                 <th scope="row" class="font-medium text-gray-100 whitespace-nowrap">
                                     <div class="flex items-center gap-2">
@@ -144,7 +144,7 @@
                                         <span class="badge badge-info">{{trade.market}}</span>
                                         <span *ngIf="trade.tags && trade.tags.length > 0" 
                                             class="flex items-center gap-1">
-                                            <span *ngFor="let tag of trade.tags.slice(0, 2)" 
+                                            <span *ngFor="let tag of trade.tags.slice(0, 2); trackBy: trackByTag" 
                                                 class="px-1.5 py-0.5 text-[10px] font-medium rounded bg-blue-600/20 text-blue-400 border border-blue-600/30">
                                                 {{tag}}
                                             </span>
@@ -215,7 +215,7 @@
                                         <div *ngIf="trade.tags && trade.tags.length > 0">
                                             <h4 class="text-sm font-semibold text-gray-300 mb-2">Tags</h4>
                                             <div class="flex flex-wrap gap-2">
-                                                <span *ngFor="let tag of trade.tags" 
+                                                <span *ngFor="let tag of trade.tags; trackBy: trackByTag" 
                                                     class="px-2.5 py-1 text-xs font-medium rounded-lg bg-blue-600/20 text-blue-400 border border-blue-600/30">
                                                     {{tag}}
                                                 </span>

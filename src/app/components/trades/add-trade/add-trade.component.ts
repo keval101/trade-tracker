@@ -125,6 +125,8 @@ export class AddTradeComponent implements OnInit{
     }
   }
 
+  trackByTag(_index: number, tag: string): string { return tag ?? String(_index); }
+
   onTagToggle(tag: string) {
     const index = this.selectedTags.indexOf(tag);
     if (index > -1) {

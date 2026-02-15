@@ -1,8 +1,10 @@
-import { Component, OnInit, ViewEncapsulation } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewEncapsulation } from '@angular/core';
 import { DialogService } from 'primeng/dynamicdialog';
 import { AddTradeComponent } from './add-trade/add-trade.component';
 import { DataService } from 'src/app/service/data.service';
 import { DeleteTradeComponent } from './delete-trade/delete-trade.component';
+import { Subscription } from 'rxjs';
+import { take } from 'rxjs/operators';
 
 @Component({
   selector: 'app-trades',
@@ -10,7 +12,7 @@ import { DeleteTradeComponent } from './delete-trade/delete-trade.component';
   styleUrls: ['./trades.component.scss'],
   encapsulation: ViewEncapsulation.None
 })
-export class TradesComponent implements OnInit {
+export class TradesComponent implements OnInit, OnDestroy {
   newDate = new Date();
   trades: any[] = [];
   filteredTrades: any[] = [];
@@ -19,8 +21,8 @@ export class TradesComponent implements OnInit {
   tradingAccuracy: any;
   isProfitableTrader = false;
   streakData: any;
-  
-  // Filter properties
+  private tradesSubscription: Subscription | null = null;
+
   searchQuery: string = '';
   selectedTags: string[] = [];
   availableTags: string[] = [];
@@ -31,57 +33,53 @@ export class TradesComponent implements OnInit {
     private dataService: DataService) {}
 
   ngOnInit(): void {
-    this.getTrades();
+    this.subscribeToTrades();
+  }
+
+  ngOnDestroy(): void {
+    if (this.tradesSubscription) {
+      this.tradesSubscription.unsubscribe();
+      this.tradesSubscription = null;
+    }
+  }
+
+  private subscribeToTrades() {
+    if (this.tradesSubscription) this.tradesSubscription.unsubscribe();
+    this.isLoading = true;
+    this.tradesSubscription = this.dataService.getTrades().subscribe(
+      trades => {
+        trades.sort((a, b) => {
+          const dateA = new Date(a.date.split('/').reverse().join('/'));
+          const dateB = new Date(b.date.split('/').reverse().join('/'));
+          return dateB.getTime() - dateA.getTime();
+        });
+        this.trades = trades;
+        this.filteredTrades = [...trades];
+        this.tradingAccuracy = this.calculateTotalDaysAndProfitableDays(this.trades);
+        this.streakData = this.countStreaks(trades);
+        this.extractAvailableTags(trades);
+        this.applyFilters();
+        const totalProfit = this.trades.reduce((total, current) => total + Math.abs(+current.profit || 0), 0);
+        const totalLose = this.trades.reduce((total, current) => total + Math.abs(+current.lose || 0), 0);
+        this.tradeOverview = {
+          totalTrades: this.trades.reduce((total, current) => total + Math.abs(+current.totalTrades || 0), 0),
+          brokerage: this.trades.reduce((total, current) => total + Math.abs(+current.brokerage || 0), 0),
+          profitLose: totalProfit - totalLose,
+        };
+        this.isLoading = false;
+      },
+      () => { this.isLoading = false; }
+    );
   }
 
   openTradeForm(trade?: any) {
-    this.isProfitableTrader = (this.tradingAccuracy?.totalProfitableDays / this.tradingAccuracy?.totalDays) * 100 > 70 ? true : false;
+    this.isProfitableTrader = (this.tradingAccuracy?.totalProfitableDays / this.tradingAccuracy?.totalDays) * 100 > 70;
     const dialogRef = this.dialogService.open(AddTradeComponent, {
       width: window.innerWidth < 600 ? '90%' : '500px',
       header: 'Add Trade',
-      data: {trade, isProfitableTrader: this.isProfitableTrader}
+      data: { trade, isProfitableTrader: this.isProfitableTrader }
     });
-
-    dialogRef.onClose.subscribe(() => {
-      this.getTrades();
-      dialogRef.destroy();
-    });
-  }
-
-  getTrades() {
-    this.trades = [];
-    this.filteredTrades = [];
-    this.isLoading = true;
-    this.dataService.getTrades().subscribe(trades => {
-      trades.sort((a, b) => {
-        const dateA: any = new Date(a.date.split('/').reverse().join('/'));
-        const dateB: any = new Date(b.date.split('/').reverse().join('/'));
-        return dateB - dateA;
-      });
-      this.trades = trades;
-      this.filteredTrades = [...trades];
-      console.log(this.trades);
-      this.tradingAccuracy = this.calculateTotalDaysAndProfitableDays(this.trades)
-      this.isLoading = false;
-      this.streakData = this.countStreaks(trades);
-      
-      // Extract unique tags from all trades
-      this.extractAvailableTags(trades);
-      
-      // Apply filters
-      this.applyFilters();
-
-      // Use Math.abs to handle any accidentally entered negative values
-      const totalProfit = this.trades.reduce((total, current) => total + Math.abs(+current.profit || 0), 0)
-      const totalLose = this.trades.reduce((total, current) => total + Math.abs(+current.lose || 0), 0)
-      this.tradeOverview = {
-        totalTrades: this.trades.reduce((total, current) => total + Math.abs(+current.totalTrades || 0), 0),
-        brokerage: this.trades.reduce((total, current) => total + Math.abs(+current.brokerage || 0), 0),
-        profitLose: totalProfit - totalLose,
-      }
-
-    },
-    (error) => this.isLoading = false)
+    dialogRef.onClose.pipe(take(1)).subscribe(() => dialogRef.destroy());
   }
 
   deleteTrade(trade: any) {
@@ -89,12 +87,8 @@ export class TradesComponent implements OnInit {
       width: window.innerWidth < 600 ? '90%' : '500px',
       header: 'Delete Trade',
       data: trade
-    })
-
-    dialogRef.onClose.subscribe(() => {
-      this.getTrades();
-      dialogRef.destroy();
-    })
+    });
+    dialogRef.onClose.pipe(take(1)).subscribe(() => dialogRef.destroy());
   }
 
   calculateMarketProfits(trades) {
@@ -223,6 +217,9 @@ export class TradesComponent implements OnInit {
   hasActiveFilters(): boolean {
     return this.searchQuery.trim().length > 0 || this.selectedTags.length > 0;
   }
+
+  trackByTradeId(_index: number, trade: any): string { return trade?.id ?? String(_index); }
+  trackByTag(_index: number, tag: string): string { return tag ?? String(_index); }
 
   getFilteredSummary() {
     const filteredProfit = this.filteredTrades.reduce((total, current) => total + Math.abs(+current.profit || 0), 0);

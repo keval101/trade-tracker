@@ -1,20 +1,22 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { DialogService } from 'primeng/dynamicdialog';
 import { DataService } from 'src/app/service/data.service';
 import { SheetFormComponent } from './sheet-form/sheet-form.component';
 import { SheetEntryDialogComponent } from './sheet-entry-dialog/sheet-entry-dialog.component';
 import { SheetDeleteComponent } from './sheet-delete/sheet-delete.component';
 import { AddTradeComponent } from '../trades/add-trade/add-trade.component';
-import { debounceTime } from 'rxjs';
+import { Subscription } from 'rxjs';
+import { debounceTime, take } from 'rxjs/operators';
 
 @Component({
   selector: 'app-trade-sheet',
   templateUrl: './trade-sheet.component.html',
   styleUrls: ['./trade-sheet.component.scss']
 })
-export class TradeSheetComponent implements OnInit{
+export class TradeSheetComponent implements OnInit, OnDestroy {
 
   sheets: any[] = [];
+  private sheetsSubscription: Subscription | null = null;
   markets: any[] = [
     {
       name: 'Nifty',
@@ -47,42 +49,53 @@ export class TradeSheetComponent implements OnInit{
     private dataService: DataService) {}
     
   ngOnInit(): void {
-    this.getSheets();
+    this.subscribeToSheets();
   }
 
-  getSheets() {
-    this.dataService.getSheet().pipe(debounceTime(500)).subscribe(sheets => {
+  ngOnDestroy(): void {
+    if (this.sheetsSubscription) {
+      this.sheetsSubscription.unsubscribe();
+      this.sheetsSubscription = null;
+    }
+  }
+
+  /** Single live subscription to sheets – no extra getSheet() calls on add/delete. */
+  private subscribeToSheets() {
+    if (this.sheetsSubscription) this.sheetsSubscription.unsubscribe();
+    this.sheetsSubscription = this.dataService.getSheet().pipe(debounceTime(300)).subscribe(sheets => {
       this.totalTargetAchievedSheets = 0;
       sheets.map((sheet, index) => {
-        sheet['expectedSheet'] = this.generateSheet(sheet)
+        sheet['expectedSheet'] = this.generateSheet(sheet);
         sheet['number'] = index + 1;
-        if(sheet) {
-          sheet['targetAchieved'] = sheet.data.length == sheet.days ? sheet.expectedSheet[sheet.days - 1].finalCapital >= +this.calculateCapital(sheet.capital, sheet.roi, sheet.days) ? true : false : null;
-
-          if(sheet.data.length && sheet.expectedSheet[sheet.data.length - 1]?.finalCapital < 0) {
+        if (sheet) {
+          sheet['targetAchieved'] = sheet.data.length === sheet.days
+            ? sheet.expectedSheet[sheet.days - 1].finalCapital >= +this.calculateCapital(sheet.capital, sheet.roi, sheet.days)
+            : null;
+          if (sheet.data.length && sheet.expectedSheet[sheet.data.length - 1]?.finalCapital < 0) {
             sheet['targetAchieved'] = false;
           }
         }
-        if(sheet.targetAchieved === true) {
-          this.totalTargetAchievedSheets = this.totalTargetAchievedSheets + 1
-        }
-      })
-      sheets.sort((a, b) => {
-        const dateA: any = new Date(a.date.split('/').reverse().join('/'));
-        const dateB: any = new Date(b.date.split('/').reverse().join('/'));
-        return dateA - dateB;
+        if (sheet.targetAchieved === true) this.totalTargetAchievedSheets += 1;
       });
-      sheets.map((x, index) => x['number'] = index + 1)
+      sheets.sort((a, b) => {
+        const dateA = new Date(a.date.split('/').reverse().join('/'));
+        const dateB = new Date(b.date.split('/').reverse().join('/'));
+        return dateA.getTime() - dateB.getTime();
+      });
+      sheets.map((x, index) => x['number'] = index + 1);
       this.sheets = sheets;
-      console.log('sheets', this.sheets);
       this.shortSheets();
-    })
+    });
   }
 
   shortSheets() {
     this.sheets = this.sheets.reverse();
     this.isShortSheets = !this.isShortSheets
   }
+
+  trackBySheetId(_index: number, sheet: any): string { return sheet?.id ?? String(_index); }
+  trackByMarketIndex(_index: number, market: any): string { return market?.name ?? String(_index); }
+  trackBySheetRowIndex(index: number, item: any): string { return item?.tradeId ?? `${index}-${item?.date}`; }
 
   generateSheet(sheet: any) {
     const data = [];
@@ -137,8 +150,7 @@ export class TradeSheetComponent implements OnInit{
       header: "Generate Sheet"
     })
 
-    dialogRef.onClose.subscribe((result) => {
-      if (result?.submitted) this.getSheets();
+    dialogRef.onClose.pipe(take(1)).subscribe((result) => {
       dialogRef.destroy();
     });
   }
@@ -182,8 +194,7 @@ export class TradeSheetComponent implements OnInit{
       data: {sheet}
     })
 
-    dialogRef.onClose.subscribe((result) => {
-      if (result?.submitted) this.getSheets();
+    dialogRef.onClose.pipe(take(1)).subscribe((result) => {
       dialogRef.destroy();
     });
   }
