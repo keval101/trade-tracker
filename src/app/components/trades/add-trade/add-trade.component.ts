@@ -112,7 +112,7 @@ export class AddTradeComponent implements OnInit{
       if(!this.config.data.trade && !this.config.data.selectedRow) {
         this.addNewTrade(payload);
       } else {
-        if (this.config.data.isSheetEntry && this.config.data.selectedRow) {
+        if (this.config.data.isSheetEntry && this.config.data.selectedRow && !this.config.data.selectedRow.tradeId) {
           this.updateTrade(payload);
           this.addSheetEntry();
         } else {
@@ -167,6 +167,7 @@ export class AddTradeComponent implements OnInit{
     if(this.tradeForm.valid) {
       let entry;
       const data = this.config.data;
+      console.log('data', data);
   
       if(!data.isEdit) {
         const formatedDate = this.tradeForm.value.date
@@ -193,8 +194,9 @@ export class AddTradeComponent implements OnInit{
         data.sheet.data[index] = entry;
       }
   
-      const payload = !data.isEdit ? data.sheet : data.sheet;
-      const sheetId = !data.isEdit ? data.sheet.id : data.sheet.id;
+      const payload = data.sheet;
+      const sheetId = data.sheet.id;
+      console.log('payload', payload, entry);
       this.dataService.updateSheet(sheetId, payload).then(() => {
         this.messageService.add({ severity: 'success', summary: 'Update Sheet', detail: 'Sheet Updated Successfully!' });
       })

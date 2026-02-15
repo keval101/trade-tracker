@@ -32,7 +32,7 @@ export class SheetDeleteComponent {
     this.deleting = true;
     this.dataService.deleteSheetAndTrades(this.sheet.id, this.sheet).then(() => {
       this.messageService.add({ severity: 'success', summary: 'Sheet', detail: 'Sheet and its trades deleted successfully!' });
-      this.dialogRef.close();
+      this.dialogRef.close({ submitted: true });
     })
     .catch((error) => {
       console.error('Error deleting sheet: ', error);

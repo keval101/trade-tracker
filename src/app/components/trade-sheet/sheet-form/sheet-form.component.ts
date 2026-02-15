@@ -43,7 +43,7 @@ export class SheetFormComponent implements OnInit{
       payload['data'] = [];
       this.dataService.addSheet(this.sheetForm.value).then(() => {
         this.messageService.add({ severity: 'success', summary: 'Add Sheet', detail: 'Sheet Added Successfully!' });
-        this.ref.close();
+        this.ref.close({ submitted: true });
       })
     }
   }

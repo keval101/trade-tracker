@@ -5,6 +5,7 @@ import { SheetFormComponent } from './sheet-form/sheet-form.component';
 import { SheetEntryDialogComponent } from './sheet-entry-dialog/sheet-entry-dialog.component';
 import { SheetDeleteComponent } from './sheet-delete/sheet-delete.component';
 import { AddTradeComponent } from '../trades/add-trade/add-trade.component';
+import { debounceTime } from 'rxjs';
 
 @Component({
   selector: 'app-trade-sheet',
@@ -50,7 +51,8 @@ export class TradeSheetComponent implements OnInit{
   }
 
   getSheets() {
-    this.dataService.getSheet().subscribe(sheets => {
+    this.dataService.getSheet().pipe(debounceTime(500)).subscribe(sheets => {
+      this.totalTargetAchievedSheets = 0;
       sheets.map((sheet, index) => {
         sheet['expectedSheet'] = this.generateSheet(sheet)
         sheet['number'] = index + 1;
@@ -135,10 +137,10 @@ export class TradeSheetComponent implements OnInit{
       header: "Generate Sheet"
     })
 
-    dialogRef.onClose.subscribe(() => {
-      this.getSheets();
+    dialogRef.onClose.subscribe((result) => {
+      if (result?.submitted) this.getSheets();
       dialogRef.destroy();
-    })
+    });
   }
 
   calculateCapital(initialCapital, roi, days) {
@@ -180,9 +182,9 @@ export class TradeSheetComponent implements OnInit{
       data: {sheet}
     })
 
-    dialogRef.onClose.subscribe(() => {
-      this.getSheets();
+    dialogRef.onClose.subscribe((result) => {
+      if (result?.submitted) this.getSheets();
       dialogRef.destroy();
-    })
+    });
   }
 }
