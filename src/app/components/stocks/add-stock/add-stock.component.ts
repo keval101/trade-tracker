@@ -1,11 +1,11 @@
 import { DatePipe } from '@angular/common';
-import { Component, EventEmitter, OnInit, Output, ViewEncapsulation } from '@angular/core';
+import { Component, EventEmitter, OnDestroy, OnInit, Output, ViewEncapsulation } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { MessageService } from 'primeng/api';
 import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { DataService } from 'src/app/service/data.service';
 import { NseDataService } from 'src/app/service/nse-data.service';
-import { Subject, debounceTime, distinctUntilChanged, switchMap, catchError, of } from 'rxjs';
+import { Subject, Subscription, debounceTime, distinctUntilChanged, switchMap, catchError, of } from 'rxjs';
 
 @Component({
   selector: 'app-add-stock',
@@ -13,19 +13,19 @@ import { Subject, debounceTime, distinctUntilChanged, switchMap, catchError, of 
   styleUrls: ['./add-stock.component.scss'],
   encapsulation: ViewEncapsulation.None
 })
-export class AddStockComponent implements OnInit {
+export class AddStockComponent implements OnInit, OnDestroy {
 
   stockForm: FormGroup;
   isEdit = false;
 
-  @Output() emitModalClose = new EventEmitter()
+  @Output() emitModalClose = new EventEmitter();
 
-  // Search functionality
   searchQuery: string = '';
   searchResults: any[] = [];
   showSearchResults: boolean = false;
   isSearching: boolean = false;
   private searchSubject = new Subject<string>();
+  private searchSubscription: Subscription | null = null;
 
   constructor(
     private fb: FormBuilder,
@@ -59,21 +59,15 @@ export class AddStockComponent implements OnInit {
       this.searchQuery = this.config.data.stock.name || '';
     }
 
-    // Setup search with debouncing
-    this.searchSubject.pipe(
+    this.searchSubscription = this.searchSubject.pipe(
       debounceTime(300),
       distinctUntilChanged(),
       switchMap(query => {
         if (query && query.length >= 2) {
           this.isSearching = true;
           return this.nseDataService.searchCompany(query).pipe(
-            catchError(error => {
-              console.error('Search error:', error);
-              this.messageService.add({ 
-                severity: 'warn', 
-                summary: 'Search Failed', 
-                detail: 'Unable to search companies. Please enter details manually.' 
-              });
+            catchError(() => {
+              this.messageService.add({ severity: 'warn', summary: 'Search Failed', detail: 'Unable to search companies. Please enter details manually.' });
               return of([]);
             })
           );
@@ -85,17 +79,13 @@ export class AddStockComponent implements OnInit {
       })
     ).subscribe((results: any) => {
       this.isSearching = false;
-      
-      // NSE API returns: { symbols: [], mfsymbols: [], search_content: [], sitemap: [] }
-      if (results && results.symbols && Array.isArray(results.symbols)) {
-        // Filter for equity stocks only (exclude bonds, derivatives, etc.)
-        const equityStocks = results.symbols.filter((item: any) => 
-          item.result_sub_type === 'equity' && item.activeSeries && item.activeSeries.length > 0
+      if (results?.symbols && Array.isArray(results.symbols)) {
+        const equityStocks = results.symbols.filter((item: any) =>
+          item.result_sub_type === 'equity' && item.activeSeries?.length > 0
         );
         this.searchResults = equityStocks;
         this.showSearchResults = equityStocks.length > 0;
-      } else if (results && Array.isArray(results)) {
-        // Fallback: if response is directly an array
+      } else if (Array.isArray(results)) {
         this.searchResults = results;
         this.showSearchResults = results.length > 0;
       } else {
@@ -103,6 +93,11 @@ export class AddStockComponent implements OnInit {
         this.showSearchResults = false;
       }
     });
+  }
+
+  ngOnDestroy(): void {
+    if (this.searchSubscription) { this.searchSubscription.unsubscribe(); this.searchSubscription = null; }
+    this.searchSubject.complete();
   }
 
   setAmount() {
@@ -170,7 +165,8 @@ export class AddStockComponent implements OnInit {
     });
   }
 
-  // Search methods
+  trackBySearchResult(_index: number, company: any): string { return company?.symbol ?? String(_index); }
+
   onSearchChange(query: string) {
     this.searchQuery = query;
     this.searchSubject.next(query);

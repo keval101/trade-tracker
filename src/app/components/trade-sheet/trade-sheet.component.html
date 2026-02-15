@@ -75,7 +75,7 @@
         Target Achieved {{(totalTargetAchievedSheets/sheets.length)*100 | number:'1.0-0'}}% ({{totalTargetAchievedSheets}}/{{sheets.length}})
     </button>
 
-    <ng-container *ngFor="let sheet of sheets; let sheetIndex = index">
+    <ng-container *ngFor="let sheet of sheets; let sheetIndex = index; trackBy: trackBySheetId">
         <div class="trading-card my-8">
             <div class="flex gap-3 items-center flex-wrap">
                 <h2 class="text-xl font-semibold text-white">Sheet {{sheet.number}}</h2>
@@ -112,7 +112,7 @@
 
             <div class="flex gap-4 mt-4 items-center justify-between flex-wrap">
                 <div class="markets flex gap-4 flex-wrap" *ngIf="sheet.targetAchieved == null">
-                    <ng-container *ngFor="let market of markets; let i = index">
+                    <ng-container *ngFor="let market of markets; let i = index; trackBy: trackByMarketIndex">
                         <div class="flex items-center">
                             <input id="sheet_{{sheetIndex}}_{{i}}" type="radio" class="w-4 h-4 text-blue-600 bg-slate-700 border-slate-600" name="sheet_market_{{sheetIndex}}" value="{{market.lot}}" (change)="onMarketSelect(sheet, market)">
                             <label for="sheet_{{sheetIndex}}_{{i}}" class="ms-2 text-sm font-medium text-gray-300">{{market.name}}</label>
@@ -140,7 +140,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <ng-container *ngFor="let item of sheet.expectedSheet; let i = index">
+                        <ng-container *ngFor="let item of sheet.expectedSheet; let i = index; trackBy: trackBySheetRowIndex">
                             <tr *ngIf="!item.isAddFund"
                                 [class.profit-row]="item.profit > 0"
                                 [class.loss-row]="item.profit < 0"

@@ -113,14 +113,14 @@
 
     <!-- Monthly PnL Grid -->
     <div class="flex gap-12 flex-wrap">
-        <ng-container *ngFor="let month of monthSortedData">
+        <ng-container *ngFor="let month of monthSortedData; trackBy: trackByMonthKey">
             <div class="trading-card">
                 <h2 class="text-xl mb-4 font-semibold month-name cursor-pointer hover:text-blue-400 transition-colors" 
                     (click)="getMonthAnalysisData(month)">
                     {{getMonthName(month.key)}}
                 </h2>
                 <div class="pnl-grid">
-                    <ng-container *ngFor="let trade of getData(month.value); let i = index">
+                    <ng-container *ngFor="let trade of getData(month.value); let i = index; trackBy: trackByTradeId">
                         <div class="pnl-grid-box" [ngClass]="i === 0 && getDayOfWeek(trade.date)"
                             *ngIf="!trade?.noTradingDay"
                             [class.bg-emerald-300]="trade.isProfitable && trade.profit < 500 && trade.profit !== 0"

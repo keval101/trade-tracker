@@ -132,7 +132,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <ng-container *ngFor="let item of addFunds">
+                        <ng-container *ngFor="let item of addFunds; trackBy: trackByFundId">
                             <tr>
                                 <th scope="row" class="font-medium text-gray-100 whitespace-nowrap">
                                     {{ item.date }}
@@ -192,7 +192,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <ng-container *ngFor="let item of withdrawalFunds">
+                        <ng-container *ngFor="let item of withdrawalFunds; trackBy: trackByFundId">
                             <tr>
                                 <th scope="row" class="font-medium text-gray-100 whitespace-nowrap">
                                     {{ item.date }}

@@ -15,7 +15,8 @@ export class AppComponent implements OnInit, OnDestroy {
   title = 'paper-trading';
   isLoginPage = false;
   marketData: MarketIndex[] = [];
-  private marketDataSubscription: Subscription;
+  private marketDataSubscription: Subscription | null = null;
+  private userDetailSubscription: Subscription | null = null;
 
   constructor(
     private router: Router,
@@ -29,32 +30,26 @@ export class AppComponent implements OnInit, OnDestroy {
       this.isLoginPage = this.router.url.includes('/login') || this.router.url.includes('/register');
     }, 50);
 
-    this.authService.getCurrentUserDetail().subscribe(res => {
-      if(!res) {
-        this.router.url.includes('/login')
-        return;
-      }
-      localStorage.setItem('preferredMarket', res.preferredMarket)
+    this.userDetailSubscription = this.authService.getCurrentUserDetail().subscribe(res => {
+      if (res?.preferredMarket) localStorage.setItem('preferredMarket', res.preferredMarket);
     });
 
-    // Initialize live market data (dev uses Angular proxy, prod uses Vercel serverless)
     this.marketDataService.initializeMarketData();
-
-    // Subscribe to market data for marquee
     this.marketDataSubscription = this.marketDataService.marketData$.subscribe(data => {
       this.marketData = data;
     });
   }
 
   ngOnDestroy() {
-    if (this.marketDataSubscription) {
-      this.marketDataSubscription.unsubscribe();
-    }
+    if (this.marketDataSubscription) { this.marketDataSubscription.unsubscribe(); this.marketDataSubscription = null; }
+    if (this.userDetailSubscription) { this.userDetailSubscription.unsubscribe(); this.userDetailSubscription = null; }
   }
 
   checkForLoginPage() {
     this.isLoginPage = this.router.url.includes('/login') || this.router.url.includes('/register');
   }
+
+  trackByMarketIndexName(_index: number, item: MarketIndex): string { return item?.indexName ?? String(_index); }
 
   getMarketDisplayName(indexName: string): string {
     const nameMap: { [key: string]: string } = {

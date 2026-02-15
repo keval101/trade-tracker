@@ -1,5 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, Subscription } from 'rxjs';
+import { take } from 'rxjs/operators';
 import { DataService } from 'src/app/service/data.service';
 import { MarketDataService } from 'src/app/service/market-data.service';
 
@@ -8,7 +9,10 @@ import { MarketDataService } from 'src/app/service/market-data.service';
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.scss']
 })
-export class DashboardComponent implements OnInit, OnDestroy{
+export class DashboardComponent implements OnInit, OnDestroy {
+  private tradesSubscription: Subscription | null = null;
+  private sheetsSubscription: Subscription | null = null;
+
   expectedROI = {
     currentWeekInvestment: 2000,
     currentWeekExpectedROI: 10,
@@ -47,10 +51,9 @@ export class DashboardComponent implements OnInit, OnDestroy{
     private dataService: DataService) {}
 
   ngOnInit(): void {
-    this.getTrades();
-    this.getSheets();
+    this.subscribeToTrades();
+    this.subscribeToSheets();
     this.updateMarketStatus();
-    // Update every minute
     this.statusInterval = setInterval(() => this.updateMarketStatus(), 60000);
   }
 
@@ -113,18 +116,18 @@ export class DashboardComponent implements OnInit, OnDestroy{
     }
   }
 
-  getTrades() {
-    this.dataService.getTrades().subscribe(trades => {
+  private subscribeToTrades(): void {
+    if (this.tradesSubscription) this.tradesSubscription.unsubscribe();
+    this.tradesSubscription = this.dataService.getTrades().subscribe(trades => {
       trades.sort((a, b) => {
-        const dateA: any = new Date(a.date.split('/').reverse().join('/'));
-        const dateB: any = new Date(b.date.split('/').reverse().join('/'));
-        return dateA - dateB;
+        const dateA = new Date(a.date.split('/').reverse().join('/'));
+        const dateB = new Date(b.date.split('/').reverse().join('/'));
+        return dateA.getTime() - dateB.getTime();
       });
-      this.chartData = this.calculateMarketProfits(trades)
-      console.log('chartData', this.chartData);
+      this.chartData = this.calculateMarketProfits(trades);
       this.setChart();
       this.trades$.next(trades);
-    })
+    });
   }
 
   getWeekNumber(date) {
@@ -169,6 +172,8 @@ export class DashboardComponent implements OnInit, OnDestroy{
     return marketProfits;
   }
 
+  trackByWeekTradeId(_index: number, trade: any): string { return trade?.id ?? `${trade?.date}-${_index}`; }
+
   setColor(marketValue: any, documentStyle:any): string {
     // Dark theme colors - more vibrant for better visibility
     if(marketValue < 0 && marketValue < -1000) {
@@ -190,36 +195,35 @@ export class DashboardComponent implements OnInit, OnDestroy{
     }
   }
 
-  getSheets() {
-    this.dataService.getSheet().subscribe(sheets => {
+  private subscribeToSheets(): void {
+    if (this.sheetsSubscription) this.sheetsSubscription.unsubscribe();
+    this.sheetsSubscription = this.dataService.getSheet().subscribe(sheets => {
       sheets.sort((a, b) => {
-        const dateA: any = new Date(a.date.split('/').reverse().join('/'));
-        const dateB: any = new Date(b.date.split('/').reverse().join('/'));
-        return dateA - dateB;
+        const dateA = new Date(a.date.split('/').reverse().join('/'));
+        const dateB = new Date(b.date.split('/').reverse().join('/'));
+        return dateA.getTime() - dateB.getTime();
       });
       this.sheets = sheets;
-
-      const data: any = [];
-      this.sheets.map(sheet => {
-      this.trades$.subscribe((trades: any) => {
-        const index = trades.findIndex(x => x.date == sheet.date)
-        if(index >= 0) {
-          const tradeData = trades.slice(index, index + sheet.data.length);
-          tradeData['totalProfit'] = sheet.data.reduce((total, trade) => {
-            const profit = Number(trade?.profit) || 0;
-            const lose = Number(trade?.lose) || 0;
-            return total + profit - lose;
-          }, 0);
-          tradeData['totalDays'] = sheet.days;
-          tradeData['roi'] = sheet.roi;
-          tradeData['startingWeekCapital'] = sheet.capital;
-          this.groupedData.push(tradeData);
-        }
-      })
-    })
-      this.trades$.unsubscribe();
+      this.groupedData = [];
+      this.sheets.forEach(sheet => {
+        this.trades$.pipe(take(1)).subscribe((trades: any) => {
+          const index = trades.findIndex((x: any) => x.date === sheet.date);
+          if (index >= 0) {
+            const tradeData = trades.slice(index, index + sheet.data.length);
+            (tradeData as any).totalProfit = sheet.data.reduce((total: number, trade: any) => {
+              const profit = Number(trade?.profit) || 0;
+              const lose = Number(trade?.lose) || 0;
+              return total + profit - lose;
+            }, 0);
+            (tradeData as any).totalDays = sheet.days;
+            (tradeData as any).roi = sheet.roi;
+            (tradeData as any).startingWeekCapital = sheet.capital;
+            this.groupedData.push(tradeData);
+          }
+        });
+      });
       this.setWeeklyData();
-    })
+    });
   }
 
   setWeeklyData() {
@@ -313,10 +317,18 @@ export class DashboardComponent implements OnInit, OnDestroy{
   }
 
   ngOnDestroy(): void {
-      this.trades$.unsubscribe();
-      if (this.statusInterval) {
-        clearInterval(this.statusInterval);
-      }
+    if (this.tradesSubscription) {
+      this.tradesSubscription.unsubscribe();
+      this.tradesSubscription = null;
+    }
+    if (this.sheetsSubscription) {
+      this.sheetsSubscription.unsubscribe();
+      this.sheetsSubscription = null;
+    }
+    if (this.statusInterval) {
+      clearInterval(this.statusInterval);
+      this.statusInterval = null;
+    }
   }
 
   private updateMarketStatus() {
