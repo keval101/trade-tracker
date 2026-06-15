@@ -96,7 +96,6 @@ A comprehensive Angular-based paper trading platform for tracking and analyzing 
    - Copy `.env.example` to `.env` and fill in your Firebase values, or set these env vars in [Vercel](https://vercel.com/docs/projects/environment-variables):
      - `FIREBASE_API_KEY`
      - `FIREBASE_AUTH_DOMAIN`
-     - `FIREBASE_DATABASE_URL`
      - `FIREBASE_PROJECT_ID`
      - `FIREBASE_STORAGE_BUCKET`
      - `FIREBASE_MESSAGING_SENDER_ID`
