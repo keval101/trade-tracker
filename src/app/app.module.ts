@@ -48,17 +48,7 @@ import { CalculateStoplossComponent } from './components/calculate-stoploss/calc
 import { StocksComponent } from './components/stocks/stocks.component';
 import { AddStockComponent } from './components/stocks/add-stock/add-stock.component';
 import { DeleteStockComponent } from './components/stocks/delete-stock/delete-stock.component';
-
-const firebaseConfig = {
-  apiKey: "AIzaSyA7OCANxXbgxUiQ_0zB_co_22z3jgxJiFY",
-  authDomain: "paper-trade-5c9d7.firebaseapp.com",
-  databaseURL: "https://paper-trade-5c9d7-default-rtdb.firebaseio.com",
-  projectId: "paper-trade-5c9d7",
-  storageBucket: "paper-trade-5c9d7.appspot.com",
-  messagingSenderId: "1020706193249",
-  appId: "1:1020706193249:web:0a4452766cf34844810f20",
-  measurementId: "G-FZXX60P22Q"
-};
+import { environment } from '../environments/environment';
 
 @NgModule({
   declarations: [
@@ -95,7 +85,7 @@ const firebaseConfig = {
     DialogModule,
     DynamicDialogModule,
     CalendarModule,
-    AngularFireModule.initializeApp(firebaseConfig),
+    AngularFireModule.initializeApp(environment.firebase),
     AngularFireDatabaseModule,
     AngularFirestoreModule,
     AngularFireStorageModule,

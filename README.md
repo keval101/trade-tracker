@@ -93,19 +93,16 @@ A comprehensive Angular-based paper trading platform for tracking and analyzing 
    - Create a Firebase project at [Firebase Console](https://console.firebase.google.com/)
    - Enable Authentication (Email/Password)
    - Create a Firestore database
-   - Update `src/app/app.module.ts` with your Firebase configuration:
-     ```typescript
-     const firebaseConfig = {
-       apiKey: "YOUR_API_KEY",
-       authDomain: "YOUR_AUTH_DOMAIN",
-       databaseURL: "YOUR_DATABASE_URL",
-       projectId: "YOUR_PROJECT_ID",
-       storageBucket: "YOUR_STORAGE_BUCKET",
-       messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
-       appId: "YOUR_APP_ID",
-       measurementId: "YOUR_MEASUREMENT_ID"
-     };
-     ```
+   - Copy `.env.example` to `.env` and fill in your Firebase values, or set these env vars in [Vercel](https://vercel.com/docs/projects/environment-variables):
+     - `FIREBASE_API_KEY`
+     - `FIREBASE_AUTH_DOMAIN`
+     - `FIREBASE_DATABASE_URL`
+     - `FIREBASE_PROJECT_ID`
+     - `FIREBASE_STORAGE_BUCKET`
+     - `FIREBASE_MESSAGING_SENDER_ID`
+     - `FIREBASE_APP_ID`
+     - `FIREBASE_MEASUREMENT_ID`
+   - Run `npm run generate-env` (also runs automatically before `npm start` and `npm run build`)
 
 5. **Proxy Setup** (for NSE API)
    - Already configured - no changes needed!

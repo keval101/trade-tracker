@@ -41,3 +41,8 @@ testem.log
 .DS_Store
 Thumbs.db
 config.bat
+
+# Environment
+.env
+.env.local
+src/environments/firebase.config.ts
