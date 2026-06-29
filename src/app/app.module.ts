@@ -34,6 +34,8 @@ import { TradeSheetComponent } from './components/trade-sheet/trade-sheet.compon
 import { SheetFormComponent } from './components/trade-sheet/sheet-form/sheet-form.component';
 import { SheetEntryDialogComponent } from './components/trade-sheet/sheet-entry-dialog/sheet-entry-dialog.component';
 import { LogoComponent } from './shared/logo/logo.component';
+import { LoaderComponent } from './shared/loader/loader.component';
+import { ScreenLoaderComponent } from './shared/screen-loader/screen-loader.component';
 import { AngularFireAuthModule } from '@angular/fire/compat/auth';
 import { LoginComponent } from './components/login/login.component';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
@@ -64,6 +66,8 @@ import { environment } from '../environments/environment';
     SheetFormComponent,
     SheetEntryDialogComponent,
     LogoComponent,
+    LoaderComponent,
+    ScreenLoaderComponent,
     LoginComponent,
     SignupComponent,
     DeleteFundComponent,

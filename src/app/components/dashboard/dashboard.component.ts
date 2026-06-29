@@ -11,6 +11,9 @@ import { MarketDataService } from 'src/app/service/market-data.service';
 export class DashboardComponent implements OnInit, OnDestroy {
   private tradesSubscription: Subscription | null = null;
   private sheetsSubscription: Subscription | null = null;
+  isLoading = true;
+  private tradesLoaded = false;
+  private sheetsLoaded = false;
 
   expectedROI = {
     currentWeekInvestment: 2000,
@@ -50,6 +53,9 @@ export class DashboardComponent implements OnInit, OnDestroy {
     private dataService: DataService) {}
 
   ngOnInit(): void {
+    this.isLoading = true;
+    this.tradesLoaded = false;
+    this.sheetsLoaded = false;
     this.subscribeToTrades();
     this.subscribeToSheets();
     this.updateMarketStatus();
@@ -128,7 +134,15 @@ export class DashboardComponent implements OnInit, OnDestroy {
       this.setChart();
       this.trades$.next(trades);
       this.rebuildWeeklyData();
+      this.tradesLoaded = true;
+      this.checkLoadingComplete();
     });
+  }
+
+  private checkLoadingComplete(): void {
+    if (this.tradesLoaded && this.sheetsLoaded) {
+      this.isLoading = false;
+    }
   }
 
   getWeekNumber(date) {
@@ -205,6 +219,8 @@ export class DashboardComponent implements OnInit, OnDestroy {
         return dateA.getTime() - dateB.getTime();
       });
       this.rebuildWeeklyData();
+      this.sheetsLoaded = true;
+      this.checkLoadingComplete();
     });
   }
 

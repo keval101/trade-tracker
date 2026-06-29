@@ -24,6 +24,10 @@ export class OverviewComponent implements OnInit, OnDestroy {
   fundData: any;
   dayData: any;
   showInstructions: boolean = false;
+  isLoading = true;
+  private tradesLoaded = false;
+  private addFundsLoaded = false;
+  private withdrawalFundsLoaded = false;
 
   private tradesSubscription: Subscription | null = null;
   private addFundsSubscription: Subscription | null = null;
@@ -34,9 +38,19 @@ export class OverviewComponent implements OnInit, OnDestroy {
     private sanitizer: DomSanitizer) {}
 
   ngOnInit(): void {
+    this.isLoading = true;
+    this.tradesLoaded = false;
+    this.addFundsLoaded = false;
+    this.withdrawalFundsLoaded = false;
     this.subscribeToTrades();
     this.subscribeToAddFunds();
     this.subscribeToWithdrawalFunds();
+  }
+
+  private checkLoadingComplete(): void {
+    if (this.tradesLoaded && this.addFundsLoaded && this.withdrawalFundsLoaded) {
+      this.isLoading = false;
+    }
   }
 
   ngOnDestroy(): void {
@@ -108,6 +122,8 @@ export class OverviewComponent implements OnInit, OnDestroy {
         });
         this.monthSortedData = sortedData;
       }
+      this.tradesLoaded = true;
+      this.checkLoadingComplete();
     });
   }
 
@@ -120,6 +136,8 @@ export class OverviewComponent implements OnInit, OnDestroy {
         return dateA.getTime() - dateB.getTime();
       });
       this.addFundsData = this.splitDataByMonth(funds);
+      this.addFundsLoaded = true;
+      this.checkLoadingComplete();
     });
   }
 
@@ -132,6 +150,8 @@ export class OverviewComponent implements OnInit, OnDestroy {
         return dateA.getTime() - dateB.getTime();
       });
       this.withdrawalFundsData = this.splitDataByMonth(funds);
+      this.withdrawalFundsLoaded = true;
+      this.checkLoadingComplete();
     });
   }
 

@@ -1,3 +1,4 @@
+<app-screen-loader [loading]="isLoading">
 <div class="sheet">
     <!-- Header -->
     <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8">
@@ -167,8 +168,8 @@
                                     <span class="text-gray-500" *ngIf="item.profit == 0">-</span>
                                 </td>
                                 <td>
-                                    <span class="profit" *ngIf="item.profit > 0">+{{(item.profit / item.startingCapital) * 100 | number:'1.0-0'}}%</span>
-                                    <span class="lose" *ngIf="item.profit < 0">{{(item.profit / item.startingCapital) * 100 | number:'1.0-0'}}%</span>
+                                    <span class="profit" *ngIf="item.profit > 0">+{{ calculateRowRoi(item.profit, item.startingCapital) | number:'1.2-2' }}%</span>
+                                    <span class="lose" *ngIf="item.profit < 0">{{ calculateRowRoi(item.profit, item.startingCapital) | number:'1.2-2' }}%</span>
                                     <span class="text-gray-500" *ngIf="item.profit == 0">-</span>
                                 </td>
                                 <td>
@@ -194,3 +195,4 @@
         </div>
     </ng-container>
 </div>
+</app-screen-loader>

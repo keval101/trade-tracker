@@ -26,6 +26,10 @@ export class AccountComponent implements OnInit, OnDestroy {
 
   user: any;
   activeTab: 'profile' | 'funds' | 'summary' = 'profile';
+  isLoading = true;
+  private userLoaded = false;
+  private addFundsLoaded = false;
+  private withdrawalFundsLoaded = false;
 
   private addFundsSubscription: Subscription | null = null;
   private withdrawalFundsSubscription: Subscription | null = null;
@@ -40,11 +44,23 @@ export class AccountComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
+    this.isLoading = true;
+    this.userLoaded = false;
+    this.addFundsLoaded = false;
+    this.withdrawalFundsLoaded = false;
     this.subscribeToAddFunds();
     this.subscribeToWithdrawalFunds();
     this.userSubscription = this.authService.getCurrentUserDetail().subscribe(res => {
       this.user = res;
+      this.userLoaded = true;
+      this.checkLoadingComplete();
     });
+  }
+
+  private checkLoadingComplete(): void {
+    if (this.userLoaded && this.addFundsLoaded && this.withdrawalFundsLoaded) {
+      this.isLoading = false;
+    }
   }
 
   ngOnDestroy(): void {
@@ -63,6 +79,8 @@ export class AccountComponent implements OnInit, OnDestroy {
       });
       this.addFunds = funds;
       this.totalAddedFunds = this.addFunds.reduce((total, current) => total + current.fund, 0);
+      this.addFundsLoaded = true;
+      this.checkLoadingComplete();
     });
   }
 
@@ -76,6 +94,8 @@ export class AccountComponent implements OnInit, OnDestroy {
       });
       this.withdrawalFunds = funds;
       this.totalWithdrawalFunds = this.withdrawalFunds.reduce((total, current) => total + current.fund, 0);
+      this.withdrawalFundsLoaded = true;
+      this.checkLoadingComplete();
     });
   }
 
