@@ -1,0 +1,10 @@
+<div
+  class="dots"
+  [style.--size]="size"
+  [style.--dot-size]="'6px'"
+  [style.--dot-count]="'6'"
+  [style.--color]="color"
+  [style.--speed]="'1s'"
+  [style.--spread]="'60deg'">
+  <div *ngFor="let dot of dots" class="dot" [style.--i]="dot"></div>
+</div>

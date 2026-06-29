@@ -16,6 +16,7 @@ import { debounceTime, take } from 'rxjs/operators';
 export class TradeSheetComponent implements OnInit, OnDestroy {
 
   sheets: any[] = [];
+  isLoading = true;
   private sheetsSubscription: Subscription | null = null;
   markets: any[] = [
     {
@@ -49,6 +50,7 @@ export class TradeSheetComponent implements OnInit, OnDestroy {
     private dataService: DataService) {}
     
   ngOnInit(): void {
+    this.isLoading = true;
     this.subscribeToSheets();
   }
 
@@ -85,6 +87,7 @@ export class TradeSheetComponent implements OnInit, OnDestroy {
       sheets.map((x, index) => x['number'] = index + 1);
       this.sheets = sheets;
       this.shortSheets();
+      this.isLoading = false;
     });
   }
 
@@ -162,6 +165,13 @@ export class TradeSheetComponent implements OnInit, OnDestroy {
         capital += profit;
     }
     return capital.toFixed(2);
+  }
+
+  calculateRowRoi(profit: number, startingCapital: number): number {
+    if (!startingCapital) {
+      return 0;
+    }
+    return (profit / startingCapital) * 100;
   }
 
   addSheetEntry(sheet: any) {

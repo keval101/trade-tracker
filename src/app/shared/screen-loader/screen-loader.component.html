@@ -1,0 +1,5 @@
+<div *ngIf="loading" class="screen-loader">
+  <app-loader></app-loader>
+</div>
+
+<ng-content *ngIf="!loading"></ng-content>

@@ -1,3 +1,4 @@
+<app-screen-loader [loading]="isLoading">
 <div class="trades">
     <!-- Header Section -->
     <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8">
@@ -125,7 +126,6 @@
                     </tr>
                 </thead>
                 <tbody>
-                        <ng-container *ngIf="!isLoading">
                         <ng-container *ngFor="let trade of filteredTrades; trackBy: trackByTradeId">
                             <tr>
                                 <th scope="row" class="font-medium text-gray-100 whitespace-nowrap">
@@ -297,18 +297,9 @@
                                 </td>
                             </tr>
                         </ng-container>
-                    </ng-container>
-                    
-                    <!-- Loading State -->
-                    <ng-container *ngIf="isLoading">
-                        <tr>
-                            <td colspan="9" class="py-16 text-center">
-                                <p-progressSpinner styleClass="w-1rem h-1rem" strokeWidth="8" fill="var(--surface-ground)" animationDuration=".5s"></p-progressSpinner>
-                            </td>
-                        </tr>
-                    </ng-container>
                 </tbody>
             </table>
         </div>
     </div>
 </div>
+</app-screen-loader>

@@ -13,6 +13,7 @@ import { take } from 'rxjs/operators';
 })
 export class StocksComponent implements OnInit, OnDestroy {
   stocks: any[] = [];
+  isLoading = true;
   private stocksSubscription: Subscription | null = null;
 
   constructor(
@@ -20,6 +21,7 @@ export class StocksComponent implements OnInit, OnDestroy {
     private dataService: DataService) {}
 
   ngOnInit(): void {
+    this.isLoading = true;
     this.subscribeToStocks();
   }
 
@@ -34,6 +36,7 @@ export class StocksComponent implements OnInit, OnDestroy {
     if (this.stocksSubscription) this.stocksSubscription.unsubscribe();
     this.stocksSubscription = this.dataService.getStocks().subscribe(stocks => {
       this.stocks = this.sortByDate(stocks);
+      this.isLoading = false;
     });
   }
 
