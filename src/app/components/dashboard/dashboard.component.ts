@@ -1,6 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { BehaviorSubject, Subscription } from 'rxjs';
-import { take } from 'rxjs/operators';
 import { DataService } from 'src/app/service/data.service';
 import { MarketDataService } from 'src/app/service/market-data.service';
 
@@ -124,9 +123,11 @@ export class DashboardComponent implements OnInit, OnDestroy {
         const dateB = new Date(b.date.split('/').reverse().join('/'));
         return dateA.getTime() - dateB.getTime();
       });
+      this.trades = trades;
       this.chartData = this.calculateMarketProfits(trades);
       this.setChart();
       this.trades$.next(trades);
+      this.rebuildWeeklyData();
     });
   }
 
@@ -198,54 +199,59 @@ export class DashboardComponent implements OnInit, OnDestroy {
   private subscribeToSheets(): void {
     if (this.sheetsSubscription) this.sheetsSubscription.unsubscribe();
     this.sheetsSubscription = this.dataService.getSheet().subscribe(sheets => {
-      sheets.sort((a, b) => {
+      this.sheets = sheets.sort((a, b) => {
         const dateA = new Date(a.date.split('/').reverse().join('/'));
         const dateB = new Date(b.date.split('/').reverse().join('/'));
         return dateA.getTime() - dateB.getTime();
       });
-      this.sheets = sheets;
-      this.groupedData = [];
-      this.sheets.forEach(sheet => {
-        this.trades$.pipe(take(1)).subscribe((trades: any) => {
-          const index = trades.findIndex((x: any) => x.date === sheet.date);
-          if (index >= 0) {
-            const tradeData = trades.slice(index, index + sheet.data.length);
-            (tradeData as any).totalProfit = sheet.data.reduce((total: number, trade: any) => {
-              const profit = Number(trade?.profit) || 0;
-              const lose = Number(trade?.lose) || 0;
-              return total + profit - lose;
-            }, 0);
-            (tradeData as any).totalDays = sheet.days;
-            (tradeData as any).roi = sheet.roi;
-            (tradeData as any).startingWeekCapital = sheet.capital;
-            this.groupedData.push(tradeData);
-          }
-        });
-      });
-      this.setWeeklyData();
+      this.rebuildWeeklyData();
     });
   }
 
+  private rebuildWeeklyData(): void {
+    this.groupedData = [];
+    this.weeklyROIData = [];
+
+    this.sheets.forEach(sheet => {
+      const index = this.trades.findIndex((x: any) => x.date === sheet.date);
+      if (index >= 0 && sheet.data?.length) {
+        const tradeData = this.trades.slice(index, index + sheet.data.length);
+        (tradeData as any).totalProfit = sheet.data.reduce((total: number, trade: any) => {
+          const profit = Number(trade?.profit) || 0;
+          const lose = Number(trade?.lose) || 0;
+          return total + profit - lose;
+        }, 0);
+        (tradeData as any).totalDays = sheet.days;
+        (tradeData as any).roi = sheet.roi;
+        (tradeData as any).startingWeekCapital = sheet.capital;
+        this.groupedData.push(tradeData);
+      }
+    });
+
+    this.setWeeklyData();
+  }
+
   setWeeklyData() {
-    this.groupedData.map((x: any, index: number) => {
-      if(x.length) {
+    this.weeklyROIData = this.groupedData
+      .filter((x: any) => x.length)
+      .map((x: any, index: number) => {
         const lastTrade = x[x.length - 1];
         const finalCapital = lastTrade?.isProfitable === true
           ? +lastTrade.investment + +lastTrade.profit - +lastTrade.brokerage
           : +lastTrade.investment - +lastTrade.lose - +lastTrade.brokerage;
         const totalBrokerage = x.reduce((total, trade) => total + (+trade.brokerage || 0), 0);
-        const object = {
+
+        return {
           currentWeekInvestment: x.startingWeekCapital,
           currentWeekExpectedROI: x.roi,
           currentWeekExpectedResult: this.calculateCapital(+x.startingWeekCapital, x.roi, x.totalDays),
           currentWeekCapital: finalCapital,
           currentWeekOverallResult: +x.startingWeekCapital + x.totalProfit - totalBrokerage,
           week: index + 1
-        }
-        this.weeklyROIData.push(object)
-      }
-    })
-    this.selectedWeek = this.weeklyROIData.length;
+        };
+      });
+
+    this.selectedWeek = this.weeklyROIData.length || 1;
     this.selectedWeekData = this.weeklyROIData[this.selectedWeek - 1];
     this.setBarCharts();
   }

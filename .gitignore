@@ -44,3 +44,4 @@ config.bat
 
 # Environment
 src/environments/firebase.config.ts
+.env
