@@ -40,11 +40,7 @@ testem.log
 # System files
 .DS_Store
 Thumbs.db
-config.bat
 
 # Environment
 src/environments/firebase.config.ts
 .env
-branch_structure.json
-temp_auto_push.bat
-temp_interactive_push.bat
